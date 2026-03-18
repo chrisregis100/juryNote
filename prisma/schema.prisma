@@ -1,0 +1,143 @@
+// JuryFlow - Prisma Schema
+// PostgreSQL + Prisma ORM
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  organizer
+  jury
+  supervisor
+}
+
+enum EventStatus {
+  draft
+  open
+  deliberation
+  closed
+}
+
+enum ScaleType {
+  SCALE_0_5
+  SCALE_0_10
+  SCALE_0_20
+}
+
+enum DeliberationStatus {
+  open
+  locked
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String?  @unique
+  name      String?
+  role      UserRole @default(organizer)
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  juryAssignments JuryAssignment[]
+  grades          Grade[]
+}
+
+model Event {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  status      EventStatus @default(draft)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  teams           Team[]
+  criteria        Criterion[]
+  juryAssignments JuryAssignment[]
+  deliberations   Deliberation[]
+}
+
+model Team {
+  id         String   @id @default(cuid())
+  eventId    String
+  name       String
+  membersJson String @default("[]") // JSON array of member names
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  event  Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  grades Grade[]
+}
+
+model Criterion {
+  id        String    @id @default(cuid())
+  eventId   String
+  name      String
+  weight    Float     // coefficient > 0
+  scaleType ScaleType // 0-5, 0-10, 0-20
+  order     Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  event  Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  grades Grade[]
+}
+
+model JuryAssignment {
+  id           String    @id @default(cuid())
+  eventId      String
+  userId       String?
+  pinCode      String    // 6 digits
+  magicToken   String?   @unique
+  displayName  String?   // optional label for anonymous jury
+  expiresAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  grades Grade[]
+}
+
+model Grade {
+  id                 String   @id @default(cuid())
+  teamId             String
+  criterionId        String
+  juryAssignmentId   String
+  value              Int      // note within scale
+  comment            String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  team            Team            @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  criterion       Criterion       @relation(fields: [criterionId], references: [id], onDelete: Cascade)
+  juryAssignment  JuryAssignment  @relation(fields: [juryAssignmentId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, criterionId, juryAssignmentId])
+  users User[]
+}
+
+model Deliberation {
+  id        String             @id @default(cuid())
+  eventId   String
+  status    DeliberationStatus @default(open)
+  closedAt  DateTime?
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+
+  event             Event             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  rankingSnapshots  RankingSnapshot[]
+}
+
+model RankingSnapshot {
+  id             String   @id @default(cuid())
+  deliberationId String
+  rankingsJson   String   // JSON array of { teamId, rank, score, ... }
+  createdAt      DateTime @default(now())
+
+  deliberation Deliberation @relation(fields: [deliberationId], references: [id], onDelete: Cascade)
+}
