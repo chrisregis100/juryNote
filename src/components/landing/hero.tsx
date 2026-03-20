@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { AnimatedSection } from "./animated-section";
 
 export const Hero = () => (
@@ -35,7 +37,7 @@ export const Hero = () => (
       </AnimatedSection>
 
       <AnimatedSection delay={0.1}>
-        <p className="mx-auto mt-8 max-w-2xl text-center text-lg text-slate-500 md:text-xl">
+        <p className="mx-auto mt-8 max-w-2xl text-center text-lg text-slate-600 md:text-xl">
           Organisez, notez et délibérez en temps réel.
           <br className="hidden md:block" />
           Plus de tableurs, plus de chaos.
@@ -50,12 +52,12 @@ export const Hero = () => (
           >
             Demander une démo
           </a>
-          <a
-            href="#how-it-works"
+          <Link
+            href="/admin"
             className="inline-flex h-12 items-center rounded-md border-2 border-black bg-white px-8 text-base font-bold text-black transition-all hover:bg-slate-50"
           >
-            Voir comment ça marche
-          </a>
+            Gérer un événement
+          </Link>
         </div>
       </AnimatedSection>
 

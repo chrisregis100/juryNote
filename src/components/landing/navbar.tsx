@@ -10,7 +10,7 @@ const NAV_LINKS = [
 
 export const Navbar = () => (
   <header className="sticky top-0 z-50 border-b-2 border-black bg-white">
-    <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+    <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6" aria-label="Navigation principale">
       <Link
         href="/"
         className="flex items-center gap-2 text-xl font-black tracking-tight"

@@ -47,6 +47,7 @@ const FAQItem = ({
   index: number;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const accordionId = `faq-accordion-${index}`;
 
   const handleToggle = () => setIsOpen((prev) => !prev);
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -63,6 +64,7 @@ const FAQItem = ({
           onClick={handleToggle}
           onKeyDown={handleKeyDown}
           aria-expanded={isOpen}
+          aria-controls={accordionId}
           className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
         >
           <span className="text-sm font-bold text-black md:text-base">
@@ -80,6 +82,7 @@ const FAQItem = ({
         <AnimatePresence>
           {isOpen && (
             <motion.div
+              id={accordionId}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}

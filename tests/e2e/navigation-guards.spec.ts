@@ -11,6 +11,11 @@ test.describe("Navigation guards (unauthenticated)", () => {
     await expect(page).toHaveURL(/\/jury\/join/);
   });
 
+  test("visiting /supervisor redirects to /login when not logged in", async ({ page }) => {
+    await page.goto("/supervisor");
+    await expect(page).toHaveURL(/\/login/);
+  });
+
   test("home redirects to /admin when organisateur is logged in", async ({ page }) => {
     test.skip(!process.env.E2E_ORGANISER_EMAIL, "E2E_ORGANISER_EMAIL not set");
     const organizerEmail = process.env.E2E_ORGANISER_EMAIL!;

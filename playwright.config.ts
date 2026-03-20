@@ -23,9 +23,12 @@ export default defineConfig({
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "on-first-retry",
+    actionTimeout: 5_000,
+    navigationTimeout: 15_000,
   },
+  timeout: 30_000,
   expect: {
-    timeout: 10_000, // 10s timeout for assertions
+    timeout: 10_000,
   },
   projects: process.env.CI
     ? [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }]

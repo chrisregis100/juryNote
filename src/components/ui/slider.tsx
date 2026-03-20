@@ -16,11 +16,13 @@ const Slider = React.forwardRef<
 >(({ className, "aria-label": ariaLabel, "aria-valuetext": ariaValueText, value, min, max, ...props }, ref) => {
   const computedValueText = React.useMemo(() => {
     if (ariaValueText) return ariaValueText;
-    if (value && typeof value[0] === "number" && typeof max === "number") {
-      return `${value[0]} sur ${max}`;
+    if (Array.isArray(value) && value.length > 0 && typeof value[0] === "number" && typeof max === "number") {
+      const currentValue = value[0];
+      const minValue = typeof min === "number" ? min : 0;
+      return `${currentValue} sur ${max}`;
     }
     return undefined;
-  }, [ariaValueText, value, max]);
+  }, [ariaValueText, value, min, max]);
 
   return (
     <SliderPrimitive.Root

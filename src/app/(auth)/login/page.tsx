@@ -22,7 +22,7 @@ export default async function LoginPage() {
           <h1 className="text-3xl font-black tracking-tight text-black">
             Connexion
           </h1>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-slate-600">
             Accédez à votre espace d&apos;organisation et de gestion.
           </p>
         </div>
@@ -30,9 +30,18 @@ export default async function LoginPage() {
         <LoginForm />
       </div>
 
-      {/* Jury join link */}
-      <div className="text-center">
-        <p className="text-sm text-slate-500">
+      {/* Links */}
+      <div className="space-y-3 text-center">
+        <p className="text-sm text-slate-600">
+          Vous n&apos;avez pas de compte ?{" "}
+          <Link
+            href="/register"
+            className="font-semibold text-indigo-600 underline-offset-4 transition-colors hover:text-indigo-800 hover:underline"
+          >
+            Créer un compte
+          </Link>
+        </p>
+        <p className="text-sm text-slate-600">
           Vous êtes membre du jury ?{" "}
           <Link
             href="/jury/join"

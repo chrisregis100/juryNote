@@ -30,7 +30,7 @@ export default function RootLayout({
       >
         <a
           href="#main"
-          className="fixed left-0 top-0 z-50 -translate-y-full bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-transform focus-visible:translate-y-0"
+          className="fixed left-[-9999px] top-0 z-50 bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-all focus-visible:left-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
         >
           Aller au contenu principal
         </a>

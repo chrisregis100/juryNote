@@ -43,7 +43,7 @@ export default async function AdminPage() {
                       {event.name}
                     </Link>
                   </CardTitle>
-                  <p className="text-sm text-slate-500">{event.slug}</p>
+                  <p className="text-sm text-slate-600">{event.slug}</p>
                 </CardHeader>
                 <CardContent className="text-sm text-slate-600">
                   <span>{event._count.teams} équipes</span>
