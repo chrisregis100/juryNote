@@ -10,5 +10,5 @@ export default async function SupervisorLayout({
   if (!session?.user) redirect("/login");
   if ("eventId" in session.user) redirect("/jury");
 
-  return <>{children}</>;
+  return <main id="main">{children}</main>;
 }

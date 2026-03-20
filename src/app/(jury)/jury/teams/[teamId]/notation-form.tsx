@@ -126,6 +126,7 @@ export function NotationForm({
       {criteria.map((c) => {
         const max = SCALE_MAX[c.scaleType] ?? 10;
         const value = values[c.id] ?? 0;
+        const commentId = `comment-${c.id}`;
         return (
           <div key={c.id} className="space-y-2 rounded-lg border border-slate-200 bg-white p-4">
             <Label className="text-base font-medium">
@@ -139,15 +140,22 @@ export function NotationForm({
                 min={0}
                 step={1}
                 className="flex-1"
+                aria-label={`${c.name}, échelle de 0 à ${max}`}
+                aria-valuetext={`${value} sur ${max}`}
               />
-              <span className="w-8 text-right font-mono text-slate-600">{value}</span>
+              <span className="w-8 text-right font-mono text-slate-600" aria-hidden="true">{value}</span>
             </div>
+            <Label htmlFor={commentId} className="sr-only">
+              Commentaire pour {c.name} (optionnel)
+            </Label>
             <Textarea
+              id={commentId}
               placeholder="Commentaire (optionnel)"
               value={comments[c.id] ?? ""}
               onChange={(e) => updateComment(c.id, e.target.value)}
               onBlur={() => scheduleFlush()}
               className="min-h-[60px] resize-y"
+              aria-label={`Commentaire pour ${c.name} (optionnel)`}
             />
           </div>
         );
@@ -158,9 +166,9 @@ export function NotationForm({
           {lastError}
         </p>
       )}
-      {pending && (
-        <p className="text-sm text-slate-500">Sauvegarde…</p>
-      )}
+      <div role="status" aria-live="polite" className="text-sm text-slate-500">
+        {pending && "Sauvegarde…"}
+      </div>
 
       <div className="flex flex-wrap gap-2">
         <Button asChild variant="outline">

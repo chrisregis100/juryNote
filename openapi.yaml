@@ -1,0 +1,618 @@
+openapi: 3.0.3
+info:
+  title: JuryFlow API
+  description: |
+    JuryFlow is a jury scoring and deliberation platform for hackathons.
+    This API covers authentication (NextAuth), events, teams, criteria, grades,
+    deliberations, and real-time SSE updates.
+  version: 1.0.0
+  contact:
+    name: JuryFlow
+
+servers:
+  - url: /
+    description: Next.js app (relative to app origin)
+
+tags:
+  - name: Authentication
+    description: NextAuth session, sign in, sign out
+  - name: Events
+    description: Event CRUD and jury PIN generation
+  - name: Teams
+    description: Team management per event
+  - name: Criteria
+    description: Scoring criteria per event
+  - name: Grades
+    description: Jury grade upsert
+  - name: Deliberations
+    description: Deliberation and ranking
+  - name: Real-time
+    description: Server-Sent Events stream
+
+security:
+  - sessionCookie: []
+
+paths:
+  /api/auth/[...nextauth]:
+    get:
+      tags: [Authentication]
+      summary: NextAuth GET handler
+      description: |
+        Handles NextAuth GET routes such as:
+        - `/api/auth/session` — current session
+        - `/api/auth/providers` — available providers (credentials, jury-pin)
+        - `/api/auth/csrf` — CSRF token
+        - `/api/auth/callback/*` — OAuth callbacks (if configured)
+      security: []
+      responses:
+        "200":
+          description: Session, providers, or CSRF response (varies by sub-path)
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Session"
+                  - $ref: "#/components/schemas/ProvidersResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      tags: [Authentication]
+      summary: NextAuth POST handler
+      description: |
+        Handles NextAuth POST routes:
+        - `/api/auth/signin/credentials` — sign in with email/password (organizer/supervisor)
+        - `/api/auth/signin/jury-pin` — sign in with event slug + 6-digit PIN (jury)
+        - `/api/auth/signout` — sign out
+      security: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/CredentialsSignInBody"
+                - $ref: "#/components/schemas/JuryPinSignInBody"
+      responses:
+        "200":
+          description: Redirect or success (e.g. sign out)
+        "302":
+          description: Redirect after sign in
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /api/events/{eventId}/stream:
+    get:
+      tags: [Real-time]
+      summary: Server-Sent Events stream
+      description: |
+        Opens an SSE stream for real-time updates for an event.
+        Sends a `connected` message first, then every 3 seconds a `tick` message
+        with grades count and deliberation status. No authentication required;
+        event must exist.
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/EventIdPath"
+      responses:
+        "200":
+          description: SSE stream
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: |
+                  SSE format: each event is a line "data: {json}\n\n".
+                  Message types:
+                  - connected: { "type": "connected", "eventId": "<id>" }
+                  - tick: { "type": "tick", "gradesCount": number, "deliberationStatus": "open" | "locked" }
+                  - error: { "type": "error" }
+              example: "data: {\"type\":\"connected\",\"eventId\":\"clx123\"}\n\ndata: {\"type\":\"tick\",\"gradesCount\":42,\"deliberationStatus\":\"open\"}\n\n"
+          headers:
+            Content-Type:
+              schema: { type: string, example: "text/event-stream" }
+            Cache-Control:
+              schema: { type: string, example: "no-store, no-cache, must-revalidate" }
+            Connection:
+              schema: { type: string, example: "keep-alive" }
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /api/events:
+    post:
+      tags: [Events]
+      summary: Create event
+      description: Creates a new event. Maps to `createEvent` server action. Organizer/supervisor only.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: $ref: "#/components/schemas/CreateEventRequest"
+          application/x-www-form-urlencoded:
+            schema: $ref: "#/components/schemas/CreateEventRequest"
+      responses:
+        "200":
+          description: Event created
+          content:
+            application/json:
+              schema: $ref: "#/components/schemas/CreateEventResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestValidation"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /api/events/{eventId}/criteria:
+    post:
+      tags: [Criteria]
+      summary: Create criterion
+      description: Adds a scoring criterion to an event. Maps to `createCriterion` server action.
+      parameters:
+        - $ref: "#/components/parameters/EventIdPath"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: $ref: "#/components/schemas/CreateCriterionRequest"
+          application/x-www-form-urlencoded:
+            schema: $ref: "#/components/schemas/CreateCriterionRequest"
+      responses:
+        "200":
+          description: Criterion created
+          content:
+            application/json:
+              schema: $ref: "#/components/schemas/CreateCriterionResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestValidation"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /api/events/{eventId}/teams:
+    post:
+      tags: [Teams]
+      summary: Create team
+      description: Adds a team to an event. Maps to `createTeam` server action.
+      parameters:
+        - $ref: "#/components/parameters/EventIdPath"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: $ref: "#/components/schemas/CreateTeamRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/CreateTeamRequest"
+              description: "members can be JSON array string or comma-separated"
+      responses:
+        "200":
+          description: Team created
+          content:
+            application/json:
+              schema: $ref: "#/components/schemas/CreateTeamResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestValidation"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /api/events/{eventId}/jury-pins:
+    post:
+      tags: [Events]
+      summary: Generate jury PIN
+      description: Creates a jury assignment with a 6-digit PIN and 30-day expiry. Maps to `generateJuryPin` server action.
+      parameters:
+        - $ref: "#/components/parameters/EventIdPath"
+      requestBody:
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        "200":
+          description: PIN and magic token generated
+          content:
+            application/json:
+              schema: $ref: "#/components/schemas/GenerateJuryPinResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /api/grades:
+    post:
+      tags: [Grades]
+      summary: Upsert grade
+      description: |
+        Creates or updates a grade for a team/criterion by the current jury.
+        Maps to `upsertGrade` server action. Value must be within criterion scale (0-5, 0-10, or 0-20).
+        Fails if deliberation is closed.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: $ref: "#/components/schemas/UpsertGradeRequest"
+      responses:
+        "200":
+          description: Grade saved
+          content:
+            application/json:
+              schema: $ref: "#/components/schemas/UpsertGradeResponse"
+        "400":
+          $ref: "#/components/responses/BadRequestValidation"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /api/deliberations/{eventId}:
+    get:
+      tags: [Deliberations]
+      summary: Get or create deliberation
+      description: Returns the latest deliberation for the event, creating one if none exists. Maps to `getOrCreateDeliberation`.
+      parameters:
+        - $ref: "#/components/parameters/EventIdPath"
+      responses:
+        "200":
+          description: Deliberation
+          content:
+            application/json:
+              schema: $ref: "#/components/schemas/Deliberation"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /api/deliberations/{eventId}/close:
+    post:
+      tags: [Deliberations]
+      summary: Close deliberation
+      description: |
+        Locks the deliberation, computes final ranking, and saves a ranking snapshot.
+        Maps to `closeDeliberation`. Fails if event not found or already closed.
+      parameters:
+        - $ref: "#/components/parameters/EventIdPath"
+      requestBody:
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        "200":
+          description: Deliberation closed
+          content:
+            application/json:
+              schema: $ref: "#/components/schemas/CloseDeliberationResponse"
+        "400":
+          description: Event not found or deliberation already closed
+          content:
+            application/json:
+              schema: $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /api/deliberations/{eventId}/ranking:
+    get:
+      tags: [Deliberations]
+      summary: Get ranking
+      description: Returns computed ranking for the event (live from grades; isLocked reflects deliberation status). Maps to `getRanking`.
+      parameters:
+        - $ref: "#/components/parameters/EventIdPath"
+      responses:
+        "200":
+          description: Ranking and lock status
+          content:
+            application/json:
+              schema: $ref: "#/components/schemas/GetRankingResponse"
+        "400":
+          description: Event not found
+          content:
+            application/json:
+              schema: $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: next-auth.session-token
+      description: NextAuth JWT session cookie (30-day max age)
+
+  parameters:
+    EventIdPath:
+      name: eventId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: cuid
+      description: Event ID
+
+  responses:
+    BadRequestValidation:
+      description: Validation error (e.g. invalid body or field errors)
+      content:
+        application/json:
+          schema: $ref: "#/components/schemas/ValidationError"
+    Unauthorized:
+      description: Not authenticated or session expired
+      content:
+        application/json:
+          schema: $ref: "#/components/schemas/ErrorMessage"
+          example: { error: "Unauthorized" }
+    NotFound:
+      description: Resource not found (e.g. event)
+      content:
+        text/plain:
+          schema: { type: string, example: "Event not found" }
+        application/json:
+          schema: $ref: "#/components/schemas/ErrorMessage"
+    InternalServerError:
+      description: Server error
+      content:
+        application/json:
+          schema: $ref: "#/components/schemas/ErrorMessage"
+
+  schemas:
+    # --- Enums ---
+    UserRole:
+      type: string
+      enum: [organizer, jury, supervisor]
+    EventStatus:
+      type: string
+      enum: [draft, open, deliberation, closed]
+    ScaleType:
+      type: string
+      enum: [SCALE_0_5, SCALE_0_10, SCALE_0_20]
+    DeliberationStatus:
+      type: string
+      enum: [open, locked]
+
+    # --- Prisma models (API representation) ---
+    User:
+      type: object
+      description: User entity (organizer, supervisor, or linked to jury)
+      properties:
+        id: { type: string, format: cuid }
+        email: { type: string, format: email, nullable: true }
+        name: { type: string, nullable: true }
+        role: { $ref: "#/components/schemas/UserRole" }
+        image: { type: string, nullable: true }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+      required: [id, role, createdAt, updatedAt]
+
+    Event:
+      type: object
+      description: Event entity
+      properties:
+        id: { type: string, format: cuid }
+        name: { type: string }
+        slug: { type: string }
+        status: { $ref: "#/components/schemas/EventStatus" }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+      required: [id, name, slug, status, createdAt, updatedAt]
+
+    Team:
+      type: object
+      description: Team entity (members stored as JSON array in membersJson)
+      properties:
+        id: { type: string, format: cuid }
+        eventId: { type: string, format: cuid }
+        name: { type: string }
+        membersJson: { type: string, description: "JSON array of member names" }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+      required: [id, eventId, name, membersJson, createdAt, updatedAt]
+
+    Criterion:
+      type: object
+      description: Scoring criterion per event
+      properties:
+        id: { type: string, format: cuid }
+        eventId: { type: string, format: cuid }
+        name: { type: string }
+        weight: { type: number, format: float, description: "Coefficient > 0" }
+        scaleType: { $ref: "#/components/schemas/ScaleType" }
+        order: { type: integer }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+      required: [id, eventId, name, weight, scaleType, order, createdAt, updatedAt]
+
+    JuryAssignment:
+      type: object
+      description: Jury PIN assignment for an event
+      properties:
+        id: { type: string, format: cuid }
+        eventId: { type: string, format: cuid }
+        userId: { type: string, format: cuid, nullable: true }
+        pinCode: { type: string, description: "6 digits" }
+        magicToken: { type: string, nullable: true }
+        expiresAt: { type: string, format: date-time, nullable: true }
+        displayName: { type: string, nullable: true }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+      required: [id, eventId, pinCode, createdAt, updatedAt]
+
+    Grade:
+      type: object
+      description: Single grade (team + criterion + jury)
+      properties:
+        id: { type: string, format: cuid }
+        teamId: { type: string, format: cuid }
+        criterionId: { type: string, format: cuid }
+        juryAssignmentId: { type: string, format: cuid }
+        value: { type: integer, description: "Note within scale (0-5, 0-10, or 0-20)" }
+        comment: { type: string, nullable: true }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+      required: [id, teamId, criterionId, juryAssignmentId, value, createdAt, updatedAt]
+
+    Deliberation:
+      type: object
+      description: Deliberation for an event
+      properties:
+        id: { type: string, format: cuid }
+        eventId: { type: string, format: cuid }
+        status: { $ref: "#/components/schemas/DeliberationStatus" }
+        closedAt: { type: string, format: date-time, nullable: true }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+      required: [id, eventId, status, createdAt, updatedAt]
+
+    RankingSnapshot:
+      type: object
+      description: Snapshot of ranking when deliberation is closed
+      properties:
+        id: { type: string, format: cuid }
+        deliberationId: { type: string, format: cuid }
+        rankingsJson: { type: string, description: "JSON array of { teamId, rank, score, teamName }" }
+        createdAt: { type: string, format: date-time }
+      required: [id, deliberationId, rankingsJson, createdAt]
+
+    # --- Auth ---
+    Session:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            id: { type: string }
+            email: { type: string, nullable: true }
+            name: { type: string, nullable: true }
+            role: { $ref: "#/components/schemas/UserRole" }
+            eventId: { type: string, nullable: true }
+            juryAssignmentId: { type: string, nullable: true }
+            displayName: { type: string, nullable: true }
+        expires: { type: string, format: date-time }
+
+    CredentialsSignInBody:
+      type: object
+      description: Organizer/supervisor sign-in (provider credentials)
+      required: [email, password]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string, format: password }
+
+    JuryPinSignInBody:
+      type: object
+      description: Jury sign-in (provider jury-pin)
+      required: [eventSlug, pinCode]
+      properties:
+        eventSlug: { type: string, description: "Event slug" }
+        pinCode: { type: string, minLength: 6, maxLength: 6, pattern: "^[0-9]{6}$" }
+
+    ProvidersResponse:
+      type: object
+      additionalProperties:
+        type: object
+        properties:
+          id: { type: string }
+          name: { type: string }
+
+    # --- Request/Response DTOs ---
+    CreateEventRequest:
+      type: object
+      required: [name, slug]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 200 }
+        slug: { type: string, minLength: 1, maxLength: 100, pattern: "^[a-z0-9-]+$" }
+
+    CreateEventResponse:
+      type: object
+      properties:
+        data: { $ref: "#/components/schemas/Event" }
+      required: [data]
+
+    CreateCriterionRequest:
+      type: object
+      required: [name, weight, scaleType]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 200 }
+        weight: { type: number, exclusiveMinimum: 0 }
+        scaleType: { $ref: "#/components/schemas/ScaleType" }
+        order: { type: integer, minimum: 0, default: 0 }
+
+    CreateCriterionResponse:
+      type: object
+      properties:
+        data: { $ref: "#/components/schemas/Criterion" }
+      required: [data]
+
+    CreateTeamRequest:
+      type: object
+      required: [name]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 200 }
+        members: { type: array, items: { type: string, maxLength: 200 }, default: [] }
+
+    CreateTeamResponse:
+      type: object
+      properties:
+        data: { $ref: "#/components/schemas/Team" }
+      required: [data]
+
+    GenerateJuryPinResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id: { type: string, format: cuid }
+            pinCode: { type: string }
+            magicToken: { type: string, nullable: true }
+      required: [data]
+
+    UpsertGradeRequest:
+      type: object
+      description: Requires juryAssignmentId in context (current session). Value must be within criterion scale.
+      required: [teamId, criterionId, value]
+      properties:
+        teamId: { type: string, format: cuid }
+        criterionId: { type: string, format: cuid }
+        value: { type: integer, minimum: 0, maximum: 20 }
+        comment: { type: string, maxLength: 2000, nullable: true }
+
+    UpsertGradeResponse:
+      type: object
+      properties:
+        data: { type: object, properties: { ok: { type: boolean } } }
+      required: [data]
+
+    CloseDeliberationResponse:
+      type: object
+      properties:
+        data: { type: object, properties: { ok: { type: boolean } } }
+      required: [data]
+
+    TeamRankingItem:
+      type: object
+      properties:
+        teamId: { type: string }
+        teamName: { type: string }
+        score: { type: number }
+        rank: { type: integer }
+
+    GetRankingResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            ranking:
+              type: array
+              items: { $ref: "#/components/schemas/TeamRankingItem" }
+            isLocked: { type: boolean }
+      required: [data]
+
+    # --- Errors ---
+    ValidationError:
+      type: object
+      description: Zod-style field errors from server actions
+      properties:
+        error:
+          type: object
+          additionalProperties:
+            type: array
+            items: { type: string }
+      example:
+        error:
+          slug: ["Slug must match pattern ^[a-z0-9-]+$"]
+          name: ["Required"]
+
+    ErrorMessage:
+      type: object
+      properties:
+        error: { type: string }
+      example: { error: "Event not found" }

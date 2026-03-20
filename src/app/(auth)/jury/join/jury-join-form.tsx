@@ -101,10 +101,10 @@ export function JuryJoinForm() {
         />
       </div>
 
-      <div className="space-y-2">
-        <Label className="text-sm font-semibold text-slate-700">
+      <fieldset className="space-y-2">
+        <legend className="text-sm font-semibold text-slate-700">
           Code PIN (6 chiffres)
-        </Label>
+        </legend>
         <div className="flex gap-2 sm:gap-3" onPaste={handlePaste}>
           {digits.map((digit, i) => (
             <input
@@ -125,7 +125,7 @@ export function JuryJoinForm() {
             />
           ))}
         </div>
-      </div>
+      </fieldset>
 
       {error && (
         <motion.div

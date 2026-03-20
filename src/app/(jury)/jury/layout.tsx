@@ -28,7 +28,7 @@ export default async function JuryLayout({
           </div>
         </div>
       </header>
-      <main className="flex-1 p-4">{children}</main>
+      <main id="main" className="flex-1 p-4">{children}</main>
     </div>
   );
 }
