@@ -1,3 +1,5 @@
+"use server";
+
 import { db } from "@/lib/db";
 import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
 import type { ResourceType } from "@prisma/client";
@@ -51,7 +53,6 @@ function normalizeStr(str: string): string {
 // ─── Server Actions ───────────────────────────────────────────────────────────
 
 export async function createEventResource(eventId: string, data: CreateResourceData) {
-  "use server";
   try {
     const session = await getServerSession();
     if (!session || !isOrganizerOrSupervisor(session)) {
@@ -83,7 +84,6 @@ export async function createEventResource(eventId: string, data: CreateResourceD
 }
 
 export async function updateEventResource(resourceId: string, data: UpdateResourceData) {
-  "use server";
   try {
     const session = await getServerSession();
     if (!session || !isOrganizerOrSupervisor(session)) {
@@ -112,7 +112,6 @@ export async function updateEventResource(resourceId: string, data: UpdateResour
 }
 
 export async function deleteEventResource(resourceId: string) {
-  "use server";
   try {
     const session = await getServerSession();
     if (!session || !isOrganizerOrSupervisor(session)) {
@@ -131,7 +130,6 @@ export async function deleteEventResource(resourceId: string) {
 }
 
 export async function importApiCredentials(resourceId: string, rows: ImportCredentialRow[]) {
-  "use server";
   try {
     const session = await getServerSession();
     if (!session || !isOrganizerOrSupervisor(session)) {
@@ -160,7 +158,6 @@ export async function importApiCredentials(resourceId: string, rows: ImportCrede
 }
 
 export async function addApiCredential(resourceId: string, hint: string, value: string) {
-  "use server";
   try {
     const session = await getServerSession();
     if (!session || !isOrganizerOrSupervisor(session)) {
@@ -188,7 +185,6 @@ export async function addApiCredential(resourceId: string, hint: string, value: 
 }
 
 export async function deleteApiCredential(credentialId: string) {
-  "use server";
   try {
     const session = await getServerSession();
     if (!session || !isOrganizerOrSupervisor(session)) {
@@ -214,7 +210,6 @@ export async function deleteApiCredential(credentialId: string) {
 }
 
 export async function getEventResources(eventId: string) {
-  "use server";
   try {
     const session = await getServerSession();
     if (!session || !isOrganizerOrSupervisor(session)) {
@@ -261,7 +256,6 @@ export async function getEventResources(eventId: string) {
 }
 
 export async function getResourceCredentials(resourceId: string) {
-  "use server";
   try {
     const session = await getServerSession();
     if (!session || !isOrganizerOrSupervisor(session)) {
