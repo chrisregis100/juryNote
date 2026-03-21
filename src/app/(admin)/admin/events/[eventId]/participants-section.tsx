@@ -34,6 +34,10 @@ export function ParticipantsSection({ eventId, invitedParticipants }: Participan
   const [currentFile, setCurrentFile] = useState<File | null>(null);
   const [csvColumns, setCsvColumns] = useState<string[]>([]);
   const [parsedData, setParsedData] = useState<ParseResult | null>(null);
+  /** Remonte le modal de mapping pour réinitialiser l’état (ex. préremplissage) */
+  const [mappingModalSession, setMappingModalSession] = useState(0);
+  /** D’où vient l’ouverture du mapping : annulation différente si retour prévisualisation */
+  const [mappingOrigin, setMappingOrigin] = useState<"upload" | "preview" | null>(null);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -43,12 +47,16 @@ export function ParticipantsSection({ eventId, invitedParticipants }: Participan
     setUploadError(null);
     setUploadSuccess(null);
     setCurrentFile(file);
+    setParsedData(null);
+    setMappingOrigin(null);
 
     try {
       const result = await parseParticipantFile(file);
 
       // Si mapping manuel requis
       if (result.requiresManualMapping && result.detectedColumns) {
+        setMappingOrigin("upload");
+        setMappingModalSession((s) => s + 1);
         setCsvColumns(result.detectedColumns);
         setMappingModalOpen(true);
         setIsUploading(false);
@@ -58,6 +66,9 @@ export function ParticipantsSection({ eventId, invitedParticipants }: Participan
       // Si succès direct, ouvrir la prévisualisation
       if (result.success || result.participants.length > 0) {
         setParsedData(result);
+        if (result.detectedColumns?.length) {
+          setCsvColumns(result.detectedColumns);
+        }
         setPreviewModalOpen(true);
         setIsUploading(false);
         return;
@@ -76,18 +87,31 @@ export function ParticipantsSection({ eventId, invitedParticipants }: Participan
     if (!currentFile) return;
 
     setMappingModalOpen(false);
+    setMappingOrigin(null);
     setIsUploading(true);
 
     try {
       // Re-parser avec le mapping personnalisé
       const result = await parseWithMapping(currentFile, mapping);
       setParsedData(result);
+      if (result.detectedColumns?.length) {
+        setCsvColumns(result.detectedColumns);
+      }
       setPreviewModalOpen(true);
     } catch (error) {
       setUploadError(`Erreur lors du parsing: ${error instanceof Error ? error.message : "Erreur inconnue"}`);
     } finally {
       setIsUploading(false);
     }
+  };
+
+  const handleAdjustMappingFromPreview = () => {
+    if (!parsedData?.detectedColumns?.length || !currentFile) return;
+    setMappingOrigin("preview");
+    setMappingModalSession((s) => s + 1);
+    setCsvColumns(parsedData.detectedColumns);
+    setPreviewModalOpen(false);
+    setMappingModalOpen(true);
   };
 
   const handlePreviewConfirm = async () => {
@@ -111,6 +135,7 @@ export function ParticipantsSection({ eventId, invitedParticipants }: Participan
         setCurrentFile(null);
         setParsedData(null);
         setCsvColumns([]);
+        setMappingOrigin(null);
         router.refresh();
       }
     } catch (error) {
@@ -122,6 +147,12 @@ export function ParticipantsSection({ eventId, invitedParticipants }: Participan
 
   const handleCancelMapping = () => {
     setMappingModalOpen(false);
+    if (mappingOrigin === "preview") {
+      setMappingOrigin(null);
+      setPreviewModalOpen(true);
+      return;
+    }
+    setMappingOrigin(null);
     setCurrentFile(null);
     setCsvColumns([]);
     if (fileInputRef.current) {
@@ -133,6 +164,8 @@ export function ParticipantsSection({ eventId, invitedParticipants }: Participan
     setPreviewModalOpen(false);
     setCurrentFile(null);
     setParsedData(null);
+    setCsvColumns([]);
+    setMappingOrigin(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -187,13 +220,16 @@ export function ParticipantsSection({ eventId, invitedParticipants }: Participan
           <p className="text-xs text-slate-500">
             Le fichier doit contenir une colonne "nom" (requis). Colonnes optionnelles: "email", "phone", "profession".
             Si les colonnes ne sont pas détectées automatiquement, un mapping manuel sera proposé.
+            Après une détection automatique, vous pouvez aussi corriger le mapping depuis la prévisualisation.
           </p>
         </div>
 
         {/* Modals */}
         <ColumnMappingModal
+          key={mappingModalSession}
           open={mappingModalOpen}
           csvColumns={csvColumns}
+          initialMapping={parsedData?.columnMapping}
           onMappingComplete={handleMappingComplete}
           onCancel={handleCancelMapping}
         />
@@ -205,6 +241,11 @@ export function ParticipantsSection({ eventId, invitedParticipants }: Participan
             errors={parsedData.errors}
             onConfirm={handlePreviewConfirm}
             onCancel={handleCancelPreview}
+            onAdjustMapping={
+              currentFile && parsedData.detectedColumns && parsedData.detectedColumns.length > 0
+                ? handleAdjustMappingFromPreview
+                : undefined
+            }
           />
         )}
 

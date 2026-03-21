@@ -16,6 +16,8 @@ interface DataPreviewProps {
   errors: string[];
   onConfirm: () => void;
   onCancel: () => void;
+  /** Si défini : l’organisateur peut rouvrir le mapping manuel puis revoir la prévisualisation */
+  onAdjustMapping?: () => void;
   open: boolean;
 }
 
@@ -24,6 +26,7 @@ export function DataPreview({
   errors,
   onConfirm,
   onCancel,
+  onAdjustMapping,
   open,
 }: DataPreviewProps) {
   const validCount = participants.length;
@@ -38,8 +41,11 @@ export function DataPreview({
         <DialogHeader>
           <DialogTitle>Prévisualisation des données</DialogTitle>
           <DialogDescription>
-            Vérifiez les données avant l'import. {validCount} participant(s) valide(s)
+            Vérifiez les données avant l&apos;import. {validCount} participant(s) valide(s)
             {errorCount > 0 && `, ${errorCount} erreur(s)`}.
+            {onAdjustMapping
+              ? " Si le résultat ne correspond pas à votre fichier, utilisez « Corriger le mapping des colonnes » puis validez à nouveau après prévisualisation."
+              : ""}
           </DialogDescription>
         </DialogHeader>
 
@@ -129,10 +135,15 @@ export function DataPreview({
           )}
         </div>
 
-        <DialogFooter>
+        <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-end">
           <Button type="button" variant="outline" onClick={onCancel}>
             Annuler
           </Button>
+          {onAdjustMapping ? (
+            <Button type="button" variant="secondary" onClick={onAdjustMapping}>
+              Corriger le mapping des colonnes
+            </Button>
+          ) : null}
           <Button
             type="button"
             onClick={onConfirm}

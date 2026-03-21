@@ -21,6 +21,8 @@ import {
 
 interface ColumnMappingModalProps {
   csvColumns: string[];
+  /** Colonnes CSV → champ système (préremplissage après détection auto ou pour ré-édition) */
+  initialMapping?: Record<string, string>;
   onMappingComplete: (mapping: Record<string, string>) => void;
   onCancel: () => void;
   open: boolean;
@@ -34,13 +36,25 @@ const FIELD_OPTIONS = [
   { value: "profession", label: "Profession" },
 ] as const;
 
+function buildMappingState(
+  columns: string[],
+  initial?: Record<string, string>
+): Record<string, string> {
+  return Object.fromEntries(
+    columns.map((col) => [col, initial?.[col] ?? "ignore"])
+  );
+}
+
 export function ColumnMappingModal({
   csvColumns,
+  initialMapping,
   onMappingComplete,
   onCancel,
   open,
 }: ColumnMappingModalProps) {
-  const [mapping, setMapping] = useState<Record<string, string>>({});
+  const [mapping, setMapping] = useState<Record<string, string>>(() =>
+    buildMappingState(csvColumns, initialMapping)
+  );
 
   const handleMappingChange = (column: string, field: string) => {
     setMapping((prev) => ({
@@ -65,8 +79,8 @@ export function ColumnMappingModal({
         <DialogHeader>
           <DialogTitle>Mapping des colonnes</DialogTitle>
           <DialogDescription>
-            Associez chaque colonne de votre fichier CSV aux champs correspondants.
-            Le champ "Nom" est obligatoire.
+            Associez chaque colonne de votre fichier aux champs correspondants (CSV ou Excel).
+            Le champ « Nom » est obligatoire.
           </DialogDescription>
         </DialogHeader>
 
