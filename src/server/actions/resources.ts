@@ -352,10 +352,13 @@ export async function unlockResourcesForParticipant(
 
       if (!matched) continue;
 
-      await db.apiCredential.update({
-        where: { id: matched.id },
+      // Atomic assignment: only succeeds if credential is still unassigned
+      const updateResult = await db.apiCredential.updateMany({
+        where: { id: matched.id, assignedToId: null },
         data: { assignedToId: participantCheckinId, assignedAt: new Date() },
       });
+
+      if (updateResult.count === 0) continue;
 
       await db.participantResource.create({
         data: {

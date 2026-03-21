@@ -277,8 +277,9 @@ model ApiCredential {
   assignedAt      DateTime?
   createdAt       DateTime            @default(now())
 
-  resource   EventResource       @relation(fields: [resourceId], references: [id], onDelete: Cascade)
-  assignedTo ParticipantCheckin? @relation(fields: [assignedToId], references: [id], onDelete: SetNull)
+  resource             EventResource         @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  assignedTo           ParticipantCheckin?   @relation(fields: [assignedToId], references: [id], onDelete: SetNull)
+  participantResources ParticipantResource[]
 
   @@index([resourceId])
   @@index([assignedToId])
@@ -293,6 +294,7 @@ model ParticipantResource {
 
   participantCheckin ParticipantCheckin @relation(fields: [participantCheckinId], references: [id], onDelete: Cascade)
   resource           EventResource      @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  apiCredential      ApiCredential?     @relation(fields: [apiCredentialId], references: [id], onDelete: SetNull)
 
   @@unique([participantCheckinId, resourceId])
   @@index([participantCheckinId])
