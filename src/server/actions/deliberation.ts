@@ -64,6 +64,8 @@ export async function closeDeliberation(eventId: string) {
     },
   });
 
+  revalidatePath(`/admin/events/${eventId}/deliberation`);
+  revalidatePath(`/admin/events/${eventId}`);
   revalidatePath(`/supervisor/events/${eventId}`);
   revalidatePath("/jury");
   return { data: { ok: true } };

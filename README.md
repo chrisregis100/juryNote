@@ -47,7 +47,8 @@ Plateforme de notation et de délibération pour jurys de hackathons et compéti
 
 ### Notation (jury)
 
-- **Liste des équipes** (`/jury`) : affichage de toutes les équipes avec indicateur de statut (Noté / À noter).
+- **Tableau de bord** (`/jury`) : progression et accès rapide à la notation.
+- **Liste des équipes** (`/jury/teams`) : toutes les équipes avec statut (Noté / À noter).
 - **Formulaire de notation** (`/jury/teams/[teamId]`) :
   - Un slider par critère avec échelle configurée.
   - Champ de commentaire par critère.
@@ -55,9 +56,9 @@ Plateforme de notation et de délibération pour jurys de hackathons et compéti
   - Blocage de la notation lorsque la délibération est verrouillée.
 - **Récapitulatif** (`/jury/summary`) : synthèse de toutes les notes attribuées par le membre du jury.
 
-### Délibération (superviseur)
+### Délibération (organisateur)
 
-- **Vue de délibération** (`/supervisor/events/[eventId]`) :
+- **Vue de délibération** (`/admin/events/[eventId]/deliberation`) ; l’ancienne URL `/supervisor/events/[eventId]` redirige vers cette page :
   - Tableau de classement des équipes en temps réel.
   - Calcul par moyenne pondérée : `Σ(Note × Coefficient) / Σ(Coefficients)`.
   - Bouton de clôture de la délibération.

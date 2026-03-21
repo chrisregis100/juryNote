@@ -65,9 +65,9 @@ export function NotationForm({
       });
       if (result.error) {
         setLastError(Object.values(result.error).flat().join(" "));
-          break;
-        }
+        break;
       }
+    }
     setPending(false);
   }, [juryAssignmentId, teamId]);
 
@@ -112,10 +112,15 @@ export function NotationForm({
 
   if (isLocked) {
     return (
-      <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-amber-800">
-        La délibération est clôturée. Les notes ne sont plus modifiables.
-        <Button asChild variant="outline" size="sm" className="mt-4">
-          <Link href="/jury">Retour à la liste</Link>
+      <div className="rounded-xl border-2 border-black bg-amber-50 p-5 text-amber-900 shadow-[4px_4px_0_0_#000]">
+        <p className="text-sm font-medium">La délibération est clôturée. Les notes ne sont plus modifiables.</p>
+        <Button
+          asChild
+          variant="outline"
+          size="sm"
+          className="mt-4 border-2 border-black font-bold"
+        >
+          <Link href="/jury/teams">Retour à la liste</Link>
         </Button>
       </div>
     );
@@ -128,7 +133,10 @@ export function NotationForm({
         const value = values[c.id] ?? 0;
         const commentId = `comment-${c.id}`;
         return (
-          <div key={c.id} className="space-y-2 rounded-lg border border-slate-200 bg-white p-4">
+          <div
+            key={c.id}
+            className="space-y-2 rounded-xl border-2 border-black bg-white p-4 shadow-[3px_3px_0_0_#e2e8f0]"
+          >
             <Label className="text-base font-medium">
               {c.name} (×{c.weight}, 0–{max})
             </Label>
@@ -171,8 +179,11 @@ export function NotationForm({
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <Button asChild variant="outline">
-          <Link href="/jury">Retour à la liste</Link>
+        <Button asChild variant="outline" className="border-2 border-black font-bold">
+          <Link href="/jury/teams">Retour à la liste</Link>
+        </Button>
+        <Button asChild variant="outline" className="border-2 border-black font-bold">
+          <Link href="/jury/summary">Récapitulatif</Link>
         </Button>
       </div>
     </div>

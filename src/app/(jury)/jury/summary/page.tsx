@@ -40,11 +40,17 @@ export default async function JurySummaryPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
-      <h1 className="text-xl font-semibold text-slate-900">Récapitulatif de mes notes</h1>
+      <div>
+        <p className="text-xs font-bold uppercase tracking-wide text-indigo-600">Mes notes</p>
+        <h1 className="mt-1 text-2xl font-black tracking-tight text-black md:text-3xl">
+          Récapitulatif
+        </h1>
+        <p className="mt-2 text-sm text-slate-600">Vue par équipe et par critère.</p>
+      </div>
       {isLocked && (
-        <p className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+        <div className="rounded-xl border-2 border-black bg-amber-50 p-4 text-sm font-medium text-amber-900 shadow-[4px_4px_0_0_#000]">
           La délibération est clôturée. Les notes ne sont plus modifiables.
-        </p>
+        </div>
       )}
 
       <ul className="space-y-4">
@@ -52,17 +58,22 @@ export default async function JurySummaryPage() {
           const teamGrades = gradesByTeam.get(team.id) ?? [];
           return (
             <li key={team.id}>
-              <Card>
+              <Card className="border-2 border-black shadow-[4px_4px_0_0_#000]">
                 <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <p className="font-medium text-slate-900">{team.name}</p>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="font-bold text-black">{team.name}</p>
                     {!isLocked && (
-                      <Button asChild size="sm" variant="outline">
+                      <Button
+                        asChild
+                        size="sm"
+                        variant="outline"
+                        className="border-2 border-black font-bold"
+                      >
                         <Link href={`/jury/teams/${team.id}`}>Modifier</Link>
                       </Button>
                     )}
                   </div>
-                  <ul className="mt-2 space-y-1 text-sm text-slate-600">
+                  <ul className="mt-3 space-y-1.5 text-sm text-slate-700">
                     {criteria.map((c) => {
                       const g = teamGrades.find((x) => x.criterionId === c.id);
                       return (
@@ -84,9 +95,14 @@ export default async function JurySummaryPage() {
         })}
       </ul>
 
-      <Button asChild variant="outline">
-        <Link href="/jury">← Retour à la liste des équipes</Link>
-      </Button>
+      <div className="flex flex-wrap gap-2">
+        <Button asChild variant="outline" className="border-2 border-black font-medium">
+          <Link href="/jury/teams">← Liste des équipes</Link>
+        </Button>
+        <Button asChild variant="outline" className="border-2 border-black font-medium">
+          <Link href="/jury">Tableau de bord</Link>
+        </Button>
+      </div>
     </div>
   );
 }

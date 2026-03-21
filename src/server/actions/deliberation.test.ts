@@ -133,6 +133,8 @@ describe("deliberation actions", () => {
           rankingsJson: expect.any(String),
         },
       });
+      expect(mockRevalidatePath).toHaveBeenCalledWith("/admin/events/ev-1/deliberation");
+      expect(mockRevalidatePath).toHaveBeenCalledWith("/admin/events/ev-1");
       expect(mockRevalidatePath).toHaveBeenCalledWith("/supervisor/events/ev-1");
       expect(mockRevalidatePath).toHaveBeenCalledWith("/jury");
     });

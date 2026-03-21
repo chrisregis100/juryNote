@@ -42,7 +42,13 @@ export default async function TeamNotationPage({
 
   return (
     <div className="mx-auto max-w-lg space-y-6">
-      <h1 className="text-xl font-semibold text-slate-900">{team.name}</h1>
+      <div className="rounded-xl border-2 border-black bg-white p-5 shadow-[4px_4px_0_0_#000]">
+        <p className="text-xs font-bold uppercase tracking-wide text-indigo-600">Notation</p>
+        <h1 className="mt-1 text-2xl font-black tracking-tight text-black">{team.name}</h1>
+        <p className="mt-2 text-sm text-slate-600">
+          Ajustez les curseurs et commentaires ; la sauvegarde est automatique.
+        </p>
+      </div>
       <NotationForm
         teamId={team.id}
         criteria={criteria}

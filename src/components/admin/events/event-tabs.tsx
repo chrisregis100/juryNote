@@ -13,6 +13,7 @@ const TABS = [
   { label: "Participants", href: "/participants", icon: "👥" },
   { label: "Check-in", href: "/checkin", icon: "✅" },
   { label: "Dashboard", href: "/dashboard", icon: "📊" },
+  { label: "Délibération", href: "/deliberation", icon: "🏆" },
 ] as const;
 
 export function EventTabs({ eventId }: EventTabsProps) {

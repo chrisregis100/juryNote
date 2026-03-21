@@ -56,7 +56,7 @@ export default async function EventLayout({ children, params }: EventLayoutProps
             variant="outline"
             className="border-2 border-black font-medium"
           >
-            <Link href={`/supervisor/events/${eventId}`}>
+            <Link href={`/admin/events/${eventId}/deliberation`}>
               Voir la délibération →
             </Link>
           </Button>
