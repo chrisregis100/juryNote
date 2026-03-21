@@ -4,11 +4,13 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import type { InvitedParticipant } from "@prisma/client";
 import { createInvitedParticipant, deleteInvitedParticipant, bulkImportInvitedParticipants } from "@/server/actions/participant";
-import { parseParticipantFile } from "@/lib/utils/file-parser";
+import { parseParticipantFile, parseWithMapping, type ParseResult } from "@/lib/utils/file-parser";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ColumnMappingModal } from "@/components/participants/column-mapping-modal";
+import { DataPreview } from "@/components/participants/data-preview";
 
 interface ParticipantsSectionProps {
   eventId: string;
@@ -26,6 +28,13 @@ export function ParticipantsSection({ eventId, invitedParticipants }: Participan
   const [phone, setPhone] = useState("");
   const [profession, setProfession] = useState("");
 
+  // États pour le nouveau flux de mapping
+  const [mappingModalOpen, setMappingModalOpen] = useState(false);
+  const [previewModalOpen, setPreviewModalOpen] = useState(false);
+  const [currentFile, setCurrentFile] = useState<File | null>(null);
+  const [csvColumns, setCsvColumns] = useState<string[]>([]);
+  const [parsedData, setParsedData] = useState<ParseResult | null>(null);
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -33,16 +42,62 @@ export function ParticipantsSection({ eventId, invitedParticipants }: Participan
     setIsUploading(true);
     setUploadError(null);
     setUploadSuccess(null);
+    setCurrentFile(file);
 
     try {
       const result = await parseParticipantFile(file);
-      if (!result.success) {
-        setUploadError(result.errors.join(", "));
+
+      // Si mapping manuel requis
+      if (result.requiresManualMapping && result.detectedColumns) {
+        setCsvColumns(result.detectedColumns);
+        setMappingModalOpen(true);
         setIsUploading(false);
         return;
       }
 
-      const importResult = await bulkImportInvitedParticipants(eventId, result.participants);
+      // Si succès direct, ouvrir la prévisualisation
+      if (result.success || result.participants.length > 0) {
+        setParsedData(result);
+        setPreviewModalOpen(true);
+        setIsUploading(false);
+        return;
+      }
+
+      // Si erreur sans mapping requis
+      setUploadError(result.errors.join(", "));
+      setIsUploading(false);
+    } catch (error) {
+      setUploadError(`Erreur: ${error instanceof Error ? error.message : "Erreur inconnue"}`);
+      setIsUploading(false);
+    }
+  };
+
+  const handleMappingComplete = async (mapping: Record<string, string>) => {
+    if (!currentFile) return;
+
+    setMappingModalOpen(false);
+    setIsUploading(true);
+
+    try {
+      // Re-parser avec le mapping personnalisé
+      const result = await parseWithMapping(currentFile, mapping);
+      setParsedData(result);
+      setPreviewModalOpen(true);
+    } catch (error) {
+      setUploadError(`Erreur lors du parsing: ${error instanceof Error ? error.message : "Erreur inconnue"}`);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handlePreviewConfirm = async () => {
+    if (!parsedData || parsedData.participants.length === 0) return;
+
+    setPreviewModalOpen(false);
+    setIsUploading(true);
+
+    try {
+      const importResult = await bulkImportInvitedParticipants(eventId, parsedData.participants);
       if (importResult.error) {
         setUploadError("Erreur lors de l'import: " + Object.values(importResult.error).flat().join(", "));
       } else {
@@ -52,12 +107,34 @@ export function ParticipantsSection({ eventId, invitedParticipants }: Participan
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
+        // Reset states
+        setCurrentFile(null);
+        setParsedData(null);
+        setCsvColumns([]);
         router.refresh();
       }
     } catch (error) {
       setUploadError(`Erreur: ${error instanceof Error ? error.message : "Erreur inconnue"}`);
     } finally {
       setIsUploading(false);
+    }
+  };
+
+  const handleCancelMapping = () => {
+    setMappingModalOpen(false);
+    setCurrentFile(null);
+    setCsvColumns([]);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleCancelPreview = () => {
+    setPreviewModalOpen(false);
+    setCurrentFile(null);
+    setParsedData(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -109,8 +186,27 @@ export function ParticipantsSection({ eventId, invitedParticipants }: Participan
           {uploadSuccess && <p className="text-sm text-green-600">{uploadSuccess}</p>}
           <p className="text-xs text-slate-500">
             Le fichier doit contenir une colonne "nom" (requis). Colonnes optionnelles: "email", "phone", "profession".
+            Si les colonnes ne sont pas détectées automatiquement, un mapping manuel sera proposé.
           </p>
         </div>
+
+        {/* Modals */}
+        <ColumnMappingModal
+          open={mappingModalOpen}
+          csvColumns={csvColumns}
+          onMappingComplete={handleMappingComplete}
+          onCancel={handleCancelMapping}
+        />
+
+        {parsedData && (
+          <DataPreview
+            open={previewModalOpen}
+            participants={parsedData.participants}
+            errors={parsedData.errors}
+            onConfirm={handlePreviewConfirm}
+            onCancel={handleCancelPreview}
+          />
+        )}
 
         <div className="border-t pt-4">
           <Label className="mb-2 block">Ajouter un participant manuellement</Label>
