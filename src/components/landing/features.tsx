@@ -55,7 +55,7 @@ export const Features = () => (
             faut
           </span>
         </h2>
-        <p className="mx-auto mt-4 max-w-xl text-center text-lg text-slate-500">
+        <p className="mx-auto mt-4 max-w-xl text-center text-lg text-slate-600">
           Une plateforme complète pour gérer la notation de A à Z.
         </p>
       </AnimatedSection>

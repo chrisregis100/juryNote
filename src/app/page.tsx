@@ -24,7 +24,7 @@ export default async function HomePage() {
   return (
     <>
       <Navbar />
-      <main>
+      <main id="main">
         <Hero />
         <Stats />
         <Features />

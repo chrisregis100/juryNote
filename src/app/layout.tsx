@@ -28,6 +28,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-slate-50 text-slate-900 antialiased`}
       >
+        <a
+          href="#main"
+          className="fixed left-[-9999px] top-0 z-50 bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-all focus-visible:left-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+        >
+          Aller au contenu principal
+        </a>
         <SessionProvider>{children}</SessionProvider>
       </body>
     </html>

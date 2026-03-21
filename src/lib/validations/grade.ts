@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const scaleTypeSchema = z.enum(["SCALE_0_5", "SCALE_0_10", "SCALE_0_20"]);
+export const scaleTypeSchema = z.enum(["SCALE_0_5", "SCALE_0_10", "SCALE_0_20"]);
 
 const scaleMaxMap: Record<string, number> = {
   SCALE_0_5: 5,

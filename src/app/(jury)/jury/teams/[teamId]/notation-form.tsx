@@ -44,7 +44,6 @@ export function NotationForm({
     });
     return o;
   });
-  const [teamComment, setTeamComment] = useState("");
   const [pending, setPending] = useState(false);
   const [lastError, setLastError] = useState<string | null>(null);
   const queueRef = useRef<Array<{ criterionId: string; value: number; comment: string | null }>>([]);
@@ -65,9 +64,9 @@ export function NotationForm({
       });
       if (result.error) {
         setLastError(Object.values(result.error).flat().join(" "));
-          break;
-        }
+        break;
       }
+    }
     setPending(false);
   }, [juryAssignmentId, teamId]);
 
@@ -112,10 +111,15 @@ export function NotationForm({
 
   if (isLocked) {
     return (
-      <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-amber-800">
-        La délibération est clôturée. Les notes ne sont plus modifiables.
-        <Button asChild variant="outline" size="sm" className="mt-4">
-          <Link href="/jury">Retour à la liste</Link>
+      <div className="rounded-xl border-2 border-black bg-amber-50 p-5 text-amber-900 shadow-[4px_4px_0_0_#000]">
+        <p className="text-sm font-medium">La délibération est clôturée. Les notes ne sont plus modifiables.</p>
+        <Button
+          asChild
+          variant="outline"
+          size="sm"
+          className="mt-4 border-2 border-black font-bold"
+        >
+          <Link href="/jury/teams">Retour à la liste</Link>
         </Button>
       </div>
     );
@@ -126,8 +130,12 @@ export function NotationForm({
       {criteria.map((c) => {
         const max = SCALE_MAX[c.scaleType] ?? 10;
         const value = values[c.id] ?? 0;
+        const commentId = `comment-${c.id}`;
         return (
-          <div key={c.id} className="space-y-2 rounded-lg border border-slate-200 bg-white p-4">
+          <div
+            key={c.id}
+            className="space-y-2 rounded-xl border-2 border-black bg-white p-4 shadow-[3px_3px_0_0_#e2e8f0]"
+          >
             <Label className="text-base font-medium">
               {c.name} (×{c.weight}, 0–{max})
             </Label>
@@ -139,15 +147,22 @@ export function NotationForm({
                 min={0}
                 step={1}
                 className="flex-1"
+                aria-label={`${c.name}, échelle de 0 à ${max}`}
+                aria-valuetext={`${value} sur ${max}`}
               />
-              <span className="w-8 text-right font-mono text-slate-600">{value}</span>
+              <span className="w-8 text-right font-mono text-slate-600" aria-hidden="true">{value}</span>
             </div>
+            <Label htmlFor={commentId} className="sr-only">
+              Commentaire pour {c.name} (optionnel)
+            </Label>
             <Textarea
+              id={commentId}
               placeholder="Commentaire (optionnel)"
               value={comments[c.id] ?? ""}
               onChange={(e) => updateComment(c.id, e.target.value)}
               onBlur={() => scheduleFlush()}
               className="min-h-[60px] resize-y"
+              aria-label={`Commentaire pour ${c.name} (optionnel)`}
             />
           </div>
         );
@@ -158,13 +173,16 @@ export function NotationForm({
           {lastError}
         </p>
       )}
-      {pending && (
-        <p className="text-sm text-slate-500">Sauvegarde…</p>
-      )}
+      <div role="status" aria-live="polite" className="text-sm text-slate-500">
+        {pending && "Sauvegarde…"}
+      </div>
 
       <div className="flex flex-wrap gap-2">
-        <Button asChild variant="outline">
-          <Link href="/jury">Retour à la liste</Link>
+        <Button asChild variant="outline" className="border-2 border-black font-bold">
+          <Link href="/jury/teams">Retour à la liste</Link>
+        </Button>
+        <Button asChild variant="outline" className="border-2 border-black font-bold">
+          <Link href="/jury/summary">Récapitulatif</Link>
         </Button>
       </div>
     </div>

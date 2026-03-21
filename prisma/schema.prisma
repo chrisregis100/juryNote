@@ -34,17 +34,34 @@ enum DeliberationStatus {
   locked
 }
 
+enum QuestionType {
+  TEXT
+  MULTIPLE_CHOICE
+  YES_NO
+  DATE
+  NUMBER
+}
+
+enum ResourceType {
+  API_CREDENTIAL
+  LINK
+  TEXT_INFO
+}
+
 model User {
-  id        String   @id @default(cuid())
-  email     String?  @unique
-  name      String?
-  role      UserRole @default(organizer)
-  image     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String    @id @default(cuid())
+  email         String?   @unique
+  emailVerified Boolean   @default(false)
+  name          String?
+  role          UserRole  @default(organizer)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   juryAssignments JuryAssignment[]
   grades          Grade[]
+  sessions        Session[]
+  accounts        Account[]
 }
 
 model Event {
@@ -55,10 +72,15 @@ model Event {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
-  teams           Team[]
-  criteria        Criterion[]
-  juryAssignments JuryAssignment[]
-  deliberations   Deliberation[]
+  teams               Team[]
+  criteria            Criterion[]
+  juryAssignments     JuryAssignment[]
+  deliberations       Deliberation[]
+  invitedParticipants InvitedParticipant[]
+  checkinLinks        CheckinLink[]
+  participantCheckins ParticipantCheckin[]
+  customQuestions     CustomQuestion[]
+  resources           EventResource[]
 }
 
 model Team {
@@ -140,4 +162,186 @@ model RankingSnapshot {
   createdAt      DateTime @default(now())
 
   deliberation Deliberation @relation(fields: [deliberationId], references: [id], onDelete: Cascade)
+}
+
+model InvitedParticipant {
+  id         String   @id @default(cuid())
+  eventId    String
+  name       String
+  email      String?
+  phone      String?
+  profession String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  event               Event                 @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  participantCheckins ParticipantCheckin[]
+
+  @@index([eventId])
+  @@index([eventId, name])
+}
+
+model CheckinLink {
+  id        String   @id @default(cuid())
+  eventId   String   @unique
+  token     String   @unique @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model ParticipantCheckin {
+  id                   String   @id @default(cuid())
+  eventId              String
+  invitedParticipantId String?
+  name                 String
+  email                String
+  phone                String
+  profession           String
+  photoConsent         Boolean
+  isInvited            Boolean   @default(false)
+  checkedInAt          DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  event              Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  invitedParticipant InvitedParticipant? @relation(fields: [invitedParticipantId], references: [id], onDelete: SetNull)
+  answers            ParticipantAnswer[]
+  unlockedResources  ParticipantResource[]
+  assignedCredentials ApiCredential[]
+
+  @@index([eventId])
+  @@index([eventId, name])
+  @@index([eventId, email])
+}
+
+model CustomQuestion {
+  id         String      @id @default(cuid())
+  eventId    String
+  label      String
+  type       QuestionType
+  options    String?     // JSON array for MULTIPLE_CHOICE
+  isRequired Boolean     @default(false)
+  order      Int         @default(0)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  event   Event              @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  answers ParticipantAnswer[]
+
+  @@index([eventId])
+  @@index([eventId, order])
+}
+
+model ParticipantAnswer {
+  id                 String   @id @default(cuid())
+  participantCheckinId String
+  customQuestionId   String
+  value              String   // JSON for MULTIPLE_CHOICE, string for others
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  participantCheckin ParticipantCheckin @relation(fields: [participantCheckinId], references: [id], onDelete: Cascade)
+  customQuestion     CustomQuestion     @relation(fields: [customQuestionId], references: [id], onDelete: Cascade)
+
+  @@unique([participantCheckinId, customQuestionId])
+}
+
+model EventResource {
+  id          String       @id @default(cuid())
+  eventId     String
+  type        ResourceType
+  title       String
+  description String?
+  isActive    Boolean      @default(true)
+  url         String?
+  fileName    String?
+  content     String?      @db.Text
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  event                Event                 @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  apiCredentials       ApiCredential[]
+  participantResources ParticipantResource[]
+
+  @@index([eventId])
+}
+
+model ApiCredential {
+  id              String              @id @default(cuid())
+  resourceId      String
+  participantHint String?
+  value           String
+  assignedToId    String?
+  assignedAt      DateTime?
+  createdAt       DateTime            @default(now())
+
+  resource             EventResource         @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  assignedTo           ParticipantCheckin?   @relation(fields: [assignedToId], references: [id], onDelete: SetNull)
+  participantResources ParticipantResource[]
+
+  @@index([resourceId])
+  @@index([assignedToId])
+}
+
+model ParticipantResource {
+  id                   String   @id @default(cuid())
+  participantCheckinId String
+  resourceId           String
+  apiCredentialId      String?
+  unlockedAt           DateTime @default(now())
+
+  participantCheckin ParticipantCheckin @relation(fields: [participantCheckinId], references: [id], onDelete: Cascade)
+  resource           EventResource      @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  apiCredential      ApiCredential?     @relation(fields: [apiCredentialId], references: [id], onDelete: SetNull)
+
+  @@unique([participantCheckinId, resourceId])
+  @@index([participantCheckinId])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Account {
+  id           String    @id @default(cuid())
+  accountId    String
+  providerId   String
+  userId       String
+  accessToken  String?
+  refreshToken String?
+  idToken      String?
+  expiresAt    DateTime?
+  scope        String?
+  password     String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@unique([providerId, accountId])
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
 }

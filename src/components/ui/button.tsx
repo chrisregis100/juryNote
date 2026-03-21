@@ -31,6 +31,17 @@ const buttonVariants = cva(
   }
 );
 
+/**
+ * Props pour le composant Button.
+ *
+ * @important Accessibilité (WCAG 1.1.1, 4.1.2) :
+ * - Lorsque le bouton contient uniquement une icône (size="icon" ou pas de texte visible),
+ *   vous DEVEZ fournir un `aria-label` descriptif pour que le bouton soit accessible aux
+ *   technologies d'assistance.
+ * - Exemple : <Button size="icon" aria-label="Fermer la modal">
+ *   <XIcon />
+ * </Button>
+ */
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {

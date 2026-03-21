@@ -87,7 +87,7 @@ export const Pricing = () => (
             simples
           </span>
         </h2>
-        <p className="mx-auto mt-4 max-w-xl text-center text-lg text-slate-500">
+        <p className="mx-auto mt-4 max-w-xl text-center text-lg text-slate-600">
           Pas de frais cachés. Changez de plan quand vous voulez.
         </p>
       </AnimatedSection>
@@ -114,10 +114,10 @@ export const Pricing = () => (
                   {plan.price}
                 </span>
                 {plan.period && (
-                  <span className="text-sm text-slate-500">{plan.period}</span>
+                  <span className="text-sm text-slate-600">{plan.period}</span>
                 )}
               </div>
-              <p className="mt-2 text-sm text-slate-500">{plan.description}</p>
+              <p className="mt-2 text-sm text-slate-600">{plan.description}</p>
 
               <ul className="mt-6 flex-1 space-y-3">
                 {plan.features.map((feature) => (
