@@ -1,7 +1,7 @@
 import { getServerSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import Link from "next/link";
-import { SignOutButton } from "@/components/sign-out-button";
+import { DashboardNavbar } from "@/components/admin/dashboard-navbar";
+import { DashboardSidebar } from "@/components/admin/dashboard-sidebar";
 
 export default async function AdminLayout({
   children,
@@ -13,21 +13,14 @@ export default async function AdminLayout({
   if ("eventId" in session.user) redirect("/jury");
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="border-b border-slate-200 bg-white px-4 py-3">
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <Link href="/admin" className="font-semibold text-slate-900">
-            JuryFlow Admin
-          </Link>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-slate-600">
-              {session.user.email ?? session.user.name ?? "Organisateur"}
-            </span>
-            <SignOutButton />
-          </div>
-        </div>
-      </header>
-      <main id="main" className="flex-1 p-4">{children}</main>
+    <div className="min-h-screen bg-slate-50">
+      <DashboardNavbar user={session.user} />
+      <div className="flex">
+        <DashboardSidebar />
+        <main id="main" className="flex-1 p-6">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }
