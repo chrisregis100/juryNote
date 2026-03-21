@@ -255,7 +255,7 @@ export function CheckinForm({ eventId, eventName, customQuestions }: CheckinForm
               <Checkbox
                 id="photoConsent"
                 checked={photoConsent}
-                onCheckedChange={(checked) => setPhotoConsent(checked === true)}
+                onChange={(e) => setPhotoConsent(e.target.checked)}
                 required
               />
               <Label htmlFor="photoConsent" className="cursor-pointer">

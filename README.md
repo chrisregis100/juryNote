@@ -9,7 +9,8 @@ Plateforme de notation et de délibération pour jurys de hackathons et compéti
 | Framework     | Next.js 16 (App Router, Turbopack)                   |
 | Runtime       | React 19                                             |
 | Base de données | PostgreSQL + Prisma 6                              |
-| Authentification | NextAuth.js 4 (email organisateur + code PIN jury)|
+| Authentification | Better Auth (liens magiques organisateur) + NextAuth (PIN jury) |
+| E-mails transactionnels | Brevo (API) avec repli SMTP optionnel |
 | UI            | Tailwind CSS 4, Radix UI, Framer Motion              |
 | Validation    | Zod                                                  |
 | Tests         | Vitest                                               |
@@ -26,7 +27,8 @@ Plateforme de notation et de délibération pour jurys de hackathons et compéti
 ### Authentification et rôles
 
 - **Trois rôles** : organisateur, jury, superviseur.
-- **Connexion organisateur/superviseur** : authentification par email via la page `/login`.
+- **Inscription / connexion organisateur** : pages `/register` et `/login` avec **lien magique** envoyé par **e-mail** (Brevo Transactional API si `BREVO_API_KEY` est défini, sinon SMTP).
+- **SMS Brevo** : module `src/lib/email/brevo-sms.ts` pour les SMS transactionnels (OTP, rappels) — à brancher selon vos flux ; les liens magiques restent par e-mail.
 - **Connexion jury** : accès par slug d'événement + code PIN à 6 chiffres via `/jury/join`.
 - Session JWT d'une durée de 30 jours.
 - Protection des routes par vérification de session dans les layouts serveur.

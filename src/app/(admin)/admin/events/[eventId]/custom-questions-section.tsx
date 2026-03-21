@@ -152,7 +152,7 @@ export function CustomQuestionsSection({ eventId, customQuestions }: CustomQuest
             <Checkbox
               id="question-required"
               checked={isRequired}
-              onCheckedChange={(checked) => setIsRequired(checked === true)}
+              onChange={(e) => setIsRequired(e.target.checked)}
             />
             <Label htmlFor="question-required" className="cursor-pointer">
               Question obligatoire

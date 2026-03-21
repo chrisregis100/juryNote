@@ -18,7 +18,7 @@ interface ParticipantsDashboardProps {
   customQuestions: CustomQuestion[];
 }
 
-export function ParticipantsDashboard({ checkins, customQuestions }: ParticipantsDashboardProps) {
+export function ParticipantsDashboard({ eventId, checkins, customQuestions }: ParticipantsDashboardProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterInvited, setFilterInvited] = useState<"all" | "invited" | "not-invited">("all");
   const [filterPhotoConsent, setFilterPhotoConsent] = useState<"all" | "yes" | "no">("all");

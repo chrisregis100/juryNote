@@ -123,7 +123,7 @@ async function parseCSV(file: File): Promise<ParseResult> {
           const validation = invitedParticipantSchema.safeParse(participant);
           if (!validation.success) {
             errors.push(
-              `Ligne ${index + 2}: ${validation.error.errors.map((e) => `${e.path.join(".")}: ${e.message}`).join(", ")}`
+              `Ligne ${index + 2}: ${validation.error.issues.map((e) => `${e.path.join(".")}: ${e.message}`).join(", ")}`
             );
             return;
           }
@@ -225,7 +225,7 @@ async function parseExcel(file: File): Promise<ParseResult> {
           const validation = invitedParticipantSchema.safeParse(participant);
           if (!validation.success) {
             errors.push(
-              `Ligne ${index + 2}: ${validation.error.errors.map((e) => `${e.path.join(".")}: ${e.message}`).join(", ")}`
+              `Ligne ${index + 2}: ${validation.error.issues.map((e) => `${e.path.join(".")}: ${e.message}`).join(", ")}`
             );
             return;
           }

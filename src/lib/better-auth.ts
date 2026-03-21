@@ -1,8 +1,13 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { magicLink } from "better-auth/plugins";
+import { nextCookies } from "better-auth/next-js";
 import nodemailer from "nodemailer";
 import { db } from "@/lib/db";
+import {
+  isBrevoConfigured,
+  sendBrevoTransactionalEmail,
+} from "@/lib/email/brevo";
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST ?? "smtp.gmail.com",
@@ -14,33 +19,13 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL ?? "http://localhost:3000",
-  secret: process.env.BETTER_AUTH_SECRET,
-
-  database: prismaAdapter(db, {
-    provider: "postgresql",
-  }),
-
-  emailAndPassword: {
-    enabled: true,
-  },
-
-  plugins: [
-    magicLink({
-      expiresIn: 60 * 10, // 10 minutes
-      disableSignUp: false, // allow new organizers to register via magic link
-      requireNameForSignUp: true, // require name when creating new account
-      sendMagicLink: async ({ email, token, name }) => {
-        const appUrl =
-          process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
-        const verifyUrl = `${appUrl}/verify-email?token=${encodeURIComponent(token)}`;
-
-        await transporter.sendMail({
-          from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
-          to: email,
-          subject: "Votre lien de connexion JuryFlow",
-          html: `
+function buildMagicLinkEmailContent(verifyUrl: string): {
+  subject: string;
+  html: string;
+  text: string;
+} {
+  const subject = "Votre lien de connexion JuryFlow";
+  const html = `
             <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
               <h2 style="color: #1a1a1a;">Connexion à JuryFlow</h2>
               <p style="color: #555;">Cliquez sur le bouton ci-dessous pour vous connecter. Ce lien expire dans 10&nbsp;minutes.</p>
@@ -63,9 +48,57 @@ export const auth = betterAuth({
                 Si vous n'avez pas demandé ce lien, vous pouvez ignorer cet e-mail.
               </p>
             </div>
-          `,
-          text: `Connexion à JuryFlow : ${verifyUrl}`,
-        });
+          `;
+  const text = `Connexion à JuryFlow : ${verifyUrl}`;
+  return { subject, html, text };
+}
+
+async function sendMagicLinkEmail(to: string, verifyUrl: string): Promise<void> {
+  const { subject, html, text } = buildMagicLinkEmailContent(verifyUrl);
+
+  if (isBrevoConfigured()) {
+    await sendBrevoTransactionalEmail({
+      toEmail: to,
+      subject,
+      htmlContent: html,
+      textContent: text,
+    });
+    return;
+  }
+
+  await transporter.sendMail({
+    from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
+    to,
+    subject,
+    html,
+    text,
+  });
+}
+
+export const auth = betterAuth({
+  basePath: "/api/auth",
+  baseURL: process.env.BETTER_AUTH_URL ?? "http://localhost:3000",
+  secret: process.env.BETTER_AUTH_SECRET,
+
+  database: prismaAdapter(db, {
+    provider: "postgresql",
+  }),
+
+  emailAndPassword: {
+    enabled: true,
+  },
+
+  plugins: [
+    nextCookies(),
+    magicLink({
+      expiresIn: 60 * 10, // 10 minutes
+      disableSignUp: false,
+      sendMagicLink: async ({ email, token }) => {
+        const appUrl =
+          process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
+        const verifyUrl = `${appUrl}/verify-email?token=${encodeURIComponent(token)}`;
+
+        await sendMagicLinkEmail(email, verifyUrl);
       },
     }),
   ],

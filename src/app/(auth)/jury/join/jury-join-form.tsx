@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -57,15 +56,18 @@ export function JuryJoinForm() {
     setError(null);
     setIsLoading(true);
     try {
-      const res = await signIn("jury-pin", {
-        eventSlug: eventSlug.trim(),
-        pinCode,
-        redirect: false,
+      const res = await fetch("/api/jury/sign-in", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ eventSlug: eventSlug.trim(), pinCode }),
       });
-      if (res?.error) {
-        setError("Code invalide ou expiré. Vérifiez le slug et le PIN.");
+
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
+        setError(data.error ?? "Code invalide ou expiré. Vérifiez le slug et le PIN.");
         return;
       }
+
       router.push("/jury");
       router.refresh();
     } finally {

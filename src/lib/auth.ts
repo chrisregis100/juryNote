@@ -1,14 +1,13 @@
 import { auth } from "@/lib/better-auth";
-import { getServerSession as getNextAuthSession } from "next-auth";
-import { authOptions } from "@/lib/auth-config";
-import { headers } from "next/headers";
+import { verifyJuryToken, JURY_COOKIE_NAME } from "@/lib/jury-session";
+import { headers, cookies } from "next/headers";
 
 export type SessionUser =
   | { role: "organizer" | "supervisor"; id: string; email?: string | null; name?: string | null }
   | { role: "jury"; id: string; eventId: string; juryAssignmentId: string; displayName?: string | null };
 
 export async function getServerSession(): Promise<{ user: SessionUser } | null> {
-  // Try Better Auth first (organizer / supervisor via email+password or magic link)
+  // Better Auth session (organizer / supervisor via magic link)
   const betterAuthSession = await auth.api.getSession({
     headers: await headers(),
   });
@@ -25,33 +24,22 @@ export async function getServerSession(): Promise<{ user: SessionUser } | null> 
     return { user: { id: u.id, email: u.email, name: u.name, role } };
   }
 
-  // Fall back to NextAuth (jury PIN credentials provider)
-  const nextAuthSession = await getNextAuthSession(authOptions);
-  if (!nextAuthSession?.user) return null;
-
-  const u = nextAuthSession.user;
-
-  if (u.role === "jury" && u.eventId && u.juryAssignmentId) {
-    return {
-      user: {
-        role: "jury",
-        id: u.id as string,
-        eventId: u.eventId,
-        juryAssignmentId: u.juryAssignmentId,
-        displayName: u.displayName ?? null,
-      },
-    };
-  }
-
-  if (u.role === "organizer" || u.role === "supervisor") {
-    return {
-      user: {
-        id: u.id as string,
-        email: u.email ?? null,
-        name: u.name ?? null,
-        role: u.role as "organizer" | "supervisor",
-      },
-    };
+  // Jury session via custom signed cookie
+  const cookieStore = await cookies();
+  const juryCookie = cookieStore.get(JURY_COOKIE_NAME);
+  if (juryCookie?.value) {
+    const payload = verifyJuryToken(juryCookie.value);
+    if (payload) {
+      return {
+        user: {
+          role: "jury",
+          id: payload.id,
+          eventId: payload.eventId,
+          juryAssignmentId: payload.juryAssignmentId,
+          displayName: payload.displayName ?? null,
+        },
+      };
+    }
   }
 
   return null;

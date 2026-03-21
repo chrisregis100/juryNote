@@ -70,7 +70,7 @@ export function CheckinLinkSection({ eventId, eventSlug, checkinLink, checkedInC
           <Checkbox
             id="checkin-active"
             checked={isActive}
-            onCheckedChange={(checked) => handleToggleActive(checked === true)}
+            onChange={(e) => handleToggleActive(e.target.checked)}
           />
           <Label htmlFor="checkin-active" className="cursor-pointer">
             Activer le checking pour cet événement

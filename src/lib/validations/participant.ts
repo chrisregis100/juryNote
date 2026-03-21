@@ -47,32 +47,39 @@ export const updateCheckinParticipantSchema = checkinParticipantSchema.partial()
 
 export const questionTypeSchema = z.enum(["TEXT", "MULTIPLE_CHOICE", "YES_NO", "DATE", "NUMBER"]);
 
-export const createCustomQuestionSchema = z.object({
+const customQuestionBaseSchema = z.object({
   eventId: z.string().min(1),
   label: z.string().min(1).max(500),
   type: questionTypeSchema,
-  options: z
-    .array(z.string().min(1).max(200))
-    .optional()
-    .refine(
-      (options, ctx) => {
-        const type = (ctx.parent as { type?: string })?.type;
-        if (type === "MULTIPLE_CHOICE" && (!options || options.length === 0)) {
-          return false;
-        }
-        return true;
-      },
-      {
-        message: "Les options sont requises pour les questions à choix multiple",
-      }
-    ),
+  options: z.array(z.string().min(1).max(200)).optional(),
   isRequired: z.boolean().default(false),
   order: z.number().int().min(0).default(0),
 });
 
-export const updateCustomQuestionSchema = createCustomQuestionSchema.partial().extend({
-  id: z.string().min(1),
-});
+export const createCustomQuestionSchema = customQuestionBaseSchema.superRefine(
+  (data, ctx) => {
+    if (data.type === "MULTIPLE_CHOICE" && (!data.options || data.options.length === 0)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Les options sont requises pour les questions à choix multiple",
+        path: ["options"],
+      });
+    }
+  }
+);
+
+export const updateCustomQuestionSchema = customQuestionBaseSchema
+  .partial()
+  .extend({ id: z.string().min(1) })
+  .superRefine((data, ctx) => {
+    if (data.type === "MULTIPLE_CHOICE" && (!data.options || data.options.length === 0)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Les options sont requises pour les questions à choix multiple",
+        path: ["options"],
+      });
+    }
+  });
 
 export const checkinLinkSchema = z.object({
   eventId: z.string().min(1),

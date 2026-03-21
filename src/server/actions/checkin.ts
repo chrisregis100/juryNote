@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import type { ParticipantCheckin } from "@prisma/client";
 import { db } from "@/lib/db";
 import { checkinParticipantSchema, updateCheckinParticipantSchema } from "@/lib/validations/participant";
 
@@ -85,7 +86,7 @@ export async function checkinParticipant(formData: FormData) {
     },
   });
 
-  let checkin;
+  let checkin: ParticipantCheckin;
   if (existing) {
     // Update existing checkin
     checkin = await db.participantCheckin.update({

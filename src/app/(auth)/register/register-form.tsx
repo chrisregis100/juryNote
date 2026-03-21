@@ -38,7 +38,7 @@ export function RegisterForm() {
 
     const parsed = registerFormSchema.safeParse(values);
     if (!parsed.success) {
-      setError(parsed.error.errors[0]?.message ?? "Données invalides.");
+      setError(parsed.error.issues[0]?.message ?? "Données invalides.");
       setStatus("error");
       return;
     }
