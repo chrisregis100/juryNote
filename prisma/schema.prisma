@@ -42,6 +42,12 @@ enum QuestionType {
   NUMBER
 }
 
+enum ResourceType {
+  API_CREDENTIAL
+  LINK
+  TEXT_INFO
+}
+
 model User {
   id            String    @id @default(cuid())
   email         String?   @unique
@@ -74,6 +80,7 @@ model Event {
   checkinLinks        CheckinLink[]
   participantCheckins ParticipantCheckin[]
   customQuestions     CustomQuestion[]
+  resources           EventResource[]
 }
 
 model Team {
@@ -201,6 +208,8 @@ model ParticipantCheckin {
   event              Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
   invitedParticipant InvitedParticipant? @relation(fields: [invitedParticipantId], references: [id], onDelete: SetNull)
   answers            ParticipantAnswer[]
+  unlockedResources  ParticipantResource[]
+  assignedCredentials ApiCredential[]
 
   @@index([eventId])
   @@index([eventId, name])
@@ -237,6 +246,56 @@ model ParticipantAnswer {
   customQuestion     CustomQuestion     @relation(fields: [customQuestionId], references: [id], onDelete: Cascade)
 
   @@unique([participantCheckinId, customQuestionId])
+}
+
+model EventResource {
+  id          String       @id @default(cuid())
+  eventId     String
+  type        ResourceType
+  title       String
+  description String?
+  isActive    Boolean      @default(true)
+  url         String?
+  fileName    String?
+  content     String?      @db.Text
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  event                Event                 @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  apiCredentials       ApiCredential[]
+  participantResources ParticipantResource[]
+
+  @@index([eventId])
+}
+
+model ApiCredential {
+  id              String              @id @default(cuid())
+  resourceId      String
+  participantHint String?
+  value           String
+  assignedToId    String?
+  assignedAt      DateTime?
+  createdAt       DateTime            @default(now())
+
+  resource   EventResource       @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  assignedTo ParticipantCheckin? @relation(fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  @@index([resourceId])
+  @@index([assignedToId])
+}
+
+model ParticipantResource {
+  id                   String   @id @default(cuid())
+  participantCheckinId String
+  resourceId           String
+  apiCredentialId      String?
+  unlockedAt           DateTime @default(now())
+
+  participantCheckin ParticipantCheckin @relation(fields: [participantCheckinId], references: [id], onDelete: Cascade)
+  resource           EventResource      @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@unique([participantCheckinId, resourceId])
+  @@index([participantCheckinId])
 }
 
 model Session {

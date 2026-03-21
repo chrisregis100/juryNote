@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import type { ParticipantCheckin } from "@prisma/client";
 import { db } from "@/lib/db";
 import { checkinParticipantSchema, updateCheckinParticipantSchema } from "@/lib/validations/participant";
+import { unlockResourcesForParticipant, type UnlockedResource } from "@/server/actions/resources";
+import { sendResourcesEmail } from "@/lib/email/brevo";
 
 export async function getCheckinLinkByEventSlug(eventSlug: string) {
   const event = await db.event.findUnique({
@@ -153,7 +155,28 @@ export async function checkinParticipant(formData: FormData) {
     }
   }
 
-  return { data: checkin };
+  const event = await db.event.findUnique({
+    where: { id: parsed.data.eventId },
+    select: { name: true },
+  });
+
+  const unlockedResources: UnlockedResource[] = await unlockResourcesForParticipant(
+    checkin.id,
+    parsed.data.eventId
+  );
+
+  if (checkin.email && unlockedResources.length > 0 && event) {
+    void sendResourcesEmail({
+      to: checkin.email,
+      participantName: checkin.name,
+      eventName: event.name,
+      resources: unlockedResources,
+    }).catch((err: unknown) => {
+      console.error("[checkin] Failed to send resources email:", err);
+    });
+  }
+
+  return { success: true, checkin, unlockedResources };
 }
 
 export async function updateCheckinParticipant(formData: FormData) {

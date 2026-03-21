@@ -4,10 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { CustomQuestion } from "@prisma/client";
 import { findInvitedParticipant, checkinParticipant } from "@/server/actions/checkin";
+import type { UnlockedResource } from "@/server/actions/resources";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/cn";
+import { Copy, Check, ExternalLink, Key, Link2, FileText } from "lucide-react";
 
 interface CheckinFormProps {
   eventId: string;
@@ -153,6 +155,8 @@ export function CheckinForm({ eventId, eventName, customQuestions }: CheckinForm
   const [step, setStep] = useState<Step>("name");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [unlockedResources, setUnlockedResources] = useState<UnlockedResource[]>([]);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const [name, setName] = useState("");
   const [invitedParticipant, setInvitedParticipant] = useState<{
@@ -250,6 +254,7 @@ export function CheckinForm({ eventId, eventName, customQuestions }: CheckinForm
         setIsLoading(false);
         return;
       }
+      setUnlockedResources(result.unlockedResources ?? []);
       setStep("success");
     } catch {
       setError("Erreur lors de l'enregistrement. Veuillez réessayer.");
@@ -259,26 +264,150 @@ export function CheckinForm({ eventId, eventName, customQuestions }: CheckinForm
 
   // ── Success screen ──
   if (step === "success") {
+    const handleCopyToClipboard = async (text: string, resourceId: string) => {
+      await navigator.clipboard.writeText(text);
+      setCopiedId(resourceId);
+      setTimeout(() => setCopiedId(null), 2000);
+    };
+
+    const getTypeBadge = (type: UnlockedResource["type"]) => {
+      switch (type) {
+        case "API_CREDENTIAL":
+          return (
+            <span className="inline-flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-xs font-bold text-purple-700">
+              <Key className="h-3 w-3" />
+              Crédit API
+            </span>
+          );
+        case "LINK":
+          return (
+            <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs font-bold text-blue-700">
+              <Link2 className="h-3 w-3" />
+              Lien
+            </span>
+          );
+        case "TEXT_INFO":
+          return (
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-700">
+              <FileText className="h-3 w-3" />
+              Information
+            </span>
+          );
+      }
+    };
+
     return (
-      <div className="rounded-xl border-2 border-black bg-white p-8 shadow-[8px_8px_0_0_#0a0a0a] text-center">
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border-2 border-black bg-yellow-400 text-3xl shadow-[3px_3px_0_0_#0a0a0a]">
-          🎉
+      <div className="rounded-xl border-2 border-black bg-white p-8 shadow-[8px_8px_0_0_#0a0a0a]">
+        <div className="text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border-2 border-black bg-yellow-400 text-3xl shadow-[3px_3px_0_0_#0a0a0a]">
+            🎉
+          </div>
+          <h2 className="text-2xl font-black text-black">Enregistrement réussi !</h2>
+          <p className="mt-3 text-slate-600">
+            Merci{" "}
+            <span className="inline-block -rotate-1 bg-yellow-400 px-1 font-bold text-black">
+              {name}
+            </span>
+            , votre présence a été confirmée pour{" "}
+            <strong className="text-black">{eventName}</strong>.
+          </p>
         </div>
-        <h2 className="text-2xl font-black text-black">Enregistrement réussi !</h2>
-        <p className="mt-3 text-slate-600">
-          Merci{" "}
-          <span className="inline-block -rotate-1 bg-yellow-400 px-1 font-bold text-black">
-            {name}
-          </span>
-          , votre présence a été confirmée pour{" "}
-          <strong className="text-black">{eventName}</strong>.
-        </p>
-        <button
-          onClick={() => router.push("/")}
-          className="mt-6 inline-flex h-10 items-center justify-center rounded-md border-2 border-black bg-white px-6 text-sm font-bold text-black transition-all hover:bg-slate-50"
-        >
-          Retour à l&apos;accueil
-        </button>
+
+        {unlockedResources.length > 0 && (
+          <div className="mt-8">
+            <div className="rounded-lg border-2 border-black bg-slate-50 overflow-hidden">
+              <div className="border-b-2 border-black bg-yellow-400 px-4 py-3">
+                <h3 className="flex items-center gap-2 font-black text-black">
+                  <span>🎁</span>
+                  Vos ressources ({unlockedResources.length})
+                </h3>
+                <p className="mt-1 text-xs font-medium text-black/80">
+                  Ces ressources vous ont été attribuées suite à votre check-in.
+                </p>
+              </div>
+              <div className="divide-y divide-black/10">
+                {unlockedResources.map((resource) => (
+                  <div key={resource.id} className="p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1">
+                        <div className="mb-2">{getTypeBadge(resource.type)}</div>
+                        <h4 className="font-bold text-black">{resource.title}</h4>
+                        {resource.description && (
+                          <p className="mt-1 text-sm text-slate-600">{resource.description}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    {resource.type === "API_CREDENTIAL" && resource.credentialValue && (
+                      <div className="mt-3">
+                        <Label className="text-xs font-bold text-slate-700">Votre clé API :</Label>
+                        <div className="mt-1 flex items-center gap-2">
+                          <code className="flex-1 rounded border-2 border-black bg-white px-3 py-2 font-mono text-sm break-all">
+                            {resource.credentialValue}
+                          </code>
+                          <button
+                            onClick={() => handleCopyToClipboard(resource.credentialValue!, resource.id)}
+                            className="inline-flex h-10 items-center justify-center gap-1.5 rounded-md border-2 border-black bg-white px-3 text-sm font-bold text-black transition-all hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
+                            aria-label="Copier la clé API"
+                          >
+                            {copiedId === resource.id ? (
+                              <>
+                                <Check className="h-4 w-4 text-emerald-600" />
+                                <span className="text-emerald-600">Copié !</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="h-4 w-4" />
+                                <span>Copier</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {resource.type === "LINK" && resource.url && (
+                      <div className="mt-3">
+                        <a
+                          href={resource.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 rounded-md border-2 border-black bg-blue-50 px-4 py-2 text-sm font-bold text-blue-700 transition-all hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                          {resource.fileName || resource.title}
+                        </a>
+                      </div>
+                    )}
+
+                    {resource.type === "TEXT_INFO" && resource.content && (
+                      <div className="mt-3">
+                        <pre className="whitespace-pre-wrap rounded border-2 border-black bg-white p-3 font-mono text-sm text-slate-700">
+                          {resource.content}
+                        </pre>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {email && (
+              <p className="mt-3 text-center text-sm font-medium text-slate-600">
+                Ces ressources ont également été envoyées à votre adresse email.
+              </p>
+            )}
+          </div>
+        )}
+
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => router.push("/")}
+            className="inline-flex h-10 items-center justify-center rounded-md border-2 border-black bg-white px-6 text-sm font-bold text-black transition-all hover:bg-slate-50"
+          >
+            Retour à l&apos;accueil
+          </button>
+        </div>
       </div>
     );
   }

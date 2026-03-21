@@ -14,6 +14,7 @@ const TABS = [
   { label: "Check-in", href: "/checkin", icon: "✅" },
   { label: "Dashboard", href: "/dashboard", icon: "📊" },
   { label: "Délibération", href: "/deliberation", icon: "🏆" },
+  { label: "Ressources", href: "/resources", icon: "📦" },
 ] as const;
 
 export function EventTabs({ eventId }: EventTabsProps) {
