@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-
 interface ParticipantsDashboardProps {
   eventId: string;
   checkins: (ParticipantCheckin & {
@@ -114,7 +112,7 @@ export function ParticipantsDashboard({ eventId, checkins, customQuestions }: Pa
 
           <div className="grid gap-3 md:grid-cols-2">
             <div>
-              <Label>Statut d'invitation</Label>
+              <Label>Statut d&apos;invitation</Label>
               <select
                 className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
                 value={filterInvited}

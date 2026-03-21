@@ -13,16 +13,15 @@ interface SliderProps
 const Slider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
   SliderProps
->(({ className, "aria-label": ariaLabel, "aria-valuetext": ariaValueText, value, min, max, ...props }, ref) => {
+>(({ className, "aria-label": ariaLabel, "aria-valuetext": ariaValueText, value, max, ...props }, ref) => {
   const computedValueText = React.useMemo(() => {
     if (ariaValueText) return ariaValueText;
     if (Array.isArray(value) && value.length > 0 && typeof value[0] === "number" && typeof max === "number") {
       const currentValue = value[0];
-      const minValue = typeof min === "number" ? min : 0;
       return `${currentValue} sur ${max}`;
     }
     return undefined;
-  }, [ariaValueText, value, min, max]);
+  }, [ariaValueText, value, max]);
 
   return (
     <SliderPrimitive.Root
@@ -34,7 +33,6 @@ const Slider = React.forwardRef<
       aria-label={ariaLabel}
       aria-valuetext={computedValueText}
       value={value}
-      min={min}
       max={max}
       {...props}
     >

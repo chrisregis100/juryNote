@@ -13,15 +13,15 @@ export function VerifyEmailClient() {
   const router = useRouter();
   const token = searchParams.get("token");
 
-  const [status, setStatus] = useState<VerifyStatus>("loading");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [status, setStatus] = useState<VerifyStatus>(() =>
+    token ? "loading" : "error"
+  );
+  const [errorMessage, setErrorMessage] = useState<string | null>(() =>
+    token ? null : "Lien de connexion invalide ou manquant."
+  );
 
   useEffect(() => {
-    if (!token) {
-      setStatus("error");
-      setErrorMessage("Lien de connexion invalide ou manquant.");
-      return;
-    }
+    if (!token) return;
 
     async function verifyToken() {
       const { error } = await authClient.magicLink.verify({

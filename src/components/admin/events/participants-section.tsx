@@ -218,9 +218,7 @@ export function ParticipantsSection({ eventId, invitedParticipants }: Participan
           {uploadError && <p className="text-sm text-red-600">{uploadError}</p>}
           {uploadSuccess && <p className="text-sm text-green-600">{uploadSuccess}</p>}
           <p className="text-xs text-slate-500">
-            Le fichier doit contenir une colonne "nom" (requis). Colonnes optionnelles: "email", "phone", "profession".
-            Si les colonnes ne sont pas détectées automatiquement, un mapping manuel sera proposé.
-            Après une détection automatique, vous pouvez aussi corriger le mapping depuis la prévisualisation.
+            {`Le fichier doit contenir une colonne "nom" (requis). Colonnes optionnelles: "email", "phone", "profession". Si les colonnes ne sont pas détectées automatiquement, un mapping manuel sera proposé. Après une détection automatique, vous pouvez aussi corriger le mapping depuis la prévisualisation.`}
           </p>
         </div>
 

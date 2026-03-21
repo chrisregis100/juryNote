@@ -62,7 +62,8 @@ export function verifyJuryToken(
       Buffer.from(data, "base64url").toString()
     ) as JuryPayload;
     if (payload.exp < Date.now()) return null;
-    const { exp: _exp, ...rest } = payload;
+    const { exp: expTimestamp, ...rest } = payload;
+    void expTimestamp;
     return rest;
   } catch {
     return null;

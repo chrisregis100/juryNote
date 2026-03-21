@@ -6,8 +6,8 @@
 
 import type { Criterion, Grade, Team } from "@prisma/client";
 
-interface CriterionWithScale extends Pick<Criterion, "id" | "weight" | "scaleType"> {}
-interface GradeInput extends Pick<Grade, "teamId" | "criterionId" | "value"> {}
+type CriterionWithScale = Pick<Criterion, "id" | "weight"> & { scaleType: string };
+type GradeInput = Pick<Grade, "teamId" | "criterionId" | "value">;
 
 const SCALE_MAX: Record<string, number> = {
   SCALE_0_5: 5,

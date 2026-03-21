@@ -71,7 +71,7 @@ export function JuryAccessSection({
 
       {juryAssignments.length === 0 ? (
         <p className="rounded-lg bg-slate-50 py-6 text-center text-sm text-slate-500">
-          Aucun jury enregistré. Générez des codes PIN pour permettre l'accès.
+          Aucun jury enregistré. Générez des codes PIN pour permettre l&apos;accès.
         </p>
       ) : (
         <ul className="space-y-2">

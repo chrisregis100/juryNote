@@ -44,7 +44,6 @@ export function NotationForm({
     });
     return o;
   });
-  const [teamComment, setTeamComment] = useState("");
   const [pending, setPending] = useState(false);
   const [lastError, setLastError] = useState<string | null>(null);
   const queueRef = useRef<Array<{ criterionId: string; value: number; comment: string | null }>>([]);

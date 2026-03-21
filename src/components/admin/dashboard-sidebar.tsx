@@ -57,7 +57,7 @@ export function DashboardSidebar() {
 
       <div className="border-t-2 border-black p-4">
         <div className="rounded-lg bg-slate-50 p-3">
-          <p className="text-xs font-medium text-slate-600">Besoin d'aide ?</p>
+          <p className="text-xs font-medium text-slate-600">Besoin d&apos;aide ?</p>
           <a
             href="mailto:support@juryflow.app"
             className="mt-1 text-xs text-indigo-600 hover:underline"

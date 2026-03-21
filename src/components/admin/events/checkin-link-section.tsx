@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { CheckinLink } from "@prisma/client";
 import { toggleCheckinLink } from "@/server/actions/checkin";
@@ -21,10 +21,6 @@ export function CheckinLinkSection({ eventId, eventSlug, checkinLink, checkedInC
   const router = useRouter();
   const [isActive, setIsActive] = useState(checkinLink?.isActive ?? false);
   const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    setIsActive(checkinLink?.isActive ?? false);
-  }, [checkinLink]);
 
   const checkinUrl = checkinLink ? `${typeof window !== "undefined" ? window.location.origin : ""}/checkin/${eventSlug}` : null;
 
@@ -53,7 +49,7 @@ export function CheckinLinkSection({ eventId, eventSlug, checkinLink, checkedInC
         </CardHeader>
         <CardContent>
           <p className="text-sm text-slate-600">
-            Ajoutez d'abord des participants invités pour générer le lien de checking.
+            Ajoutez d&apos;abord des participants invités pour générer le lien de checking.
           </p>
         </CardContent>
       </Card>
@@ -92,7 +88,7 @@ export function CheckinLinkSection({ eventId, eventSlug, checkinLink, checkedInC
               </Button>
             </div>
             <p className="text-xs text-slate-500">
-              Partagez ce lien avec les participants pour qu'ils puissent s'enregistrer.
+              Partagez ce lien avec les participants pour qu&apos;ils puissent s&apos;enregistrer.
             </p>
           </div>
         )}
