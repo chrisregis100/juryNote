@@ -1,7 +1,7 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedSection } from "./animated-section";
 
 const FAQ_ITEMS = [
@@ -101,7 +101,10 @@ const FAQItem = ({
 };
 
 export const FAQ = () => (
-  <section id="faq" className="dot-pattern-light bg-slate-50 px-6 py-20 md:py-28">
+  <section
+    id="faq"
+    className="dot-pattern-light bg-slate-50 px-6 py-20 md:py-28"
+  >
     <div className="mx-auto max-w-2xl">
       <AnimatedSection>
         <h2 className="text-center text-4xl font-black tracking-tight text-black md:text-5xl">
