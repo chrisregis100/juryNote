@@ -1,3 +1,4 @@
+import "server-only";
 import { auth } from "@/lib/better-auth";
 import { verifyJuryToken, JURY_COOKIE_NAME } from "@/lib/jury-session";
 import { headers, cookies } from "next/headers";
