@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Politique de confidentialité | JuryFlow",
   description:
-    "Découvrez comment JuryFlow collecte, utilise et protège vos données personnelles conformément à la Loi N°2009-09 du Bénin et à l'Acte Additionnel CEDEAO A/SA.1/01/10.",
+    "Découvrez comment JuryFlow collecte, utilise et protège vos données personnelles conformément à la Loi N°2009-09 du Bénin et à l&apos;Acte Additionnel CEDEAO A/SA.1/01/10.",
 };
 
 const LAST_UPDATED = "22 mars 2026";
@@ -95,18 +95,15 @@ export default function PolitiqueConfidentialitePage() {
                 Loi N°2009-09 du 22 mai 2009 portant protection des données à
                 caractère personnel en République du Bénin
               </strong>
-              , au{" "}
-              <strong>
-                Décret N°2011-029 du 16 février 2011
-              </strong>{" "}
-              portant création de l'APDP, à l'
+              , au <strong>Décret N°2011-029 du 16 février 2011</strong> portant
+              création de l&apos;APDP, à l&apos;
               <strong>
                 Acte Additionnel CEDEAO A/SA.1/01/10 sur la Protection des
                 Données Personnelles
               </strong>{" "}
               et à la{" "}
               <strong>
-                Convention de l'Union Africaine sur la Cybersécurité et la
+                Convention de l&apos;Union Africaine sur la Cybersécurité et la
                 Protection des Données Personnelles (Convention de Malabo)
               </strong>
               .
@@ -150,7 +147,7 @@ export default function PolitiqueConfidentialitePage() {
                   Délégué à la protection des données (DPD)
                 </dt>
                 <dd className="text-sm text-slate-600">
-                  [NOM DU DPD / À DÉSIGNER] — joignable à l'adresse e-mail
+                  [NOM DU DPD / À DÉSIGNER] — joignable à l&apos;adresse e-mail
                   ci-dessus
                 </dd>
               </div>
@@ -160,9 +157,9 @@ export default function PolitiqueConfidentialitePage() {
           {/* Section 2 - Données collectées */}
           <Section number="02" title="Données collectées">
             <p className="mb-4 text-sm leading-relaxed text-slate-600">
-              JuryFlow collecte uniquement les données strictement nécessaires
-              à la fourniture de ses services. Selon votre rôle sur la
-              plateforme, les données suivantes peuvent être collectées :
+              JuryFlow collecte uniquement les données strictement nécessaires à
+              la fourniture de ses services. Selon votre rôle sur la plateforme,
+              les données suivantes peuvent être collectées :
             </p>
             <div className="space-y-4">
               {[
@@ -179,8 +176,8 @@ export default function PolitiqueConfidentialitePage() {
                   role: "Membres du jury",
                   icon: "⚖️",
                   data: [
-                    "Prénom ou pseudonyme (saisi par l'organisateur)",
-                    "Code PIN d'accès à 6 chiffres (généré automatiquement, hashé en base de données)",
+                    "Prénom ou pseudonyme (saisi par l&apos;organisateur)",
+                    "Code PIN d&apos;accès à 6 chiffres (généré automatiquement, hashé en base de données)",
                     "Notes et commentaires attribuées aux participants",
                   ],
                 },
@@ -189,9 +186,9 @@ export default function PolitiqueConfidentialitePage() {
                   icon: "🎯",
                   data: [
                     "Nom et prénom",
-                    "Nom de l'équipe / du projet",
-                    "Informations de contact optionnelles saisies par l'organisateur",
-                    "Statut d'enregistrement (check-in)",
+                    "Nom de l&apos;équipe / du projet",
+                    "Informations de contact optionnelles saisies par l&apos;organisateur",
+                    "Statut d&apos;enregistrement (check-in)",
                   ],
                 },
                 {
@@ -199,15 +196,12 @@ export default function PolitiqueConfidentialitePage() {
                   icon: "🌐",
                   data: [
                     "Adresse IP (pour la sécurité et la lutte contre la fraude)",
-                    "Données de connexion et journaux d'activité",
+                    "Données de connexion et journaux d&apos;activité",
                     "Cookies de session (voir Politique de cookies)",
                   ],
                 },
               ].map(({ role, icon, data }) => (
-                <div
-                  key={role}
-                  className="rounded-md bg-slate-50 p-4"
-                >
+                <div key={role} className="rounded-md bg-slate-50 p-4">
                   <h3 className="mb-2 flex items-center gap-2 text-sm font-bold text-slate-800">
                     <span>{icon}</span>
                     {role}
@@ -242,7 +236,8 @@ export default function PolitiqueConfidentialitePage() {
                 <tbody className="divide-y divide-slate-100">
                   {[
                     {
-                      finalite: "Gestion des comptes organisateurs et authentification",
+                      finalite:
+                        "Gestion des comptes organisateurs et authentification",
                       base: "Exécution du contrat (art. 5, Loi N°2009-09)",
                     },
                     {
@@ -251,19 +246,20 @@ export default function PolitiqueConfidentialitePage() {
                     },
                     {
                       finalite: "Notation et délibération du jury",
-                      base: "Intérêt légitime de l'organisateur",
+                      base: "Intérêt légitime de l&apos;organisateur",
                     },
                     {
                       finalite: "Envoi de liens magiques de connexion (e-mail)",
                       base: "Exécution du contrat",
                     },
                     {
-                      finalite: "Sécurité de la plateforme et prévention des fraudes",
+                      finalite:
+                        "Sécurité de la plateforme et prévention des fraudes",
                       base: "Intérêt légitime",
                     },
                     {
                       finalite: "Export et partage des résultats",
-                      base: "Consentement de l'organisateur",
+                      base: "Consentement de l&apos;organisateur",
                     },
                     {
                       finalite: "Amélioration du service",
@@ -283,37 +279,45 @@ export default function PolitiqueConfidentialitePage() {
           {/* Section 4 - Durée de conservation */}
           <Section number="04" title="Durée de conservation">
             <p className="mb-4 text-sm leading-relaxed text-slate-600">
-              Les données sont conservées pour une durée n'excédant pas celle
-              nécessaire aux finalités pour lesquelles elles ont été collectées,
-              conformément à l'article 28 de la Loi N°2009-09 :
+              Les données sont conservées pour une durée n&apos;excédant pas
+              celle nécessaire aux finalités pour lesquelles elles ont été
+              collectées, conformément à l&apos;article 28 de la Loi N°2009-09 :
             </p>
             <ul className="space-y-3 text-sm">
               {[
                 {
                   category: "Comptes organisateurs",
-                  duration: "Jusqu'à la suppression du compte, puis 3 ans (obligations légales)",
+                  duration:
+                    "Jusqu&apos;à la suppression du compte, puis 3 ans (obligations légales)",
                 },
                 {
                   category: "Sessions de connexion",
-                  duration: "30 jours (renouvellement automatique à chaque connexion active)",
+                  duration:
+                    "30 jours (renouvellement automatique à chaque connexion active)",
                 },
                 {
-                  category: "Données d'événements et de notation",
+                  category: "Données d&apos;événements et de notation",
                   duration: "Durée de vie du compte organisateur + 1 an",
                 },
                 {
                   category: "Données des participants",
-                  duration: "Durée de l'événement + 1 an, sauf demande de suppression anticipée",
+                  duration:
+                    "Durée de l&apos;événement + 1 an, sauf demande de suppression anticipée",
                 },
                 {
                   category: "Journaux de connexion et logs de sécurité",
                   duration: "12 mois maximum",
                 },
               ].map(({ category, duration }) => (
-                <li key={category} className="flex gap-3 rounded-md bg-slate-50 p-3">
+                <li
+                  key={category}
+                  className="flex gap-3 rounded-md bg-slate-50 p-3"
+                >
                   <span className="mt-0.5 h-2 w-2 shrink-0 rotate-45 bg-indigo-600" />
                   <span>
-                    <span className="font-semibold text-slate-800">{category} :</span>{" "}
+                    <span className="font-semibold text-slate-800">
+                      {category} :
+                    </span>{" "}
                     <span className="text-slate-600">{duration}</span>
                   </span>
                 </li>
@@ -329,9 +333,9 @@ export default function PolitiqueConfidentialitePage() {
             </p>
             <ul className="space-y-2 text-sm text-slate-600">
               {[
-                "Le personnel habilité de l'équipe JuryFlow (accès restreint)",
-                "Les organisateurs de l'événement auquel vous participez",
-                "Nos sous-traitants techniques (hébergeur, prestataire de base de données, service d'envoi d'e-mails transactionnels Brevo/Sendinblue), liés par des clauses de confidentialité strictes",
+                "Le personnel habilité de l&apos;équipe JuryFlow (accès restreint)",
+                "Les organisateurs de l&apos;événement auquel vous participez",
+                "Nos sous-traitants techniques (hébergeur, prestataire de base de données, service d&apos;envoi d&apos;e-mails transactionnels Brevo/Sendinblue), liés par des clauses de confidentialité strictes",
                 "Les autorités judiciaires ou administratives compétentes, uniquement sur réquisition légale",
               ].map((item) => (
                 <li key={item} className="flex gap-2">
@@ -351,14 +355,14 @@ export default function PolitiqueConfidentialitePage() {
           <Section number="06" title="Vos droits">
             <p className="mb-4 text-sm leading-relaxed text-slate-600">
               Conformément aux articles 30 à 40 de la{" "}
-              <strong>Loi N°2009-09 du 22 mai 2009</strong> et à l'
+              <strong>Loi N°2009-09 du 22 mai 2009</strong> et à l&apos;
               <strong>Acte Additionnel CEDEAO A/SA.1/01/10</strong>, vous
               disposez des droits suivants sur vos données personnelles :
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
               {[
                 {
-                  droit: "Droit d'accès",
+                  droit: "Droit d&apos;accès",
                   desc: "Obtenir confirmation que vos données sont traitées et en obtenir une copie.",
                 },
                 {
@@ -366,11 +370,11 @@ export default function PolitiqueConfidentialitePage() {
                   desc: "Demander la correction de données inexactes ou incomplètes.",
                 },
                 {
-                  droit: "Droit à l'effacement",
+                  droit: "Droit à l&apos;effacement",
                   desc: "Obtenir la suppression de vos données dans les cas prévus par la loi.",
                 },
                 {
-                  droit: "Droit d'opposition",
+                  droit: "Droit d&apos;opposition",
                   desc: "Vous opposer au traitement de vos données pour des motifs légitimes.",
                 },
                 {
@@ -409,8 +413,8 @@ export default function PolitiqueConfidentialitePage() {
           <Section number="07" title="Autorité de contrôle — APDP">
             <p className="text-sm leading-relaxed text-slate-600">
               Si vous estimez que le traitement de vos données personnelles
-              n'est pas conforme à la réglementation en vigueur, vous avez le
-              droit de saisir l'
+              n&apos;est pas conforme à la réglementation en vigueur, vous avez
+              le droit de saisir l&apos;
               <strong>
                 Autorité de Protection des Données Personnelles (APDP)
               </strong>{" "}
@@ -419,17 +423,24 @@ export default function PolitiqueConfidentialitePage() {
             </p>
             <dl className="mt-4 divide-y divide-slate-100 text-sm">
               <div className="flex flex-col gap-0.5 py-2 sm:flex-row sm:gap-4">
-                <dt className="min-w-[160px] font-bold text-slate-700">Organisme</dt>
+                <dt className="min-w-[160px] font-bold text-slate-700">
+                  Organisme
+                </dt>
                 <dd className="text-slate-600">
-                  APDP — Autorité de Protection des Données Personnelles du Bénin
+                  APDP — Autorité de Protection des Données Personnelles du
+                  Bénin
                 </dd>
               </div>
               <div className="flex flex-col gap-0.5 py-2 sm:flex-row sm:gap-4">
-                <dt className="min-w-[160px] font-bold text-slate-700">Siège</dt>
+                <dt className="min-w-[160px] font-bold text-slate-700">
+                  Siège
+                </dt>
                 <dd className="text-slate-600">Cotonou, République du Bénin</dd>
               </div>
               <div className="flex flex-col gap-0.5 py-2 sm:flex-row sm:gap-4">
-                <dt className="min-w-[160px] font-bold text-slate-700">Site web</dt>
+                <dt className="min-w-[160px] font-bold text-slate-700">
+                  Site web
+                </dt>
                 <dd className="text-slate-600">
                   <a
                     href="https://apdp.bj"
@@ -448,15 +459,15 @@ export default function PolitiqueConfidentialitePage() {
           <Section number="08" title="Transferts internationaux de données">
             <p className="text-sm leading-relaxed text-slate-600">
               Certaines données peuvent être transférées vers des serveurs
-              situés hors du Bénin (notamment pour l'hébergement de
-              l'application et le service d'envoi d'e-mails). Ces transferts
-              sont effectués conformément à l'article 55 de la{" "}
+              situés hors du Bénin (notamment pour l&apos;hébergement de
+              l&apos;application et le service d&apos;envoi d&apos;e-mails). Ces
+              transferts sont effectués conformément à l&apos;article 55 de la{" "}
               <strong>Loi N°2009-09</strong> et sous réserve de garanties
               appropriées (clauses contractuelles types, niveau de protection
-              adéquat reconnu par l'APDP).
+              adéquat reconnu par l&apos;APDP).
             </p>
             <InfoBox>
-              JuryFlow s'engage à ne transférer vos données qu'à des
+              JuryFlow s&apos;engage à ne transférer vos données qu&apos;à des
               prestataires offrant un niveau de protection équivalent à celui
               garanti par le droit béninois et les instruments régionaux
               applicables.
@@ -474,7 +485,7 @@ export default function PolitiqueConfidentialitePage() {
               {[
                 "Chiffrement des communications via HTTPS/TLS",
                 "Hashage des codes PIN des membres du jury",
-                "Sessions d'authentification sécurisées avec expiration automatique (30 jours)",
+                "Sessions d&apos;authentification sécurisées avec expiration automatique (30 jours)",
                 "Accès aux données restreint selon les rôles (organisateur, jury, superviseur)",
                 "Journalisation des accès et activités sensibles",
                 "Base de données hébergée sur infrastructure sécurisée",
@@ -513,11 +524,17 @@ export default function PolitiqueConfidentialitePage() {
                 erneregis@gmail.com
               </a>
               . Vous pouvez également consulter nos{" "}
-              <Link href="/cgu" className="font-medium text-indigo-600 hover:underline">
-                Conditions Générales d'Utilisation
+              <Link
+                href="/cgu"
+                className="font-medium text-indigo-600 hover:underline"
+              >
+                Conditions Générales d&apos;Utilisation
               </Link>{" "}
               et notre{" "}
-              <Link href="/cookies" className="font-medium text-indigo-600 hover:underline">
+              <Link
+                href="/cookies"
+                className="font-medium text-indigo-600 hover:underline"
+              >
                 Politique de cookies
               </Link>
               .

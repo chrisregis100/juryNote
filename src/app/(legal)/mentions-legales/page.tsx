@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Mentions légales | JuryFlow",
   description:
-    "Informations légales relatives à l'éditeur, l'hébergement et la propriété intellectuelle de la plateforme JuryFlow.",
+    "Informations légales relatives à l&apos;éditeur, l&apos;hébergement et la propriété intellectuelle de la plateforme JuryFlow.",
 };
 
 const LAST_UPDATED = "22 mars 2026";
@@ -29,7 +29,13 @@ const Section = ({ number, title, children }: SectionProps) => (
   </div>
 );
 
-const DataRow = ({ label, value }: { label: string; value: React.ReactNode }) => (
+const DataRow = ({
+  label,
+  value,
+}: {
+  label: string;
+  value: React.ReactNode;
+}) => (
   <div className="flex flex-col gap-0.5 py-2 sm:flex-row sm:gap-4">
     <dt className="min-w-[180px] text-sm font-bold text-slate-700">{label}</dt>
     <dd className="text-sm text-slate-600">{value}</dd>
@@ -74,10 +80,10 @@ export default function MentionsLegalesPage() {
             <p className="text-sm leading-relaxed text-slate-700">
               Conformément aux dispositions applicables en République du Bénin
               et aux standards de transparence en ligne, les présentes mentions
-              légales ont pour objet d'informer les utilisateurs de la
-              plateforme <strong>JuryFlow</strong> sur l'identité de l'éditeur,
-              les conditions d'hébergement et les règles applicables à
-              l'utilisation du site.
+              légales ont pour objet d&apos;informer les utilisateurs de la
+              plateforme <strong>JuryFlow</strong> sur l&apos;identité de
+              l&apos;éditeur, les conditions d&apos;hébergement et les règles
+              applicables à l&apos;utilisation du site.
             </p>
           </div>
 
@@ -86,15 +92,13 @@ export default function MentionsLegalesPage() {
             <dl className="divide-y divide-slate-100">
               <DataRow
                 label="Dénomination commerciale"
-                value={
-                  <strong>JuryFlow</strong>
-                }
+                value={<strong>JuryFlow</strong>}
               />
               <DataRow
                 label="Société éditrice"
                 value="[NOM DE LA SOCIÉTÉ / ÉDITEUR]"
               />
-              <DataRow
+              {/* <DataRow
                 label="Forme juridique"
                 value="[FORME JURIDIQUE — ex. SARL, SA, SAS…]"
               />
@@ -105,11 +109,11 @@ export default function MentionsLegalesPage() {
               <DataRow
                 label="N° d'immatriculation (RCCM)"
                 value="[NUMÉRO RCCM — Registre du Commerce et du Crédit Mobilier]"
-              />
-              <DataRow
+              /> */}
+              {/* <DataRow
                 label="Siège social"
                 value="[ADRESSE DU SIÈGE SOCIAL], Cotonou, Bénin"
-              />
+              /> */}
               <DataRow
                 label="Adresse e-mail"
                 value={
@@ -121,18 +125,21 @@ export default function MentionsLegalesPage() {
                   </a>
                 }
               />
-              <DataRow
-                label="Téléphone"
-                value="[NUMÉRO DE TÉLÉPHONE]"
-              />
+              <DataRow label="Téléphone" value="+2290152435063" />
             </dl>
           </Section>
 
           {/* Section 2 - Directeur de la publication */}
           <Section number="02" title="Directeur de la publication">
             <dl className="divide-y divide-slate-100">
-              <DataRow label="Nom et prénom" value="[NOM DU DIRECTEUR DE LA PUBLICATION]" />
-              <DataRow label="Qualité" value="[GÉRANT / DIRECTEUR GÉNÉRAL / REPRÉSENTANT LÉGAL]" />
+              <DataRow
+                label="Nom et prénom"
+                value="[NOM DU DIRECTEUR DE LA PUBLICATION]"
+              />
+              <DataRow
+                label="Qualité"
+                value="[GÉRANT / DIRECTEUR GÉNÉRAL / REPRÉSENTANT LÉGAL]"
+              />
               <DataRow
                 label="Contact"
                 value={
@@ -156,8 +163,8 @@ export default function MentionsLegalesPage() {
             </dl>
             <p className="mt-4 text-sm leading-relaxed text-slate-500">
               Les données de la plateforme sont stockées sur des serveurs
-              sécurisés. Pour toute question relative à l'hébergement, vous
-              pouvez contacter l'hébergeur directement via les coordonnées
+              sécurisés. Pour toute question relative à l&apos;hébergement, vous
+              pouvez contacter l&apos;hébergeur directement via les coordonnées
               ci-dessus.
             </p>
           </Section>
@@ -165,23 +172,23 @@ export default function MentionsLegalesPage() {
           {/* Section 4 - Propriété intellectuelle */}
           <Section number="04" title="Propriété intellectuelle">
             <p className="text-sm leading-relaxed text-slate-600">
-              L'ensemble des éléments constituant la plateforme JuryFlow —
+              L&apos;ensemble des éléments constituant la plateforme JuryFlow —
               notamment les textes, graphismes, logotypes, icônes, images,
               vidéos, animations, logiciels et architecture du site — sont la
-              propriété exclusive de l'éditeur ou de ses partenaires et sont
-              protégés par les lois applicables en matière de propriété
+              propriété exclusive de l&apos;éditeur ou de ses partenaires et
+              sont protégés par les lois applicables en matière de propriété
               intellectuelle.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
               Toute reproduction, représentation, modification, publication,
-              adaptation ou exploitation de tout ou partie des éléments du
-              site, par quelque procédé que ce soit, sans l'autorisation
-              préalable écrite de l'éditeur, est strictement interdite.
+              adaptation ou exploitation de tout ou partie des éléments du site,
+              par quelque procédé que ce soit, sans l&apos;autorisation
+              préalable écrite de l&apos;éditeur, est strictement interdite.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
-              Toute utilisation non autorisée de la plateforme ou de l'un des
-              éléments qu'elle contient constitue une contrefaçon et pourra
-              donner lieu à des poursuites judiciaires.
+              Toute utilisation non autorisée de la plateforme ou de l&apos;un
+              des éléments qu&apos;elle contient constitue une contrefaçon et
+              pourra donner lieu à des poursuites judiciaires.
             </p>
           </Section>
 
@@ -189,15 +196,15 @@ export default function MentionsLegalesPage() {
           <Section number="05" title="Liens hypertextes">
             <p className="text-sm leading-relaxed text-slate-600">
               La plateforme JuryFlow peut contenir des liens hypertextes vers
-              d'autres sites internet. Ces liens sont proposés à titre
-              informatif. L'éditeur n'a aucun contrôle sur le contenu de ces
-              sites et décline toute responsabilité quant aux informations qui
-              y figurent.
+              d&apos;autres sites internet. Ces liens sont proposés à titre
+              informatif. L&apos;éditeur n&apos;a aucun contrôle sur le contenu
+              de ces sites et décline toute responsabilité quant aux
+              informations qui y figurent.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
               La création de liens vers la plateforme JuryFlow est soumise à
-              l'accord préalable et exprès de l'éditeur. Pour toute demande,
-              contactez-nous à l'adresse indiquée ci-dessus.
+              l&apos;accord préalable et exprès de l&apos;éditeur. Pour toute
+              demande, contactez-nous à l&apos;adresse indiquée ci-dessus.
             </p>
           </Section>
 
@@ -205,20 +212,17 @@ export default function MentionsLegalesPage() {
           <Section number="06" title="Données personnelles & Cookies">
             <p className="text-sm leading-relaxed text-slate-600">
               La collecte et le traitement des données personnelles effectués
-              dans le cadre de l'utilisation de JuryFlow sont régis par la{" "}
+              dans le cadre de l&apos;utilisation de JuryFlow sont régis par la{" "}
               <strong>
                 Loi N°2009-09 du 22 mai 2009 portant protection des données à
                 caractère personnel en République du Bénin
               </strong>{" "}
-              et placés sous le contrôle de l'
+              et placés sous le contrôle de l&apos;
               <strong>
                 Autorité de Protection des Données Personnelles (APDP)
               </strong>
               , instituée par le{" "}
-              <strong>
-                Décret N°2011-029 du 16 février 2011
-              </strong>
-              .
+              <strong>Décret N°2011-029 du 16 février 2011</strong>.
             </p>
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
               <Link
@@ -237,12 +241,15 @@ export default function MentionsLegalesPage() {
           </Section>
 
           {/* Section 7 - Droit applicable */}
-          <Section number="07" title="Droit applicable et juridiction compétente">
+          <Section
+            number="07"
+            title="Droit applicable et juridiction compétente"
+          >
             <p className="text-sm leading-relaxed text-slate-600">
               Les présentes mentions légales sont régies par le droit béninois.
-              Tout litige relatif à l'interprétation ou à l'exécution des
-              présentes sera soumis à la compétence exclusive des tribunaux de
-              Cotonou, Bénin, sauf disposition légale contraire.
+              Tout litige relatif à l&apos;interprétation ou à l&apos;exécution
+              des présentes sera soumis à la compétence exclusive des tribunaux
+              de Cotonou, Bénin, sauf disposition légale contraire.
             </p>
           </Section>
 

@@ -37,7 +37,13 @@ interface CookieRowProps {
   essential: boolean;
 }
 
-const CookieRow = ({ name, type, purpose, duration, essential }: CookieRowProps) => (
+const CookieRow = ({
+  name,
+  type,
+  purpose,
+  duration,
+  essential,
+}: CookieRowProps) => (
   <tr className="border-b border-slate-100">
     <td className="py-3 pr-3 align-top">
       <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs font-mono text-indigo-700">
@@ -99,8 +105,8 @@ export default function CookiesPage() {
             <p className="text-sm leading-relaxed text-slate-700">
               La présente politique de cookies explique ce que sont les cookies,
               lesquels sont utilisés par <strong>JuryFlow</strong>, pourquoi
-              nous les utilisons et comment vous pouvez les gérer. Elle
-              complète notre{" "}
+              nous les utilisons et comment vous pouvez les gérer. Elle complète
+              notre{" "}
               <Link
                 href="/politique-de-confidentialite"
                 className="font-medium text-indigo-600 hover:underline"
@@ -111,13 +117,13 @@ export default function CookiesPage() {
             </p>
           </div>
 
-          {/* Section 1 - Qu'est-ce qu'un cookie */}
+          {/* Section 1 - Qu&apos;est-ce qu&apos;un cookie */}
           <Section number="01" title="Qu'est-ce qu'un cookie ?">
             <p className="text-sm leading-relaxed text-slate-600">
               Un cookie est un petit fichier texte déposé sur votre terminal
-              (ordinateur, tablette, smartphone) par le serveur d'un site web
-              lorsque vous le visitez. Il permet au site de reconnaître votre
-              navigateur lors de vos visites ultérieures, de mémoriser vos
+              (ordinateur, tablette, smartphone) par le serveur d&apos;un site
+              web lorsque vous le visitez. Il permet au site de reconnaître
+              votre navigateur lors de vos visites ultérieures, de mémoriser vos
               préférences ou de maintenir votre session de connexion active.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
@@ -131,7 +137,7 @@ export default function CookiesPage() {
                 },
                 {
                   type: "Cookies persistants",
-                  desc: "Conservés sur votre terminal jusqu'à leur date d'expiration ou leur suppression manuelle.",
+                  desc: "Conservés sur votre terminal jusqu&apos;à leur date d&apos;expiration ou leur suppression manuelle.",
                 },
                 {
                   type: "Cookies propriétaires",
@@ -139,7 +145,7 @@ export default function CookiesPage() {
                 },
                 {
                   type: "Cookies tiers",
-                  desc: "Déposés par des services externes (ex. : hébergeur, service d'analyse).",
+                  desc: "Déposés par des services externes (ex. : hébergeur, service d&apos;analyse).",
                 },
               ].map(({ type, desc }) => (
                 <li
@@ -159,9 +165,9 @@ export default function CookiesPage() {
           <Section number="02" title="Cookies utilisés par JuryFlow">
             <p className="mb-4 text-sm leading-relaxed text-slate-600">
               JuryFlow utilise exclusivement des cookies strictement nécessaires
-              au fonctionnement de la plateforme. <strong>Aucun cookie
-              publicitaire ni de traçage marketing</strong> n'est déposé sur
-              votre terminal.
+              au fonctionnement de la plateforme.{" "}
+              <strong>Aucun cookie publicitaire ni de traçage marketing</strong>{" "}
+              n&apos;est déposé sur votre terminal.
             </p>
 
             {/* Desktop table */}
@@ -233,7 +239,7 @@ export default function CookiesPage() {
                   name: "better-auth.dont_remember",
                   type: "Propriétaire — Session",
                   purpose:
-                    "Indique si l'utilisateur souhaite une session courte.",
+                    "Indique si l&apos;utilisateur souhaite une session courte.",
                   duration: "Session",
                 },
               ].map((cookie) => (
@@ -245,9 +251,12 @@ export default function CookiesPage() {
                     {cookie.name}
                   </code>
                   <p className="mt-2 text-xs text-slate-500">{cookie.type}</p>
-                  <p className="mt-1.5 text-sm text-slate-600">{cookie.purpose}</p>
+                  <p className="mt-1.5 text-sm text-slate-600">
+                    {cookie.purpose}
+                  </p>
                   <p className="mt-1.5 text-xs text-slate-500">
-                    Durée : <span className="font-medium">{cookie.duration}</span>
+                    Durée :{" "}
+                    <span className="font-medium">{cookie.duration}</span>
                   </p>
                   <span className="mt-2 inline-block rounded bg-green-100 px-2 py-0.5 text-xs font-bold text-green-700">
                     Nécessaire
@@ -258,9 +267,9 @@ export default function CookiesPage() {
 
             <div className="mt-4 rounded-md border-l-4 border-green-500 bg-green-50 p-4 text-sm text-slate-700">
               <strong>Aucun cookie tiers, publicitaire ou analytique</strong>{" "}
-              n'est utilisé par JuryFlow. Nous ne partageons aucune donnée de
-              navigation avec des réseaux publicitaires ou des plateformes
-              d'analyse tierces.
+              n&apos;est utilisé par JuryFlow. Nous ne partageons aucune donnée
+              de navigation avec des réseaux publicitaires ou des plateformes
+              d&apos;analyse tierces.
             </div>
           </Section>
 
@@ -269,18 +278,20 @@ export default function CookiesPage() {
             <p className="text-sm leading-relaxed text-slate-600">
               Les cookies utilisés par JuryFlow sont{" "}
               <strong>strictement nécessaires</strong> au fonctionnement du
-              service d'authentification. À ce titre, conformément à la{" "}
-              <strong>Loi N°2009-09 du 22 mai 2009</strong> (art. 5) et à l'
+              service d&apos;authentification. À ce titre, conformément à la{" "}
+              <strong>Loi N°2009-09 du 22 mai 2009</strong> (art. 5) et à
+              l&apos;
               <strong>Acte Additionnel CEDEAO A/SA.1/01/10</strong>, leur dépôt
-              est fondé sur la base légale de l'
-              <strong>exécution du contrat</strong> (accès au service) et de l'
+              est fondé sur la base légale de l&apos;
+              <strong>exécution du contrat</strong> (accès au service) et de
+              l&apos;
               <strong>intérêt légitime</strong> (sécurité de la session).
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
               Ces cookies ne nécessitent pas votre consentement préalable car
               ils sont indispensables à la fourniture du service que vous
               demandez (connexion sécurisée, maintien de la session). Refuser
-              ces cookies empêcherait l'accès aux fonctionnalités de la
+              ces cookies empêcherait l&apos;accès aux fonctionnalités de la
               plateforme nécessitant une authentification.
             </p>
           </Section>
@@ -290,13 +301,13 @@ export default function CookiesPage() {
             <p className="text-sm leading-relaxed text-slate-600">
               Les cookies de session de JuryFlow sont conservés pour une durée
               maximale de <strong>30 jours</strong> à compter de la dernière
-              activité de l'utilisateur sur la plateforme. Cette durée est
-              conforme aux exigences de sécurité et aux standards de l'industrie
-              pour les applications B2B.
+              activité de l&apos;utilisateur sur la plateforme. Cette durée est
+              conforme aux exigences de sécurité et aux standards de
+              l&apos;industrie pour les applications B2B.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
-              Les cookies de session (without "remember me") sont supprimés dès
-              la fermeture du navigateur.
+              Les cookies de session (without &quot;remember me&quot;) sont
+              supprimés dès la fermeture du navigateur.
             </p>
           </Section>
 
@@ -351,11 +362,13 @@ export default function CookiesPage() {
           <Section number="06" title="Contact et questions">
             <p className="text-sm leading-relaxed text-slate-600">
               Pour toute question relative à la présente politique de cookies ou
-              à l'utilisation de vos données, contactez-nous :
+              à l&apos;utilisation de vos données, contactez-nous :
             </p>
             <dl className="mt-4 divide-y divide-slate-100 text-sm">
               <div className="flex flex-col gap-0.5 py-2 sm:flex-row sm:gap-4">
-                <dt className="min-w-[100px] font-bold text-slate-700">E-mail</dt>
+                <dt className="min-w-[100px] font-bold text-slate-700">
+                  E-mail
+                </dt>
                 <dd>
                   <a
                     href="mailto:erneregis@gmail.com"
@@ -367,7 +380,7 @@ export default function CookiesPage() {
               </div>
             </dl>
             <p className="mt-4 text-sm text-slate-500">
-              Vous pouvez également exercer vos droits auprès de l'
+              Vous pouvez également exercer vos droits auprès de l&apos;
               <strong>APDP</strong> (Autorité de Protection des Données
               Personnelles du Bénin) — voir notre{" "}
               <Link

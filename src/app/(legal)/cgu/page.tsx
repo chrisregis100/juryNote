@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Conditions Générales d'Utilisation | JuryFlow",
+  title: "Conditions Générales d&apos;Utilisation | JuryFlow",
   description:
-    "Conditions générales d'utilisation de la plateforme JuryFlow — droits, obligations, propriété intellectuelle et droit applicable (Bénin).",
+    "Conditions générales d&apos;utilisation de la plateforme JuryFlow — droits, obligations, propriété intellectuelle et droit applicable (Bénin).",
 };
 
 const LAST_UPDATED = "22 mars 2026";
@@ -73,12 +73,13 @@ export default function CguPage() {
           {/* Intro */}
           <div className="rounded-lg border-2 border-yellow-400 bg-yellow-50 p-5">
             <p className="text-sm leading-relaxed text-slate-700">
-              Les présentes Conditions Générales d'Utilisation (ci-après «
-              CGU ») régissent l'accès et l'utilisation de la plateforme{" "}
-              <strong>JuryFlow</strong> (accessible à [URL DE LA PLATEFORME]).
-              En accédant à la plateforme, vous acceptez sans réserve les
-              présentes CGU. Si vous n'acceptez pas ces conditions, vous devez
-              cesser immédiatement d'utiliser la plateforme.
+              Les présentes Conditions Générales d&apos;Utilisation (ci-après «
+              CGU ») régissent l&apos;accès et l&apos;utilisation de la
+              plateforme <strong>JuryFlow</strong> (accessible à [URL DE LA
+              PLATEFORME]). En accédant à la plateforme, vous acceptez sans
+              réserve les présentes CGU. Si vous n&apos;acceptez pas ces
+              conditions, vous devez cesser immédiatement d&apos;utiliser la
+              plateforme.
             </p>
           </div>
 
@@ -86,26 +87,25 @@ export default function CguPage() {
           <Section number="01" title="Objet">
             <p className="text-sm leading-relaxed text-slate-600">
               Les présentes CGU ont pour objet de définir les conditions dans
-              lesquelles{" "}
-              <strong>JuryFlow</strong> (ci-après « la Plateforme ») met à
-              disposition des organisateurs, membres du jury, superviseurs et
-              participants (ci-après collectivement « les Utilisateurs ») une
+              lesquelles <strong>JuryFlow</strong> (ci-après « la Plateforme »)
+              met à disposition des organisateurs, membres du jury, superviseurs
+              et participants (ci-après collectivement « les Utilisateurs ») une
               solution logicielle de gestion, notation et délibération pour
               hackathons, concours et événements compétitifs.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
-              Les présentes CGU constituent un contrat entre l'éditeur de la
-              Plateforme et tout Utilisateur. Elles sont applicables à toutes
+              Les présentes CGU constituent un contrat entre l&apos;éditeur de
+              la Plateforme et tout Utilisateur. Elles sont applicables à toutes
               les fonctionnalités de la Plateforme, notamment :
             </p>
             <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
               {[
-                "La création et la gestion d'événements",
-                "L'inscription et la gestion des participants",
-                "L'attribution de critères de notation et leur pondération",
+                "La création et la gestion d&apos;événements",
+                "L&apos;inscription et la gestion des participants",
+                "L&apos;attribution de critères de notation et leur pondération",
                 "La notation en temps réel par les membres du jury",
                 "La délibération collaborative",
-                "L'export des résultats",
+                "L&apos;export des résultats",
                 "La supervision en direct",
               ].map((item) => (
                 <li key={item} className="flex gap-2">
@@ -119,32 +119,32 @@ export default function CguPage() {
           {/* Section 2 - Accès */}
           <Section number="02" title="Accès à la plateforme">
             <p className="mb-3 text-sm leading-relaxed text-slate-600">
-              L'accès à JuryFlow est différencié selon les rôles :
+              L&apos;accès à JuryFlow est différencié selon les rôles :
             </p>
             <div className="space-y-3">
               {[
                 {
                   role: "Organisateurs",
                   condition:
-                    "Inscription via adresse e-mail et connexion par lien magique (magic link). L'accès est soumis à une validation préalable par l'équipe JuryFlow.",
+                    "Inscription via adresse e-mail et connexion par lien magique (magic link). L&apos;accès est soumis à une validation préalable par l&apos;équipe JuryFlow.",
                   color: "border-indigo-200 bg-indigo-50",
                 },
                 {
                   role: "Membres du jury",
                   condition:
-                    "Accès via un code PIN à 6 chiffres fourni par l'organisateur. Aucun compte personnel n'est requis.",
+                    "Accès via un code PIN à 6 chiffres fourni par l&apos;organisateur. Aucun compte personnel n&apos;est requis.",
                   color: "border-yellow-200 bg-yellow-50",
                 },
                 {
                   role: "Superviseurs",
                   condition:
-                    "Accès via invitation de l'organisateur, avec authentification sécurisée.",
+                    "Accès via invitation de l&apos;organisateur, avec authentification sécurisée.",
                   color: "border-green-200 bg-green-50",
                 },
                 {
                   role: "Participants",
                   condition:
-                    "Accès au formulaire de check-in via un lien public fourni par l'organisateur. Aucun compte requis.",
+                    "Accès au formulaire de check-in via un lien public fourni par l&apos;organisateur. Aucun compte requis.",
                   color: "border-slate-200 bg-slate-50",
                 },
               ].map(({ role, condition, color }) => (
@@ -164,11 +164,12 @@ export default function CguPage() {
           {/* Section 3 - Inscription */}
           <Section number="03" title="Inscription et comptes utilisateurs">
             <p className="mb-3 text-sm leading-relaxed text-slate-600">
-              L'Utilisateur qui s'inscrit en qualité d'organisateur s'engage à :
+              L&apos;Utilisateur qui s&apos;inscrit en qualité
+              d&apos;organisateur s&apos;engage à :
             </p>
             <ul className="space-y-2 text-sm text-slate-600">
               {[
-                "Fournir des informations exactes, complètes et à jour lors de l'inscription",
+                "Fournir des informations exactes, complètes et à jour lors de l&apos;inscription",
                 "Maintenir la confidentialité de ses accès (lien magique, session)",
                 "Notifier immédiatement JuryFlow de tout accès non autorisé à son compte",
                 "Ne pas créer plusieurs comptes pour contourner des restrictions",
@@ -181,28 +182,28 @@ export default function CguPage() {
               ))}
             </ul>
             <p className="mt-4 text-sm leading-relaxed text-slate-600">
-              L'Utilisateur est seul responsable de l'ensemble des activités
-              effectuées depuis son compte.
+              L&apos;Utilisateur est seul responsable de l&apos;ensemble des
+              activités effectuées depuis son compte.
             </p>
           </Section>
 
-          {/* Section 4 - Conditions d'utilisation */}
+          {/* Section 4 - Conditions d&apos;utilisation */}
           <Section number="04" title="Utilisation acceptable de la plateforme">
             <p className="mb-3 text-sm leading-relaxed text-slate-600">
-              L'Utilisateur s'engage à utiliser la Plateforme dans le respect
-              de la réglementation applicable et des droits des tiers. Il est
-              notamment interdit de :
+              L&apos;Utilisateur s&apos;engage à utiliser la Plateforme dans le
+              respect de la réglementation applicable et des droits des tiers.
+              Il est notamment interdit de :
             </p>
             <ul className="space-y-2 text-sm text-slate-600">
               {[
                 "Utiliser la Plateforme à des fins illégales, frauduleuses ou nuisibles",
-                "Tenter de contourner les mécanismes de sécurité ou d'authentification",
-                "Accéder à des données auxquelles vous n'êtes pas autorisé à accéder",
+                "Tenter de contourner les mécanismes de sécurité ou d&apos;authentification",
+                "Accéder à des données auxquelles vous n&apos;êtes pas autorisé à accéder",
                 "Télécharger, transmettre ou diffuser des contenus illicites, diffamatoires ou portant atteinte aux droits de tiers",
                 "Reproduire, copier, revendre ou exploiter commercialement tout ou partie de la Plateforme sans autorisation préalable",
                 "Utiliser des robots, scrapers ou outils automatisés pour collecter des données",
                 "Perturber le fonctionnement normal de la Plateforme (attaques DDoS, injection de code…)",
-                "Usurper l'identité d'un autre Utilisateur",
+                "Usurper l&apos;identité d&apos;un autre Utilisateur",
               ].map((item) => (
                 <li key={item} className="flex gap-2">
                   <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-rose-500" />
@@ -220,15 +221,15 @@ export default function CguPage() {
           {/* Section 5 - Responsabilités utilisateur */}
           <Section number="05" title="Responsabilités de l'Utilisateur">
             <p className="mb-3 text-sm leading-relaxed text-slate-600">
-              L'Utilisateur est seul responsable :
+              L&apos;Utilisateur est seul responsable :
             </p>
             <ul className="space-y-2 text-sm text-slate-600">
               {[
-                "Du contenu qu'il crée et importe sur la Plateforme (événements, critères, participants…)",
+                "Du contenu qu&apos;il crée et importe sur la Plateforme (événements, critères, participants…)",
                 "Des notes et appréciations saisies dans le cadre de son rôle de juré",
                 "Du partage des codes PIN avec les membres du jury désignés",
-                "De l'exactitude des informations relatives aux participants",
-                "De l'utilisation qui est faite des résultats exportés",
+                "De l&apos;exactitude des informations relatives aux participants",
+                "De l&apos;utilisation qui est faite des résultats exportés",
                 "Du respect des droits à la vie privée des participants dont les données sont saisies",
               ].map((item) => (
                 <li key={item} className="flex gap-2">
@@ -238,27 +239,28 @@ export default function CguPage() {
               ))}
             </ul>
             <p className="mt-4 text-sm leading-relaxed text-slate-600">
-              L'organisateur qui collecte des données personnelles de
+              L&apos;organisateur qui collecte des données personnelles de
               participants via la Plateforme agit en qualité de responsable du
-              traitement au sens de la Loi N°2009-09 du 22 mai 2009 et est
-              tenu de respecter les obligations légales y afférentes.
+              traitement au sens de la Loi N°2009-09 du 22 mai 2009 et est tenu
+              de respecter les obligations légales y afférentes.
             </p>
           </Section>
 
           {/* Section 6 - Propriété intellectuelle */}
           <Section number="06" title="Propriété intellectuelle">
             <p className="mb-3 text-sm leading-relaxed text-slate-600">
-              L'ensemble des éléments de la Plateforme — code source,
+              L&apos;ensemble des éléments de la Plateforme — code source,
               algorithmes, interfaces graphiques, logos, marques, textes et
-              contenus éditoriaux — sont la propriété exclusive de l'éditeur de
-              JuryFlow et sont protégés par les lois béninoises et
-              internationales sur la propriété intellectuelle.
+              contenus éditoriaux — sont la propriété exclusive de
+              l&apos;éditeur de JuryFlow et sont protégés par les lois
+              béninoises et internationales sur la propriété intellectuelle.
             </p>
             <p className="text-sm leading-relaxed text-slate-600">
-              L'Utilisateur conserve l'intégralité des droits sur les données
-              qu'il crée (événements, critères, résultats). Il accorde à
-              JuryFlow une licence limitée, non exclusive et non cessible pour
-              traiter ces données aux seules fins de la fourniture du service.
+              L&apos;Utilisateur conserve l&apos;intégralité des droits sur les
+              données qu&apos;il crée (événements, critères, résultats). Il
+              accorde à JuryFlow une licence limitée, non exclusive et non
+              cessible pour traiter ces données aux seules fins de la fourniture
+              du service.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
               Toute reproduction, représentation ou exploitation non autorisée
@@ -271,18 +273,18 @@ export default function CguPage() {
           {/* Section 7 - Responsabilité JuryFlow */}
           <Section number="07" title="Responsabilité de JuryFlow">
             <p className="mb-3 text-sm leading-relaxed text-slate-600">
-              JuryFlow s'engage à mettre en œuvre tous les moyens raisonnables
-              pour assurer un accès de qualité à la Plateforme. Cependant,
-              JuryFlow ne peut être tenu responsable :
+              JuryFlow s&apos;engage à mettre en œuvre tous les moyens
+              raisonnables pour assurer un accès de qualité à la Plateforme.
+              Cependant, JuryFlow ne peut être tenu responsable :
             </p>
             <ul className="space-y-2 text-sm text-slate-600">
               {[
                 "Des interruptions temporaires du service pour maintenance",
-                "Des dommages résultant d'une utilisation frauduleuse ou non conforme de la Plateforme par un tiers",
-                "De la perte de données résultant d'une faute ou négligence de l'Utilisateur",
+                "Des dommages résultant d&apos;une utilisation frauduleuse ou non conforme de la Plateforme par un tiers",
+                "De la perte de données résultant d&apos;une faute ou négligence de l&apos;Utilisateur",
                 "Des décisions prises sur la base des résultats générés par la Plateforme",
                 "Des contenus publiés par les Utilisateurs",
-                "Des dommages indirects, pertes de données ou pertes de revenus liés à l'utilisation ou l'impossibilité d'utiliser la Plateforme",
+                "Des dommages indirects, pertes de données ou pertes de revenus liés à l&apos;utilisation ou l&apos;impossibilité d&apos;utiliser la Plateforme",
               ].map((item) => (
                 <li key={item} className="flex gap-2">
                   <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400" />
@@ -295,17 +297,16 @@ export default function CguPage() {
           {/* Section 8 - Disponibilité */}
           <Section number="08" title="Disponibilité du service et maintenance">
             <p className="text-sm leading-relaxed text-slate-600">
-              JuryFlow s'efforce de maintenir la Plateforme disponible en
+              JuryFlow s&apos;efforce de maintenir la Plateforme disponible en
               permanence mais ne garantit pas une disponibilité de 100 %. Des
               opérations de maintenance peuvent entraîner des interruptions
               temporaires, annoncées dans la mesure du possible avec un préavis
               raisonnable.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
-              JuryFlow se réserve le droit de modifier, suspendre ou
-              interrompre tout ou partie des fonctionnalités de la Plateforme à
-              tout moment, notamment pour des raisons techniques, légales ou
-              commerciales.
+              JuryFlow se réserve le droit de modifier, suspendre ou interrompre
+              tout ou partie des fonctionnalités de la Plateforme à tout moment,
+              notamment pour des raisons techniques, légales ou commerciales.
             </p>
           </Section>
 
@@ -314,13 +315,13 @@ export default function CguPage() {
             <p className="text-sm leading-relaxed text-slate-600">
               JuryFlow se réserve le droit de modifier les présentes CGU à tout
               moment. Les modifications entrent en vigueur dès leur publication
-              sur la Plateforme. La date de dernière mise à jour est indiquée
-              en tête du présent document.
+              sur la Plateforme. La date de dernière mise à jour est indiquée en
+              tête du présent document.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
               En cas de modifications substantielles affectant les droits des
               Utilisateurs, une notification sera envoyée aux organisateurs
-              enregistrés par e-mail. La poursuite de l'utilisation de la
+              enregistrés par e-mail. La poursuite de l&apos;utilisation de la
               Plateforme après notification vaudra acceptation des nouvelles
               conditions.
             </p>
@@ -329,12 +330,13 @@ export default function CguPage() {
           {/* Section 10 - Résiliation */}
           <Section number="10" title="Résiliation">
             <p className="mb-3 text-sm leading-relaxed text-slate-600">
-              L'Utilisateur peut à tout moment cesser d'utiliser la Plateforme
-              et demander la suppression de son compte en contactant JuryFlow.
+              L&apos;Utilisateur peut à tout moment cesser d&apos;utiliser la
+              Plateforme et demander la suppression de son compte en contactant
+              JuryFlow.
             </p>
             <p className="text-sm leading-relaxed text-slate-600">
-              JuryFlow peut suspendre ou résilier l'accès d'un Utilisateur sans
-              préavis ni remboursement en cas de :
+              JuryFlow peut suspendre ou résilier l&apos;accès d&apos;un
+              Utilisateur sans préavis ni remboursement en cas de :
             </p>
             <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
               {[
@@ -352,7 +354,10 @@ export default function CguPage() {
           </Section>
 
           {/* Section 11 - Droit applicable */}
-          <Section number="11" title="Droit applicable et juridiction compétente">
+          <Section
+            number="11"
+            title="Droit applicable et juridiction compétente"
+          >
             <p className="text-sm leading-relaxed text-slate-600">
               Les présentes CGU sont régies et interprétées conformément au
               droit de la <strong>République du Bénin</strong>, notamment :
@@ -360,8 +365,8 @@ export default function CguPage() {
             <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
               {[
                 "La Loi N°2009-09 du 22 mai 2009 portant protection des données à caractère personnel en République du Bénin",
-                "L'Acte Additionnel CEDEAO A/SA.1/01/10 sur la Protection des Données Personnelles",
-                "La Convention de l'Union Africaine sur la Cybersécurité et la Protection des Données Personnelles (Convention de Malabo)",
+                "L&apos;Acte Additionnel CEDEAO A/SA.1/01/10 sur la Protection des Données Personnelles",
+                "La Convention de l&apos;Union Africaine sur la Cybersécurité et la Protection des Données Personnelles (Convention de Malabo)",
                 "Le Code du commerce béninois",
                 "Tout texte législatif ou réglementaire applicable en République du Bénin",
               ].map((item) => (
@@ -373,11 +378,11 @@ export default function CguPage() {
             </ul>
             <div className="mt-4 rounded-md border-2 border-black bg-slate-50 p-4 text-sm text-slate-700">
               <strong>Juridiction :</strong> En cas de litige relatif à
-              l'interprétation ou à l'exécution des présentes CGU, et à défaut
-              de résolution amiable dans un délai de 30 jours suivant la
-              notification du litige, les parties attribuent compétence
-              exclusive aux <strong>Tribunaux de Cotonou</strong>, République
-              du Bénin.
+              l&apos;interprétation ou à l&apos;exécution des présentes CGU, et
+              à défaut de résolution amiable dans un délai de 30 jours suivant
+              la notification du litige, les parties attribuent compétence
+              exclusive aux <strong>Tribunaux de Cotonou</strong>, République du
+              Bénin.
             </div>
           </Section>
 
@@ -388,7 +393,9 @@ export default function CguPage() {
             </p>
             <dl className="mt-4 divide-y divide-slate-100 text-sm">
               <div className="flex flex-col gap-0.5 py-2 sm:flex-row sm:gap-4">
-                <dt className="min-w-[100px] font-bold text-slate-700">E-mail</dt>
+                <dt className="min-w-[100px] font-bold text-slate-700">
+                  E-mail
+                </dt>
                 <dd>
                   <a
                     href="mailto:erneregis@gmail.com"
@@ -399,7 +406,9 @@ export default function CguPage() {
                 </dd>
               </div>
               <div className="flex flex-col gap-0.5 py-2 sm:flex-row sm:gap-4">
-                <dt className="min-w-[100px] font-bold text-slate-700">Adresse</dt>
+                <dt className="min-w-[100px] font-bold text-slate-700">
+                  Adresse
+                </dt>
                 <dd className="text-slate-600">
                   [ADRESSE DU SIÈGE SOCIAL], Cotonou, Bénin
                 </dd>
