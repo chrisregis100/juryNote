@@ -32,7 +32,6 @@
     "@radix-ui/react-slider": "^1.2.2",
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-tabs": "^1.1.2",
-    "@types/nodemailer": "^6.4.17",
     "@types/papaparse": "^5.5.2",
     "better-auth": "^1.5.5",
     "class-variance-authority": "^0.7.1",
