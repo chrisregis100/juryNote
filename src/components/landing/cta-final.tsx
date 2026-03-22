@@ -34,8 +34,8 @@ export const CTAFinal = () => (
 
       <AnimatedSection delay={0.1}>
         <p className="mx-auto mt-6 max-w-lg text-lg text-slate-400">
-          Rejoignez les organisateurs qui ont déjà simplifié leur notation.
-          Démo gratuite, sans engagement.
+          Rejoignez les organisateurs qui ont déjà simplifié leur notation. Démo
+          gratuite, sans engagement.
         </p>
       </AnimatedSection>
 
