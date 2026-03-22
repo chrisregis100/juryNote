@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -7,6 +8,11 @@ export async function GET(
   request: Request,
   context: { params: Promise<{ eventId: string }> }
 ) {
+  const session = await getServerSession();
+  if (!session?.user || !isOrganizerOrSupervisor(session)) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   const { eventId } = await context.params;
   const event = await db.event.findUnique({
     where: { id: eventId },

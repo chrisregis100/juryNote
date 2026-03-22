@@ -3,8 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { computeRanking } from "@/lib/scoring";
+import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
 
 export async function getOrCreateDeliberation(eventId: string) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   let d = await db.deliberation.findFirst({
     where: { eventId },
     orderBy: { createdAt: "desc" },
@@ -18,6 +22,9 @@ export async function getOrCreateDeliberation(eventId: string) {
 }
 
 export async function closeDeliberation(eventId: string) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const event = await db.event.findUnique({
     where: { id: eventId },
     include: {
@@ -72,6 +79,9 @@ export async function closeDeliberation(eventId: string) {
 }
 
 export async function getRanking(eventId: string) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const event = await db.event.findUnique({
     where: { id: eventId },
     include: { teams: true, criteria: true },

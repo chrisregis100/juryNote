@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { EventTabs } from "@/components/admin/events/event-tabs";
+import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 
 interface EventLayoutProps {
   children: React.ReactNode;
@@ -10,6 +12,10 @@ interface EventLayoutProps {
 }
 
 export default async function EventLayout({ children, params }: EventLayoutProps) {
+  const session = await getServerSession();
+  if (!session?.user) redirect("/login");
+  if (!isOrganizerOrSupervisor(session)) redirect("/login");
+
   const { eventId } = await params;
   const event = await db.event.findUnique({
     where: { id: eventId },
@@ -29,7 +35,7 @@ export default async function EventLayout({ children, params }: EventLayoutProps
   if (!event) notFound();
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6">
+    <div className="mx-auto max-w-6xl space-y-4 sm:space-y-6">
       {/* Header */}
       <div className="flex flex-wrap items-center gap-4">
         <Button
@@ -38,7 +44,10 @@ export default async function EventLayout({ children, params }: EventLayoutProps
           size="sm"
           className="text-slate-600 hover:text-black"
         >
-          <Link href="/admin">← Retour aux événements</Link>
+          <Link href="/admin" className="inline-flex items-center gap-2">
+              <ArrowLeftIcon className="h-4 w-4" aria-hidden="true" />
+              <span>Retour aux événements</span>
+            </Link>
         </Button>
       </div>
 
@@ -56,8 +65,9 @@ export default async function EventLayout({ children, params }: EventLayoutProps
             variant="outline"
             className="border-2 border-black font-medium"
           >
-            <Link href={`/admin/events/${eventId}/deliberation`}>
-              Voir la délibération →
+            <Link href={`/admin/events/${eventId}/deliberation`} className="inline-flex items-center gap-2">
+              Voir la délibération
+              <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />
             </Link>
           </Button>
         </div>

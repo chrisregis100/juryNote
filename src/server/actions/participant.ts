@@ -10,8 +10,12 @@ import {
   updateCustomQuestionSchema,
 } from "@/lib/validations/participant";
 import type { ParsedParticipant } from "@/lib/utils/file-parser";
+import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
 
 export async function createInvitedParticipant(formData: FormData) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const raw = {
     eventId: formData.get("eventId") as string,
     name: formData.get("name") as string,
@@ -45,6 +49,9 @@ export async function createInvitedParticipant(formData: FormData) {
 }
 
 export async function updateInvitedParticipant(formData: FormData) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const raw = {
     id: formData.get("id") as string,
     name: formData.get("name") as string | null,
@@ -75,6 +82,9 @@ export async function updateInvitedParticipant(formData: FormData) {
 }
 
 export async function deleteInvitedParticipant(participantId: string) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const participant = await db.invitedParticipant.findUnique({
     where: { id: participantId },
   });
@@ -89,6 +99,9 @@ export async function deleteInvitedParticipant(participantId: string) {
 }
 
 export async function bulkImportInvitedParticipants(eventId: string, participants: ParsedParticipant[]) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const parsed = bulkImportInvitedParticipantsSchema.safeParse({
     eventId,
     participants,
@@ -161,6 +174,9 @@ async function ensureCheckinLink(eventId: string) {
 }
 
 export async function createCustomQuestion(formData: FormData) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const raw = {
     eventId: formData.get("eventId") as string,
     label: formData.get("label") as string,
@@ -201,6 +217,9 @@ export async function createCustomQuestion(formData: FormData) {
 }
 
 export async function updateCustomQuestion(formData: FormData) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const raw = {
     id: formData.get("id") as string,
     label: formData.get("label") as string | null,
@@ -241,6 +260,9 @@ export async function updateCustomQuestion(formData: FormData) {
 }
 
 export async function deleteCustomQuestion(questionId: string) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const question = await db.customQuestion.findUnique({
     where: { id: questionId },
   });

@@ -3,8 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { createEventSchema, createCriterionSchema, createTeamSchema } from "@/lib/validations/event";
+import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
 
 export async function createEvent(formData: FormData) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const raw = {
     name: formData.get("name") as string,
     slug: formData.get("slug") as string,
@@ -21,6 +25,9 @@ export async function createEvent(formData: FormData) {
 }
 
 export async function createCriterion(eventId: string, formData: FormData) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const raw = {
     name: formData.get("name") as string,
     weight: Number(formData.get("weight")),
@@ -44,6 +51,9 @@ export async function createCriterion(eventId: string, formData: FormData) {
 }
 
 export async function createTeam(eventId: string, formData: FormData) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const raw = {
     name: formData.get("name") as string,
     members: [] as string[],
@@ -71,6 +81,9 @@ export async function createTeam(eventId: string, formData: FormData) {
 }
 
 export async function generateJuryPin(eventId: string) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const pinCode = Math.floor(100000 + Math.random() * 900000).toString();
   const assignment = await db.juryAssignment.create({
     data: {

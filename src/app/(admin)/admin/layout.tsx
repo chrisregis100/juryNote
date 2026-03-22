@@ -15,7 +15,7 @@ export default async function AdminLayout({
   return (
     <div className="min-h-screen bg-slate-50">
       <DashboardNavbar user={session.user} />
-      <div className="flex">
+      <div className="flex min-h-[calc(100vh-4rem)]">
         <DashboardSidebar />
         <main id="main" className="flex-1 p-6">
           {children}

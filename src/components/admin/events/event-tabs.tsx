@@ -2,20 +2,34 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  Cog6ToothIcon,
+  UsersIcon,
+  CheckCircleIcon,
+  ChartBarIcon,
+  TrophyIcon,
+  ArchiveBoxIcon,
+} from "@heroicons/react/24/outline";
 import { cn } from "@/lib/cn";
 
 interface EventTabsProps {
   eventId: string;
 }
 
-const TABS = [
-  { label: "Configuration", href: "", icon: "⚙️" },
-  { label: "Participants", href: "/participants", icon: "👥" },
-  { label: "Check-in", href: "/checkin", icon: "✅" },
-  { label: "Dashboard", href: "/dashboard", icon: "📊" },
-  { label: "Délibération", href: "/deliberation", icon: "🏆" },
-  { label: "Ressources", href: "/resources", icon: "📦" },
-] as const;
+interface Tab {
+  label: string;
+  href: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+}
+
+const TABS: Tab[] = [
+  { label: "Configuration", href: "", icon: Cog6ToothIcon },
+  { label: "Participants", href: "/participants", icon: UsersIcon },
+  { label: "Check-in", href: "/checkin", icon: CheckCircleIcon },
+  { label: "Dashboard", href: "/dashboard", icon: ChartBarIcon },
+  { label: "Délibération", href: "/deliberation", icon: TrophyIcon },
+  { label: "Ressources", href: "/resources", icon: ArchiveBoxIcon },
+];
 
 export function EventTabs({ eventId }: EventTabsProps) {
   const pathname = usePathname();
@@ -29,8 +43,11 @@ export function EventTabs({ eventId }: EventTabsProps) {
   };
 
   return (
-    <nav className="border-b-2 border-slate-200" aria-label="Onglets de l'événement">
-      <ul className="flex flex-wrap gap-1">
+    <nav
+      className="-mx-4 overflow-x-auto border-b-2 border-slate-200 px-4 sm:mx-0 sm:px-0"
+      aria-label="Onglets de l'événement"
+    >
+      <ul className="flex min-w-max gap-1">
         {TABS.map((tab) => {
           const href = `/admin/events/${eventId}${tab.href}`;
           const active = isActive(tab.href);
@@ -45,7 +62,7 @@ export function EventTabs({ eventId }: EventTabsProps) {
                     : "border-transparent text-slate-600 hover:border-slate-300 hover:text-black"
                 )}
               >
-                <span>{tab.icon}</span>
+                <tab.icon className="h-4 w-4 shrink-0" aria-hidden="true" />
                 {tab.label}
               </Link>
             </li>

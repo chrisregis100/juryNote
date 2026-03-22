@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { checkinParticipantSchema, updateCheckinParticipantSchema } from "@/lib/validations/participant";
 import { unlockResourcesForParticipant, type UnlockedResource } from "@/server/actions/resources";
 import { sendResourcesEmail } from "@/lib/email/brevo";
+import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
 
 export async function getCheckinLinkByEventSlug(eventSlug: string) {
   const event = await db.event.findUnique({
@@ -180,6 +181,9 @@ export async function checkinParticipant(formData: FormData) {
 }
 
 export async function updateCheckinParticipant(formData: FormData) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const raw = {
     id: formData.get("id") as string,
     name: formData.get("name") as string | null,
@@ -208,6 +212,9 @@ export async function updateCheckinParticipant(formData: FormData) {
 }
 
 export async function toggleCheckinLink(eventId: string, isActive: boolean) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const checkinLink = await db.checkinLink.findUnique({
     where: { eventId },
   });

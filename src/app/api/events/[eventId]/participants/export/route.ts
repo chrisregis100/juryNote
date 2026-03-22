@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import * as XLSX from "xlsx";
+import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
 
 export async function GET(
   request: NextRequest,
   context: { params: Promise<{ eventId: string }> }
 ) {
+  const session = await getServerSession();
+  if (!session?.user || !isOrganizerOrSupervisor(session)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const { eventId } = await context.params;
   const searchParams = request.nextUrl.searchParams;
   const format = searchParams.get("format") || "csv";

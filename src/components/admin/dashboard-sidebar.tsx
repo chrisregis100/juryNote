@@ -33,7 +33,7 @@ export function DashboardSidebar() {
   };
 
   return (
-    <aside className="hidden w-64 flex-col border-r-2 border-black bg-white md:flex">
+    <aside className="hidden w-64 shrink-0 flex-col border-r-2 border-black bg-white md:flex sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto justify-between">
       <nav className="flex-1 p-4" aria-label="Navigation latérale">
         <ul className="space-y-1">
           {NAV_ITEMS.map((item) => (

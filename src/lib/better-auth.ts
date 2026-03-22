@@ -56,10 +56,10 @@ async function sendMagicLinkEmail(to: string, verifyUrl: string): Promise<void> 
     return;
   }
 
-  // No SMTP transport configured — log the magic link so it is accessible
-  // in development without a mail server. In production, configure Brevo.
-  console.warn(
-    `[sendMagicLinkEmail] No email provider configured. Magic link for ${to}: ${verifyUrl}`
+  // No email provider configured — throw so misconfiguration is surfaced.
+  // Configure BREVO_API_KEY to enable transactional email delivery.
+  throw new Error(
+    `[sendMagicLinkEmail] No email provider configured. Set BREVO_API_KEY to send magic links.`
   );
 }
 

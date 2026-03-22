@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { upsertGradeSchema } from "@/lib/validations/grade";
+import { getServerSession } from "@/lib/auth";
 
 async function getCriterionScaleMax(criterionId: string): Promise<number> {
   const c = await db.criterion.findUnique({
@@ -22,6 +23,13 @@ export async function upsertGrade(
   juryAssignmentId: string,
   payload: { teamId: string; criterionId: string; value: number; comment?: string | null }
 ) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (session.user.role !== "jury") throw new Error("Forbidden");
+
+  // IDOR guard: ensure the juryAssignmentId belongs to the authenticated jury member
+  if (session.user.juryAssignmentId !== juryAssignmentId) throw new Error("Forbidden");
+
   const parsed = upsertGradeSchema.safeParse(payload);
   if (!parsed.success) return { error: parsed.error.flatten().fieldErrors };
 

@@ -13,10 +13,9 @@ interface JuryPayload {
 }
 
 function getSecret(): string {
-  return (
-    process.env.BETTER_AUTH_SECRET ??
-    "dev-secret-please-set-BETTER_AUTH_SECRET"
-  );
+  const secret = process.env.BETTER_AUTH_SECRET;
+  if (!secret) throw new Error("BETTER_AUTH_SECRET environment variable must be set");
+  return secret;
 }
 
 function sign(payload: JuryPayload): string {
