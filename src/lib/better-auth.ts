@@ -3,22 +3,11 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { magicLink } from "better-auth/plugins";
 import { nextCookies } from "better-auth/next-js";
-import nodemailer from "nodemailer";
 import { db } from "@/lib/db";
 import {
   isBrevoConfigured,
   sendBrevoTransactionalEmail,
 } from "@/lib/email/brevo";
-
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST ?? "smtp.gmail.com",
-  port: Number(process.env.SMTP_PORT ?? 587),
-  secure: process.env.SMTP_SECURE === "true",
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
 
 function buildMagicLinkEmailContent(verifyUrl: string): {
   subject: string;
@@ -67,13 +56,11 @@ async function sendMagicLinkEmail(to: string, verifyUrl: string): Promise<void> 
     return;
   }
 
-  await transporter.sendMail({
-    from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
-    to,
-    subject,
-    html,
-    text,
-  });
+  // No SMTP transport configured — log the magic link so it is accessible
+  // in development without a mail server. In production, configure Brevo.
+  console.warn(
+    `[sendMagicLinkEmail] No email provider configured. Magic link for ${to}: ${verifyUrl}`
+  );
 }
 
 export const auth = betterAuth({
