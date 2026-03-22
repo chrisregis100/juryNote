@@ -6,8 +6,29 @@ import {
   JURY_COOKIE_NAME,
   JURY_MAX_AGE,
 } from "@/lib/jury-session";
+import { rateLimit } from "@/lib/rate-limit";
+import { validateCsrf } from "@/lib/csrf";
 
 export async function POST(req: NextRequest) {
+  if (!validateCsrf(req)) {
+    return NextResponse.json({ error: "Requête invalide." }, { status: 403 });
+  }
+
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    req.headers.get("x-real-ip") ??
+    "unknown";
+  const rl = rateLimit(`jury-signin:${ip}`, { limit: 5, windowMs: 15 * 60 * 1000 });
+  if (!rl.success) {
+    return NextResponse.json(
+      { error: "Trop de tentatives. Réessayez dans 15 minutes." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) },
+      }
+    );
+  }
+
   let body: unknown;
   try {
     body = await req.json();

@@ -1,5 +1,5 @@
 import Papa from "papaparse";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import { invitedParticipantSchema } from "@/lib/validations/participant";
 
 export interface ParsedParticipant {
@@ -268,15 +268,46 @@ async function parseCSV(file: File, customMapping?: Record<string, string>): Pro
 async function parseExcel(file: File, customMapping?: Record<string, string>): Promise<ParseResult> {
   return new Promise((resolve) => {
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       try {
-        const data = new Uint8Array(e.target?.result as ArrayBuffer);
-        const workbook = XLSX.read(data, { type: "array" });
-        const firstSheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[firstSheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { raw: false });
+        const arrayBuffer = e.target?.result as ArrayBuffer;
+        const workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.load(arrayBuffer);
 
-        if (!jsonData || jsonData.length === 0) {
+        const sheet = workbook.worksheets[0];
+        if (!sheet || sheet.rowCount === 0) {
+          resolve({
+            success: false,
+            participants: [],
+            errors: ["Le fichier est vide ou ne contient aucune donnée"],
+          });
+          return;
+        }
+
+        // Extract headers from first row
+        const headers: string[] = [];
+        const headerRow = sheet.getRow(1);
+        headerRow.eachCell({ includeEmpty: false }, (cell, colNumber) => {
+          headers[colNumber - 1] = String(cell.value ?? "").trim();
+        });
+
+        // Extract data rows as array of objects (equivalent to sheet_to_json with raw: false)
+        const jsonData: Record<string, string>[] = [];
+        sheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+          if (rowNumber === 1) return; // skip header row
+          const obj: Record<string, string> = {};
+          row.eachCell({ includeEmpty: false }, (cell, colNumber) => {
+            const header = headers[colNumber - 1];
+            if (header) {
+              obj[header] = String(cell.value ?? "").trim();
+            }
+          });
+          if (Object.keys(obj).length > 0) {
+            jsonData.push(obj);
+          }
+        });
+
+        if (jsonData.length === 0) {
           resolve({
             success: false,
             participants: [],
@@ -289,8 +320,7 @@ async function parseExcel(file: File, customMapping?: Record<string, string>): P
         const participants: ParsedParticipant[] = [];
 
         // Récupérer les colonnes originales
-        const firstRow = jsonData[0] as Record<string, unknown>;
-        const originalColumns = Object.keys(firstRow);
+        const originalColumns = Object.keys(jsonData[0]);
 
         // Détecter ou utiliser le mapping personnalisé
         let columnMapping: Record<string, string> = {};
@@ -336,8 +366,7 @@ async function parseExcel(file: File, customMapping?: Record<string, string>): P
         }
 
         // Parser les données avec le mapping
-        jsonData.forEach((row: unknown, index: number) => {
-          const rowData = row as Record<string, unknown>;
+        jsonData.forEach((rowData: Record<string, string>, index: number) => {
           const participant: Partial<ParsedParticipant> = {};
 
           // Mapper chaque colonne vers le champ système
@@ -360,7 +389,7 @@ async function parseExcel(file: File, customMapping?: Record<string, string>): P
           const validation = invitedParticipantSchema.safeParse(participant);
           if (!validation.success) {
             errors.push(
-              `Ligne ${index + 2}: ${validation.error.issues.map((e) => `${e.path.join(".")}: ${e.message}`).join(", ")}`
+              `Ligne ${index + 2}: ${validation.error.issues.map((err) => `${err.path.join(".")}: ${err.message}`).join(", ")}`
             );
             return;
           }

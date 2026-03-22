@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
+
+function sanitizeCsvCell(value: string): string {
+  const trimmed = String(value).trim();
+  if (/^[=+\-@\t\r]/.test(trimmed)) return `'${trimmed}`;
+  return trimmed;
+}
 
 export async function GET(
   request: NextRequest,
@@ -38,7 +44,7 @@ export async function GET(
   }
 
   // Prepare data
-  const rows: unknown[][] = [];
+  const rows: string[][] = [];
   const headers = [
     "Nom",
     "Email",
@@ -57,11 +63,11 @@ export async function GET(
       checkin.answers.map((a) => [a.customQuestionId, a.value])
     );
 
-    const row = [
+    const row: string[] = [
       checkin.name,
       checkin.email,
-      checkin.phone,
-      checkin.profession,
+      checkin.phone ?? "",
+      checkin.profession ?? "",
       checkin.isInvited ? "Invité" : "Non invité",
       checkin.photoConsent ? "Oui" : "Non",
       new Date(checkin.checkedInAt).toLocaleString("fr-FR"),
@@ -86,8 +92,13 @@ export async function GET(
   }
 
   if (format === "csv") {
-    // Generate CSV
-    const csvContent = rows.map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")).join("\n");
+    const csvContent = rows
+      .map((row) =>
+        row
+          .map((cell) => `"${sanitizeCsvCell(cell).replace(/"/g, '""')}"`)
+          .join(",")
+      )
+      .join("\n");
     const csvBuffer = Buffer.from("\ufeff" + csvContent, "utf-8"); // BOM for Excel
 
     return new NextResponse(csvBuffer, {
@@ -99,13 +110,12 @@ export async function GET(
   }
 
   if (format === "xlsx") {
-    // Generate Excel
-    const worksheet = XLSX.utils.aoa_to_sheet(rows);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Participants");
-    const excelBuffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Participants");
+    sheet.addRows(rows.map((row) => row.map(sanitizeCsvCell)));
+    const buffer = Buffer.from(await workbook.xlsx.writeBuffer());
 
-    return new NextResponse(excelBuffer, {
+    return new NextResponse(buffer, {
       headers: {
         "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "Content-Disposition": `attachment; filename="participants-${event.slug}-${new Date().toISOString().split("T")[0]}.xlsx"`,
@@ -114,9 +124,6 @@ export async function GET(
   }
 
   if (format === "pdf") {
-    // For PDF, we'll use a simple HTML approach that can be converted
-    // or use a server-side PDF library. For now, let's return CSV as fallback
-    // In production, you might want to use puppeteer or similar
     const html = `
       <!DOCTYPE html>
       <html>

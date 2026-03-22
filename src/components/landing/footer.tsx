@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const Footer = () => (
   <footer className="bg-[#0a0a0a] px-6 pb-8 pt-12">
     <div className="mx-auto max-w-6xl">
@@ -46,12 +48,21 @@ export const Footer = () => (
             </h4>
             <ul className="mt-3 space-y-2">
               {[
-                "Mentions légales",
-                "Politique de confidentialité",
-                "CGU",
+                { label: "Mentions légales", href: "/mentions-legales" },
+                {
+                  label: "Politique de confidentialité",
+                  href: "/politique-de-confidentialite",
+                },
+                { label: "CGU", href: "/cgu" },
+                { label: "Politique de cookies", href: "/cookies" },
               ].map((item) => (
-                <li key={item}>
-                  <span className="text-sm text-slate-500">{item}</span>
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="text-sm text-slate-500 transition-colors hover:text-white"
+                  >
+                    {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>
