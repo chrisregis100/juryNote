@@ -1,4 +1,5 @@
 import { AnimatedSection } from "./animated-section";
+import { DemoForm } from "./demo-form";
 
 export const CTAFinal = () => (
   <section
@@ -41,12 +42,7 @@ export const CTAFinal = () => (
 
       <AnimatedSection delay={0.2}>
         <div className="mt-10">
-          <a
-            href="mailto:contact@juryflow.fr?subject=Demande%20de%20démo"
-            className="inline-flex h-14 items-center rounded-md border-2 border-yellow-400 bg-yellow-400 px-10 text-base font-black text-black shadow-[4px_4px_0_0_#fff] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#fff]"
-          >
-            Demander une démo
-          </a>
+          <DemoForm />
         </div>
       </AnimatedSection>
     </div>
