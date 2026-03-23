@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import ExcelJS from "exceljs";
 import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
 import { escapeHtml } from "@/lib/utils/html-escape";
+import { requireEventOwnership } from "@/lib/auth-guards";
+import { rateLimit } from "@/lib/rate-limit";
 
 function sanitizeCsvCell(value: string): string {
   const trimmed = String(value).trim();
@@ -20,6 +22,14 @@ export async function GET(
   }
 
   const { eventId } = await context.params;
+
+  const rl = rateLimit(`export:${session.user.id}`, { limit: 10, windowMs: 60 * 1000 });
+  if (!rl.success) {
+    return NextResponse.json({ error: "Trop de requêtes. Réessayez dans une minute." }, { status: 429 });
+  }
+
+  const ownershipError = await requireEventOwnership(eventId, session);
+  if (ownershipError) return ownershipError;
   const searchParams = request.nextUrl.searchParams;
   const format = searchParams.get("format") || "csv";
 

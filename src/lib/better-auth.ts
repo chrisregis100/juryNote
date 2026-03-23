@@ -74,13 +74,15 @@ export const auth = betterAuth({
 
   emailAndPassword: {
     enabled: true,
+    minPasswordLength: 12,
+    requireEmailVerification: true,
   },
 
   plugins: [
     nextCookies(),
     magicLink({
       expiresIn: 60 * 10, // 10 minutes
-      disableSignUp: false,
+      disableSignUp: true,
       sendMagicLink: async ({ email, token }) => {
         const appUrl =
           process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
@@ -119,8 +121,8 @@ export const auth = betterAuth({
   },
 
   session: {
-    expiresIn: 30 * 24 * 60 * 60, // 30 days
-    updateAge: 24 * 60 * 60, // refresh session if older than 1 day
+    expiresIn: 24 * 60 * 60, // 24 hours
+    updateAge: 60 * 60, // extend by 1h of activity
   },
 });
 

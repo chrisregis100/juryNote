@@ -5,6 +5,7 @@ import {
   JURY_COOKIE_NAME,
   JURY_MAX_AGE,
 } from "@/lib/jury-session";
+import { rateLimit } from "@/lib/rate-limit";
 
 const APP_BASE_URL =
   process.env.NEXT_PUBLIC_APP_URL ?? process.env.BETTER_AUTH_URL ?? "";
@@ -17,6 +18,12 @@ export async function GET(
 
   if (!token) {
     return NextResponse.json({ error: "Token manquant." }, { status: 400 });
+  }
+
+  const ip = _req.headers.get("x-forwarded-for") ?? _req.headers.get("x-real-ip") ?? "unknown";
+  const rl = rateLimit(`jury-magic:${ip}`, { limit: 10, windowMs: 15 * 60 * 1000 });
+  if (!rl.success) {
+    return NextResponse.json({ error: "Trop de tentatives. Réessayez dans 15 minutes." }, { status: 429 });
   }
 
   const existing = await db.juryAssignment.findUnique({

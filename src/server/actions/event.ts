@@ -18,7 +18,7 @@ export async function createEvent(formData: FormData) {
   if (!parsed.success) return { error: parsed.error.flatten().fieldErrors };
 
   const event = await db.event.create({
-    data: { name: parsed.data.name, slug: parsed.data.slug },
+    data: { name: parsed.data.name, slug: parsed.data.slug, organizerId: session.user.id },
   });
   revalidatePath("/admin");
   revalidatePath("/admin/events");

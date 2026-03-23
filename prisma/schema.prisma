@@ -58,20 +58,23 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  juryAssignments JuryAssignment[]
-  grades          Grade[]
-  sessions        Session[]
-  accounts        Account[]
+  juryAssignments  JuryAssignment[]
+  grades           Grade[]
+  sessions         Session[]
+  accounts         Account[]
+  organizedEvents  Event[]
 }
 
 model Event {
-  id          String      @id @default(cuid())
-  name        String
-  slug        String      @unique
-  status      EventStatus @default(draft)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id           String      @id @default(cuid())
+  name         String
+  slug         String      @unique
+  status       EventStatus @default(draft)
+  organizerId  String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 
+  organizer           User?                @relation(fields: [organizerId], references: [id], onDelete: SetNull)
   teams               Team[]
   criteria            Criterion[]
   juryAssignments     JuryAssignment[]

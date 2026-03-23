@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
+import { encrypt, decrypt, isEncrypted } from "@/lib/encryption";
 import type { ResourceType } from "@prisma/client";
 
 // ─── Interfaces ───────────────────────────────────────────────────────────────
@@ -143,7 +144,7 @@ export async function importApiCredentials(resourceId: string, rows: ImportCrede
       data: rows.map((row) => ({
         resourceId,
         participantHint: row.hint,
-        value: row.value,
+        value: encrypt(row.value),
       })),
     });
 
@@ -171,11 +172,11 @@ export async function addApiCredential(resourceId: string, hint: string, value: 
       data: {
         resourceId,
         participantHint: hint,
-        value,
+        value: encrypt(value),
       },
     });
 
-    return { success: true, credential };
+    return { success: true, credential: { ...credential, value } };
   } catch (error) {
     return {
       success: false,
@@ -272,7 +273,12 @@ export async function getResourceCredentials(resourceId: string) {
       orderBy: { createdAt: "asc" },
     });
 
-    return { success: true, credentials };
+    const decrypted = credentials.map((cred) => ({
+      ...cred,
+      value: isEncrypted(cred.value) ? decrypt(cred.value) : cred.value,
+    }));
+
+    return { success: true, credentials: decrypted };
   } catch (error) {
     return {
       success: false,
@@ -370,7 +376,7 @@ export async function unlockResourcesForParticipant(
         url: resource.url,
         fileName: resource.fileName,
         content: resource.content,
-        credentialValue: matched.value,
+        credentialValue: isEncrypted(matched.value) ? decrypt(matched.value) : matched.value,
       });
     } else {
       // LINK or TEXT_INFO
