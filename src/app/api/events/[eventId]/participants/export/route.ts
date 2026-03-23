@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import ExcelJS from "exceljs";
 import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
+import { escapeHtml } from "@/lib/utils/html-escape";
 
 function sanitizeCsvCell(value: string): string {
   const trimmed = String(value).trim();
@@ -129,7 +130,7 @@ export async function GET(
       <html>
         <head>
           <meta charset="utf-8">
-          <title>Participants - ${event.name}</title>
+          <title>Participants - ${escapeHtml(event.name)}</title>
           <style>
             body { font-family: Arial, sans-serif; margin: 20px; }
             table { border-collapse: collapse; width: 100%; }
@@ -138,11 +139,11 @@ export async function GET(
           </style>
         </head>
         <body>
-          <h1>Participants - ${event.name}</h1>
+          <h1>Participants - ${escapeHtml(event.name)}</h1>
           <table>
             ${rows.map((row, idx) => {
               const tag = idx === 0 ? "th" : "td";
-              return `<tr>${row.map((cell) => `<${tag}>${String(cell)}</${tag}>`).join("")}</tr>`;
+              return `<tr>${row.map((cell) => `<${tag}>${escapeHtml(cell)}</${tag}>`).join("")}</tr>`;
             }).join("")}
           </table>
         </body>

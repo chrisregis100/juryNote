@@ -122,6 +122,8 @@ model JuryAssignment {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
+  magicTokenUsedAt DateTime?
+
   event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
   user  User? @relation(fields: [userId], references: [id], onDelete: SetNull)
   grades Grade[]

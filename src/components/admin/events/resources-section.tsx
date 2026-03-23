@@ -10,7 +10,6 @@ import {
   updateEventResource,
 } from "@/server/actions/resources";
 import dynamic from "next/dynamic";
-import { Skeleton } from "@/components/ui/skeleton";
 import { AddResourceDialog } from "./add-resource-dialog";
 
 const ApiCredentialsManager = dynamic(
@@ -19,7 +18,9 @@ const ApiCredentialsManager = dynamic(
       default: m.ApiCredentialsManager,
     })),
   {
-    loading: () => <Skeleton className="h-64 w-full" />,
+    loading: () => (
+      <div className="h-64 w-full animate-pulse rounded-xl bg-slate-100" />
+    ),
     ssr: false,
   }
 );
