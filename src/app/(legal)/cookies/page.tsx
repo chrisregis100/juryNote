@@ -7,6 +7,9 @@ export const metadata: Metadata = {
     "Politique de cookies de JuryFlow — quels cookies sont utilisés, pourquoi et comment les gérer.",
 };
 
+export const dynamic = "force-static";
+export const revalidate = false;
+
 const LAST_UPDATED = "22 mars 2026";
 
 interface SectionProps {

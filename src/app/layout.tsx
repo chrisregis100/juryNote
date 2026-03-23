@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SessionProvider } from "@/components/providers/session-provider";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,8 +15,33 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "JuryFlow – Notation & Délibération",
-  description: "Plateforme de notation des hackathons et concours",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL ?? "https://jurynote.fr"
+  ),
+  title: {
+    default: "JuryNote — Gestion de jurys et délibérations",
+    template: "%s | JuryNote",
+  },
+  description:
+    "Plateforme de gestion de jurys, notation et délibérations pour concours et examens.",
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    siteName: "JuryNote",
+    title: "JuryNote — Gestion de jurys et délibérations",
+    description:
+      "Plateforme de gestion de jurys, notation et délibérations pour concours et examens.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "JuryNote — Gestion de jurys et délibérations",
+    description:
+      "Plateforme de gestion de jurys, notation et délibérations pour concours et examens.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -34,7 +60,10 @@ export default function RootLayout({
         >
           Aller au contenu principal
         </a>
-        <SessionProvider>{children}</SessionProvider>
+        <SessionProvider>
+          {children}
+          <Toaster richColors position="bottom-right" />
+        </SessionProvider>
       </body>
     </html>
   );

@@ -7,6 +7,9 @@ export const metadata: Metadata = {
     "Conditions générales d&apos;utilisation de la plateforme JuryFlow — droits, obligations, propriété intellectuelle et droit applicable (Bénin).",
 };
 
+export const dynamic = "force-static";
+export const revalidate = false;
+
 const LAST_UPDATED = "22 mars 2026";
 
 interface SectionProps {

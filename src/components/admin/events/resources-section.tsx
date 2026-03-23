@@ -9,8 +9,20 @@ import {
   deleteEventResource,
   updateEventResource,
 } from "@/server/actions/resources";
+import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/skeleton";
 import { AddResourceDialog } from "./add-resource-dialog";
-import { ApiCredentialsManager } from "./api-credentials-manager";
+
+const ApiCredentialsManager = dynamic(
+  () =>
+    import("./api-credentials-manager").then((m) => ({
+      default: m.ApiCredentialsManager,
+    })),
+  {
+    loading: () => <Skeleton className="h-64 w-full" />,
+    ssr: false,
+  }
+);
 
 interface Resource {
   id: string;

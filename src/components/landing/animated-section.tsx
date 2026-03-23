@@ -1,26 +1,34 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { cn } from "@/lib/cn";
+import { type ReactNode } from "react";
 
 interface AnimatedSectionProps {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   delay?: number;
+  immediate?: boolean;
 }
 
 export const AnimatedSection = ({
   children,
   className,
   delay = 0,
-}: AnimatedSectionProps) => (
-  <motion.div
-    initial={{ opacity: 0, y: 32 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-80px" }}
-    transition={{ duration: 0.5, delay, ease: "easeOut" }}
-    className={cn(className)}
-  >
-    {children}
-  </motion.div>
-);
+  immediate = false,
+}: AnimatedSectionProps) => {
+  if (immediate) {
+    return <section className={className}>{children}</section>;
+  }
+
+  return (
+    <motion.section
+      className={className}
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.5, delay }}
+    >
+      {children}
+    </motion.section>
+  );
+};

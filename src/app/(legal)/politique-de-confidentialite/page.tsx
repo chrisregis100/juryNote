@@ -7,6 +7,9 @@ export const metadata: Metadata = {
     "Découvrez comment JuryFlow collecte, utilise et protège vos données personnelles conformément à la Loi N°2009-09 du Bénin et à l&apos;Acte Additionnel CEDEAO A/SA.1/01/10.",
 };
 
+export const dynamic = "force-static";
+export const revalidate = false;
+
 const LAST_UPDATED = "22 mars 2026";
 
 interface SectionProps {

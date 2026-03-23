@@ -7,6 +7,9 @@ export const metadata: Metadata = {
     "Informations légales relatives à l&apos;éditeur, l&apos;hébergement et la propriété intellectuelle de la plateforme JuryFlow.",
 };
 
+export const dynamic = "force-static";
+export const revalidate = false;
+
 const LAST_UPDATED = "22 mars 2026";
 
 interface SectionProps {

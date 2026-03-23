@@ -1,4 +1,3 @@
-import Papa from "papaparse";
 import ExcelJS from "exceljs";
 import { invitedParticipantSchema } from "@/lib/validations/participant";
 
@@ -138,6 +137,7 @@ export async function parseWithMapping(
 }
 
 async function parseCSV(file: File, customMapping?: Record<string, string>): Promise<ParseResult> {
+  const { default: Papa } = await import("papaparse");
   return new Promise((resolve) => {
     Papa.parse(file, {
       header: true,
