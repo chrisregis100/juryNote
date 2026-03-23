@@ -88,6 +88,7 @@ export async function POST(req: NextRequest) {
     eventId: event.id,
     juryAssignmentId: assignment.id,
     displayName: assignment.displayName ?? null,
+    isPresident: assignment.isPresident,
   });
 
   const res = NextResponse.json({ ok: true });

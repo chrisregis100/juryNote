@@ -21,12 +21,13 @@ export default async function JuryLayout({
 
   const eventName = event?.name ?? "Événement";
   const displayName = session.user.displayName ?? "Jury";
+  const isPresident = session.user.isPresident;
 
   return (
     <div className="min-h-screen bg-slate-50">
       <JuryDashboardNavbar displayName={displayName} eventName={eventName} />
       <div className="flex">
-        <JuryDashboardSidebar eventName={eventName} />
+        <JuryDashboardSidebar eventName={eventName} isPresident={isPresident} />
         <main id="main" className="min-w-0 flex-1 p-4 sm:p-6">
           {children}
         </main>

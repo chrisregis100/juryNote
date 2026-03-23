@@ -116,6 +116,8 @@ model JuryAssignment {
   pinCode      String    // 6 digits
   magicToken   String?   @unique
   displayName  String?   // optional label for anonymous jury
+  isPresident  Boolean   @default(false)
+  submittedAt  DateTime?
   expiresAt    DateTime?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt

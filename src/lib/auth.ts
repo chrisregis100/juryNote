@@ -5,7 +5,7 @@ import { headers, cookies } from "next/headers";
 
 export type SessionUser =
   | { role: "organizer" | "supervisor"; id: string; email?: string | null; name?: string | null }
-  | { role: "jury"; id: string; eventId: string; juryAssignmentId: string; displayName?: string | null };
+  | { role: "jury"; id: string; eventId: string; juryAssignmentId: string; displayName?: string | null; isPresident: boolean };
 
 export async function getServerSession(): Promise<{ user: SessionUser } | null> {
   // Better Auth session (organizer / supervisor via magic link)
@@ -38,6 +38,7 @@ export async function getServerSession(): Promise<{ user: SessionUser } | null> 
           eventId: payload.eventId,
           juryAssignmentId: payload.juryAssignmentId,
           displayName: payload.displayName ?? null,
+          isPresident: payload.isPresident,
         },
       };
     }

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { randomUUID } from "crypto";
 import { db } from "@/lib/db";
 import { createEventSchema, createCriterionSchema, createTeamSchema } from "@/lib/validations/event";
 import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
@@ -78,6 +79,60 @@ export async function createTeam(eventId: string, formData: FormData) {
   });
   revalidatePath(`/admin/events/${eventId}`);
   return { data: team };
+}
+
+export async function createJuryMember(
+  eventId: string,
+  displayName: string,
+  isPresident: boolean
+) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
+
+  const pinCode = Math.floor(100000 + Math.random() * 900000).toString();
+  const magicToken = randomUUID();
+
+  const assignment = await db.juryAssignment.create({
+    data: {
+      eventId,
+      pinCode,
+      displayName,
+      isPresident,
+      magicToken,
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    },
+  });
+
+  revalidatePath(`/admin/events/${eventId}`);
+  revalidatePath(`/admin/events/${eventId}/jury`);
+  return {
+    data: {
+      id: assignment.id,
+      pinCode: assignment.pinCode,
+      magicToken: assignment.magicToken,
+      displayName: assignment.displayName,
+      isPresident: assignment.isPresident,
+    },
+  };
+}
+
+export async function deleteJuryMember(assignmentId: string) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
+
+  const assignment = await db.juryAssignment.findUnique({
+    where: { id: assignmentId },
+    select: { eventId: true },
+  });
+  if (!assignment) return { error: "Assignment not found" };
+
+  await db.juryAssignment.delete({ where: { id: assignmentId } });
+
+  revalidatePath(`/admin/events/${assignment.eventId}`);
+  revalidatePath(`/admin/events/${assignment.eventId}/jury`);
+  return { data: { ok: true } };
 }
 
 export async function generateJuryPin(eventId: string) {

@@ -73,3 +73,50 @@ export async function upsertGrade(
   revalidatePath("/jury/teams");
   return { data: { ok: true } };
 }
+
+export async function submitJuryGrades(juryAssignmentId: string) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (session.user.role !== "jury") throw new Error("Forbidden");
+
+  // IDOR guard
+  if (session.user.juryAssignmentId !== juryAssignmentId) throw new Error("Forbidden");
+
+  const assignment = await db.juryAssignment.findUnique({
+    where: { id: juryAssignmentId },
+    include: {
+      event: {
+        include: {
+          teams: true,
+          criteria: true,
+          deliberations: { where: { status: "locked" }, take: 1 },
+        },
+      },
+    },
+  });
+  if (!assignment) return { error: "Jury assignment not found" };
+  if (assignment.event.deliberations.length > 0) {
+    return { error: "La délibération est clôturée ; impossible de soumettre." };
+  }
+
+  const expectedCount = assignment.event.teams.length * assignment.event.criteria.length;
+
+  const gradedCount = await db.grade.count({
+    where: { juryAssignmentId },
+  });
+
+  if (gradedCount < expectedCount) {
+    return {
+      error: `Toutes les notes doivent être saisies avant de soumettre. (${gradedCount}/${expectedCount})`,
+    };
+  }
+
+  await db.juryAssignment.update({
+    where: { id: juryAssignmentId },
+    data: { submittedAt: new Date() },
+  });
+
+  revalidatePath("/jury");
+  revalidatePath("/jury/teams");
+  return { data: { ok: true } };
+}

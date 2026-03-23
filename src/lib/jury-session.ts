@@ -9,6 +9,7 @@ interface JuryPayload {
   eventId: string;
   juryAssignmentId: string;
   displayName: string | null;
+  isPresident: boolean;
   exp: number; // ms timestamp
 }
 

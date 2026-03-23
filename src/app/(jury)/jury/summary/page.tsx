@@ -3,6 +3,7 @@ import { getServerSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { SubmitGradesButton } from "./submit-grades-button";
 
 export default async function JurySummaryPage() {
   const session = await getServerSession();
@@ -10,8 +11,9 @@ export default async function JurySummaryPage() {
 
   const eventId = session.user.eventId;
   const juryAssignmentId = session.user.juryAssignmentId;
+  const isPresident = session.user.isPresident;
 
-  const [teams, criteria, grades, deliberation] = await Promise.all([
+  const [teams, criteria, grades, deliberation, assignment] = await Promise.all([
     db.team.findMany({
       where: { eventId },
       orderBy: { name: "asc" },
@@ -28,9 +30,17 @@ export default async function JurySummaryPage() {
       where: { eventId },
       orderBy: { createdAt: "desc" },
     }),
+    db.juryAssignment.findUnique({
+      where: { id: juryAssignmentId },
+      select: { submittedAt: true },
+    }),
   ]);
 
   const isLocked = deliberation?.status === "locked";
+  const submittedAt = assignment?.submittedAt ?? null;
+  const expectedGradeCount = teams.length * criteria.length;
+  const isAllGraded = grades.length >= expectedGradeCount && expectedGradeCount > 0;
+
   const gradesByTeam = new Map<string, typeof grades>();
   for (const g of grades) {
     const list = gradesByTeam.get(g.teamId) ?? [];
@@ -47,6 +57,7 @@ export default async function JurySummaryPage() {
         </h1>
         <p className="mt-2 text-sm text-slate-600">Vue par équipe et par critère.</p>
       </div>
+
       {isLocked && (
         <div className="rounded-xl border-2 border-black bg-amber-50 p-4 text-sm font-medium text-amber-900 shadow-[4px_4px_0_0_#000]">
           La délibération est clôturée. Les notes ne sont plus modifiables.
@@ -94,6 +105,33 @@ export default async function JurySummaryPage() {
           );
         })}
       </ul>
+
+      {!isLocked && (
+        <div className="rounded-xl border-2 border-black bg-white p-5 shadow-[4px_4px_0_0_#000]">
+          {submittedAt ? (
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="rounded-md bg-green-100 px-3 py-1.5 text-sm font-bold text-green-700">
+                Notes déjà soumises
+              </span>
+              {isPresident && (
+                <Button
+                  asChild
+                  size="sm"
+                  className="border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0_0_#4f46e5]"
+                >
+                  <Link href="/jury/deliberation">Accéder à la délibération →</Link>
+                </Button>
+              )}
+            </div>
+          ) : (
+            <SubmitGradesButton
+              juryAssignmentId={juryAssignmentId}
+              isAllGraded={isAllGraded}
+              isPresident={isPresident}
+            />
+          )}
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-2">
         <Button asChild variant="outline" className="border-2 border-black font-medium">
