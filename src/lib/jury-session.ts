@@ -1,4 +1,4 @@
-import { createHmac, timingSafeEqual } from "crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 
 export const JURY_COOKIE_NAME = "jury_session";
 export const JURY_MAX_AGE = 30 * 24 * 60 * 60; // 30 days in seconds
