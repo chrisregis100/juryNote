@@ -29,7 +29,7 @@ export async function getServerSession(): Promise<{ user: SessionUser } | null> 
   const cookieStore = await cookies();
   const juryCookie = cookieStore.get(JURY_COOKIE_NAME);
   if (juryCookie?.value) {
-    const payload = verifyJuryToken(juryCookie.value);
+    const payload = await verifyJuryToken(juryCookie.value);
     if (payload) {
       return {
         user: {

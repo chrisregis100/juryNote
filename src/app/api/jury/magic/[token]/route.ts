@@ -68,7 +68,7 @@ export async function GET(
     return updated;
   });
 
-  const juryToken = createJuryToken({
+  const juryToken = await createJuryToken({
     id: assignment.id,
     role: "jury",
     eventId: assignment.event.id,
