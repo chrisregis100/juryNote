@@ -1,10 +1,15 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { randomUUID } from "crypto";
 import { db } from "@/lib/db";
 import { createEventSchema, createCriterionSchema, createTeamSchema } from "@/lib/validations/event";
+import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
 
 export async function createEvent(formData: FormData) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const raw = {
     name: formData.get("name") as string,
     slug: formData.get("slug") as string,
@@ -13,7 +18,7 @@ export async function createEvent(formData: FormData) {
   if (!parsed.success) return { error: parsed.error.flatten().fieldErrors };
 
   const event = await db.event.create({
-    data: { name: parsed.data.name, slug: parsed.data.slug },
+    data: { name: parsed.data.name, slug: parsed.data.slug, organizerId: session.user.id },
   });
   revalidatePath("/admin");
   revalidatePath("/admin/events");
@@ -21,6 +26,9 @@ export async function createEvent(formData: FormData) {
 }
 
 export async function createCriterion(eventId: string, formData: FormData) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const raw = {
     name: formData.get("name") as string,
     weight: Number(formData.get("weight")),
@@ -44,6 +52,9 @@ export async function createCriterion(eventId: string, formData: FormData) {
 }
 
 export async function createTeam(eventId: string, formData: FormData) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const raw = {
     name: formData.get("name") as string,
     members: [] as string[],
@@ -70,7 +81,64 @@ export async function createTeam(eventId: string, formData: FormData) {
   return { data: team };
 }
 
+export async function createJuryMember(
+  eventId: string,
+  displayName: string,
+  isPresident: boolean
+) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
+
+  const pinCode = Math.floor(100000 + Math.random() * 900000).toString();
+  const magicToken = randomUUID();
+
+  const assignment = await db.juryAssignment.create({
+    data: {
+      eventId,
+      pinCode,
+      displayName,
+      isPresident,
+      magicToken,
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    },
+  });
+
+  revalidatePath(`/admin/events/${eventId}`);
+  revalidatePath(`/admin/events/${eventId}/jury`);
+  return {
+    data: {
+      id: assignment.id,
+      pinCode: assignment.pinCode,
+      magicToken: assignment.magicToken,
+      displayName: assignment.displayName,
+      isPresident: assignment.isPresident,
+    },
+  };
+}
+
+export async function deleteJuryMember(assignmentId: string) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
+
+  const assignment = await db.juryAssignment.findUnique({
+    where: { id: assignmentId },
+    select: { eventId: true },
+  });
+  if (!assignment) return { error: "Assignment not found" };
+
+  await db.juryAssignment.delete({ where: { id: assignmentId } });
+
+  revalidatePath(`/admin/events/${assignment.eventId}`);
+  revalidatePath(`/admin/events/${assignment.eventId}/jury`);
+  return { data: { ok: true } };
+}
+
 export async function generateJuryPin(eventId: string) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const pinCode = Math.floor(100000 + Math.random() * 900000).toString();
   const assignment = await db.juryAssignment.create({
     data: {

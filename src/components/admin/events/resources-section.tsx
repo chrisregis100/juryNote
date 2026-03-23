@@ -9,8 +9,21 @@ import {
   deleteEventResource,
   updateEventResource,
 } from "@/server/actions/resources";
+import dynamic from "next/dynamic";
 import { AddResourceDialog } from "./add-resource-dialog";
-import { ApiCredentialsManager } from "./api-credentials-manager";
+
+const ApiCredentialsManager = dynamic(
+  () =>
+    import("./api-credentials-manager").then((m) => ({
+      default: m.ApiCredentialsManager,
+    })),
+  {
+    loading: () => (
+      <div className="h-64 w-full animate-pulse rounded-xl bg-slate-100" />
+    ),
+    ssr: false,
+  }
+);
 
 interface Resource {
   id: string;

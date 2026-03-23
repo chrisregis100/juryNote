@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { toast } from "sonner";
-import Papa from "papaparse";
 import { Upload, Plus, Eye, EyeOff, Trash2 } from "lucide-react";
 import {
   Dialog,
@@ -102,10 +101,11 @@ export function ApiCredentialsManager({
 
   // ─── CSV ────────────────────────────────────────────────────────────────────
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const { default: Papa } = await import("papaparse");
     Papa.parse<Record<string, string>>(file, {
       header: true,
       skipEmptyLines: true,

@@ -1,5 +1,4 @@
-import { getServerSession } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import dynamic from "next/dynamic";
 import { Navbar } from "@/components/landing/navbar";
 import { Hero } from "@/components/landing/hero";
 import { Stats } from "@/components/landing/stats";
@@ -7,20 +6,17 @@ import { Features } from "@/components/landing/features";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { Testimonials } from "@/components/landing/testimonials";
 import { Pricing } from "@/components/landing/pricing";
-import { FAQ } from "@/components/landing/faq";
 import { CTAFinal } from "@/components/landing/cta-final";
 import { Footer } from "@/components/landing/footer";
 
-export default async function HomePage() {
-  const session = await getServerSession();
+const FAQ = dynamic(
+  () => import("@/components/landing/faq").then((m) => ({ default: m.FAQ })),
+  { ssr: true }
+);
 
-  if (session?.user) {
-    if ("eventId" in session.user && "juryAssignmentId" in session.user) {
-      redirect("/jury");
-    }
-    redirect("/admin");
-  }
+export const revalidate = 3600;
 
+export default function HomePage() {
   return (
     <>
       <Navbar />

@@ -23,7 +23,7 @@ export const Hero = () => (
     />
 
     <div className="mx-auto max-w-5xl">
-      <AnimatedSection>
+      <AnimatedSection immediate>
         <h1 className="text-center text-5xl font-black leading-tight tracking-tight text-black md:text-7xl lg:text-8xl">
           La notation de jury,
           <br />

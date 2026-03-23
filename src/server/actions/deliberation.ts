@@ -3,8 +3,33 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { computeRanking } from "@/lib/scoring";
+import { getServerSession, isOrganizerOrSupervisor } from "@/lib/auth";
+
+async function assertJuryPresident(eventId: string): Promise<
+  | { ok: true; juryAssignmentId: string }
+  | { ok: false; error: string }
+> {
+  const session = await getServerSession();
+  if (!session?.user) return { ok: false, error: "Unauthorized" };
+  if (session.user.role !== "jury") return { ok: false, error: "Forbidden" };
+
+  // Verify isPresident via DB to avoid stale token claims
+  const assignment = await db.juryAssignment.findFirst({
+    where: {
+      id: session.user.juryAssignmentId,
+      eventId,
+      isPresident: true,
+    },
+    select: { id: true },
+  });
+  if (!assignment) return { ok: false, error: "Forbidden" };
+  return { ok: true, juryAssignmentId: assignment.id };
+}
 
 export async function getOrCreateDeliberation(eventId: string) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   let d = await db.deliberation.findFirst({
     where: { eventId },
     orderBy: { createdAt: "desc" },
@@ -18,6 +43,9 @@ export async function getOrCreateDeliberation(eventId: string) {
 }
 
 export async function closeDeliberation(eventId: string) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const event = await db.event.findUnique({
     where: { id: eventId },
     include: {
@@ -72,6 +100,9 @@ export async function closeDeliberation(eventId: string) {
 }
 
 export async function getRanking(eventId: string) {
+  const session = await getServerSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if (!isOrganizerOrSupervisor(session)) throw new Error("Forbidden");
   const event = await db.event.findUnique({
     where: { id: eventId },
     include: { teams: true, criteria: true },
@@ -100,4 +131,105 @@ export async function getRanking(eventId: string) {
       isLocked: deliberation?.status === "locked",
     },
   };
+}
+
+export async function getLiveRankingForPresident(eventId: string) {
+  const auth = await assertJuryPresident(eventId);
+  if (!auth.ok) throw new Error(auth.error);
+
+  const event = await db.event.findUnique({
+    where: { id: eventId },
+    include: { teams: true, criteria: true },
+  });
+  if (!event) return { error: "Event not found" };
+
+  const grades = await db.grade.findMany({
+    where: { team: { eventId } },
+    select: { teamId: true, criterionId: true, value: true },
+  });
+
+  const ranking = computeRanking(
+    event.teams.map((t) => ({ id: t.id, name: t.name })),
+    grades,
+    event.criteria
+  );
+
+  const deliberation = await db.deliberation.findFirst({
+    where: { eventId },
+    orderBy: { createdAt: "desc" },
+  });
+
+  const juryAssignments = await db.juryAssignment.findMany({
+    where: { eventId },
+    select: { id: true, displayName: true, submittedAt: true },
+    orderBy: { createdAt: "asc" },
+  });
+
+  return {
+    data: {
+      ranking,
+      juryStatuses: juryAssignments.map((a) => ({
+        id: a.id,
+        displayName: a.displayName,
+        submittedAt: a.submittedAt,
+      })),
+      isLocked: deliberation?.status === "locked",
+    },
+  };
+}
+
+export async function closeDeliberationAsPresident(eventId: string) {
+  const auth = await assertJuryPresident(eventId);
+  if (!auth.ok) throw new Error(auth.error);
+
+  const event = await db.event.findUnique({
+    where: { id: eventId },
+    include: {
+      teams: true,
+      criteria: true,
+      deliberations: { where: { status: "locked" }, take: 1 },
+    },
+  });
+  if (!event) return { error: "Event not found" };
+  if (event.deliberations.length > 0) return { error: "Deliberation already closed" };
+
+  const grades = await db.grade.findMany({
+    where: { team: { eventId } },
+    select: { teamId: true, criterionId: true, value: true },
+  });
+
+  const ranking = computeRanking(
+    event.teams.map((t) => ({ id: t.id, name: t.name })),
+    grades,
+    event.criteria
+  );
+
+  let deliberation = await db.deliberation.findFirst({
+    where: { eventId },
+    orderBy: { createdAt: "desc" },
+  });
+  if (!deliberation) {
+    deliberation = await db.deliberation.create({
+      data: { eventId, status: "open" },
+    });
+  }
+
+  await db.deliberation.update({
+    where: { id: deliberation.id },
+    data: { status: "locked", closedAt: new Date() },
+  });
+
+  await db.rankingSnapshot.create({
+    data: {
+      deliberationId: deliberation.id,
+      rankingsJson: JSON.stringify(ranking),
+    },
+  });
+
+  revalidatePath(`/admin/events/${eventId}/deliberation`);
+  revalidatePath(`/admin/events/${eventId}`);
+  revalidatePath(`/supervisor/events/${eventId}`);
+  revalidatePath("/jury");
+  revalidatePath("/jury/deliberation");
+  return { data: { ok: true } };
 }
