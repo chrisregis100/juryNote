@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const token = createJuryToken({
+  const token = await createJuryToken({
     id: assignment.id,
     role: "jury",
     eventId: event.id,
