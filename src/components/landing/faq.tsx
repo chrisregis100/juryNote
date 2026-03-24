@@ -21,14 +21,29 @@ const FAQ_ITEMS = [
       "Absolument. Vous définissez vos propres critères, choisissez l'échelle (sur 5, 10 ou 20) et attribuez des pondérations différentes à chaque critère.",
   },
   {
+    question: "Comment fonctionne le check-in participants ?",
+    answer:
+      "Vous générez un lien de check-in unique pour votre événement. Les participants s'y rendent depuis leur mobile, renseignent leurs informations et confirment leur présence en quelques étapes. Vous suivez les arrivées en temps réel depuis votre dashboard.",
+  },
+  {
+    question: "Peut-on distribuer des ressources automatiquement au check-in ?",
+    answer:
+      "Oui. Vous configurez vos ressources en amont — clés API, liens d'accès, documents texte. Dès qu'un participant valide son check-in, il reçoit automatiquement ses ressources. Idéal pour les hackathons : fini les distributions manuelles de clés API.",
+  },
+  {
+    question: "JuryNote fonctionne-t-il pour les hackathons ?",
+    answer:
+      "Absolument. La distribution automatique de clés API et d'accès au check-in a été conçue précisément pour les hackathons. Gérez l'accueil des participants, la notation et la délibération depuis une seule plateforme.",
+  },
+  {
     question: "Les données sont-elles sécurisées ?",
     answer:
       "Oui. Toutes les données sont chiffrées en transit et au repos. Nous utilisons des serveurs en Europe et respectons le RGPD.",
   },
   {
-    question: "Puis-je exporter les résultats ?",
+    question: "Puis-je exporter les résultats et les participants ?",
     answer:
-      "Oui, vous pouvez exporter les classements et les notes détaillées. L'export avancé avec filtres est disponible sur le plan Pro.",
+      "Oui, vous pouvez exporter les classements, les notes détaillées et la liste des participants enregistrés. L'export avancé avec filtres est disponible sur le plan Pro.",
   },
   {
     question: "Y a-t-il une période d'essai ?",

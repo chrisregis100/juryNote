@@ -20,6 +20,8 @@ const PLANS: PricingPlan[] = [
       "1 événement",
       "5 jurys max",
       "3 critères max",
+      "Check-in participants (50 max)",
+      "1 ressource distribuable",
       "Classement automatique",
       "Export basique",
     ],
@@ -35,8 +37,12 @@ const PLANS: PricingPlan[] = [
       "Événements illimités",
       "Jurys illimités",
       "Critères illimités",
+      "Check-in participants illimité",
+      "Ressources illimitées (API, liens, docs)",
+      "Questions personnalisées au check-in",
+      "Export participants CSV",
       "Délibération collaborative",
-      "Export avancé",
+      "Dashboard participants en direct",
       "Support prioritaire",
     ],
     cta: "Demander une démo",
@@ -83,9 +89,7 @@ export const Pricing = () => (
       <AnimatedSection>
         <h2 className="text-center text-4xl font-black tracking-tight text-black md:text-5xl">
           Des tarifs{" "}
-          <span className="inline-block -rotate-1 bg-yellow-400 px-2">
-            simples
-          </span>
+          <span className="inline-block -rotate-1 bg-yellow-400 px-2">simples</span>
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-center text-lg text-slate-600">
           Pas de frais cachés. Changez de plan quand vous voulez.
@@ -107,30 +111,22 @@ export const Pricing = () => (
                   Populaire
                 </span>
               )}
-
               <h3 className="text-lg font-bold text-black">{plan.name}</h3>
               <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-4xl font-black text-black md:text-5xl">
-                  {plan.price}
-                </span>
+                <span className="text-4xl font-black text-black md:text-5xl">{plan.price}</span>
                 {plan.period && (
                   <span className="text-sm text-slate-600">{plan.period}</span>
                 )}
               </div>
               <p className="mt-2 text-sm text-slate-600">{plan.description}</p>
-
               <ul className="mt-6 flex-1 space-y-3">
                 {plan.features.map((feature) => (
-                  <li
-                    key={feature}
-                    className="flex items-center gap-2 text-sm text-slate-700"
-                  >
+                  <li key={feature} className="flex items-center gap-2 text-sm text-slate-700">
                     <CheckIcon />
                     {feature}
                   </li>
                 ))}
               </ul>
-
               <a
                 href="#demo"
                 className={`mt-8 inline-flex h-11 w-full items-center justify-center rounded-md border-2 text-sm font-bold transition-all ${

@@ -1,9 +1,9 @@
 import { AnimatedSection } from "./animated-section";
 
 const STATS = [
-  { value: "500+", label: "Événements" },
-  { value: "10k+", label: "Notes attribuées" },
-  { value: "98%", label: "Satisfaction" },
+  { value: "500+", label: "Événements organisés" },
+  { value: "10k+", label: "Participants enregistrés" },
+  { value: "3", label: "Rôles (Admin, Superviseur, Jury)" },
   { value: "2 min", label: "De setup" },
 ] as const;
 
@@ -17,12 +17,8 @@ export const Stats = () => (
               key={stat.label}
               className={`flex flex-col items-center gap-2 ${i < STATS.length - 1 ? "md:border-r md:border-slate-700" : ""}`}
             >
-              <span className="text-4xl font-black text-white md:text-5xl">
-                {stat.value}
-              </span>
-              <span className="text-xs font-medium uppercase tracking-widest text-slate-400">
-                {stat.label}
-              </span>
+              <span className="text-4xl font-black text-white md:text-5xl">{stat.value}</span>
+              <span className="text-xs font-medium uppercase tracking-widest text-slate-400 text-center">{stat.label}</span>
             </div>
           ))}
         </div>
