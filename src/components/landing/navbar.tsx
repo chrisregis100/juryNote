@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Star } from "lucide-react";
 import { MobileNav } from "./mobile-nav";
 
 const NAV_LINKS = [
@@ -9,15 +10,22 @@ const NAV_LINKS = [
 ] as const;
 
 export const Navbar = () => (
-  <header className="sticky top-0 z-50 border-b-2 border-black bg-white">
-    <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6" aria-label="Navigation principale">
+  <header className="sticky top-0 z-50 border-b border-slate-200/50 bg-white/80 backdrop-blur-md">
+    <nav
+      className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6"
+      aria-label="Navigation principale"
+    >
       <Link
         href="/"
-        className="flex items-center gap-2 text-xl font-black tracking-tight"
-        aria-label="JuryFlow - Accueil"
+        className="flex items-center gap-2"
+        aria-label="JuryNote - Accueil"
       >
-        <span className="inline-block h-4 w-4 rotate-6 bg-indigo-600" />
-        JuryFlow
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900">
+          <Star className="h-5 w-5 text-white" aria-hidden="true" />
+        </div>
+        <span className="text-xl font-semibold tracking-tight text-slate-900">
+          JuryNote
+        </span>
       </Link>
 
       <ul className="hidden items-center gap-8 md:flex">
@@ -25,7 +33,7 @@ export const Navbar = () => (
           <li key={link.href}>
             <a
               href={link.href}
-              className="text-sm font-medium text-slate-700 transition-colors hover:text-black hover:underline hover:underline-offset-4"
+              className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
             >
               {link.label}
             </a>
@@ -33,10 +41,16 @@ export const Navbar = () => (
         ))}
       </ul>
 
-      <div className="hidden md:block">
+      <div className="hidden items-center gap-4 md:flex">
         <a
           href="#demo"
-          className="inline-flex h-10 items-center rounded-md border-2 border-black bg-black px-5 text-sm font-bold text-white shadow-[3px_3px_0_0_#4f46e5] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#4f46e5]"
+          className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
+        >
+          Connexion
+        </a>
+        <a
+          href="#demo"
+          className="inline-flex h-10 items-center rounded-lg bg-slate-900 px-5 text-sm font-medium text-white transition-colors hover:bg-slate-800"
         >
           Demander une démo
         </a>

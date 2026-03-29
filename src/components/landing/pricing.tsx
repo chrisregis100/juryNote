@@ -87,9 +87,9 @@ export const Pricing = () => (
   <section id="pricing" className="bg-white px-6 py-20 md:py-28">
     <div className="mx-auto max-w-6xl">
       <AnimatedSection>
-        <h2 className="text-center text-4xl font-black tracking-tight text-black md:text-5xl">
+        <h2 className="text-center text-4xl font-bold tracking-tight text-slate-900 md:text-5xl">
           Des tarifs{" "}
-          <span className="inline-block -rotate-1 bg-yellow-400 px-2">simples</span>
+          <span className="text-slate-900">simples</span>
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-center text-lg text-slate-600">
           Pas de frais cachés. Changez de plan quand vous voulez.
@@ -100,22 +100,22 @@ export const Pricing = () => (
         {PLANS.map((plan, i) => (
           <AnimatedSection key={plan.name} delay={i * 0.1}>
             <div
-              className={`relative flex h-full flex-col rounded-lg border-2 bg-white p-6 transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 ${
+              className={`relative flex h-full flex-col rounded-xl border bg-white p-6 transition-all hover:shadow-md ${
                 plan.highlighted
-                  ? "border-indigo-600 shadow-[6px_6px_0_0_#4f46e5] hover:shadow-[8px_8px_0_0_#4f46e5]"
-                  : "border-black shadow-[4px_4px_0_0_#0a0a0a] hover:shadow-[6px_6px_0_0_#0a0a0a]"
+                  ? "border-slate-900 shadow-md shadow-slate-200"
+                  : "border-slate-200 shadow-sm"
               }`}
             >
               {plan.highlighted && (
-                <span className="absolute -top-3 right-4 inline-block rotate-2 rounded-sm bg-yellow-400 px-3 py-1 text-xs font-bold text-black">
+                <span className="absolute -top-3 right-4 inline-block rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white shadow-sm">
                   Populaire
                 </span>
               )}
-              <h3 className="text-lg font-bold text-black">{plan.name}</h3>
+              <h3 className="text-lg font-semibold text-slate-900">{plan.name}</h3>
               <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-4xl font-black text-black md:text-5xl">{plan.price}</span>
+                <span className="text-4xl font-bold text-slate-900 md:text-5xl">{plan.price}</span>
                 {plan.period && (
-                  <span className="text-sm text-slate-600">{plan.period}</span>
+                  <span className="text-sm text-slate-500">{plan.period}</span>
                 )}
               </div>
               <p className="mt-2 text-sm text-slate-600">{plan.description}</p>
@@ -129,10 +129,10 @@ export const Pricing = () => (
               </ul>
               <a
                 href="#demo"
-                className={`mt-8 inline-flex h-11 w-full items-center justify-center rounded-md border-2 text-sm font-bold transition-all ${
+                className={`mt-8 inline-flex h-11 w-full items-center justify-center rounded-lg text-sm font-medium transition-colors ${
                   plan.highlighted
-                    ? "border-indigo-600 bg-indigo-600 text-white hover:bg-indigo-700"
-                    : "border-black bg-white text-black hover:bg-slate-50"
+                    ? "bg-slate-900 text-white hover:bg-slate-800"
+                    : "border border-slate-200 bg-white text-slate-900 hover:bg-slate-50"
                 }`}
               >
                 {plan.cta}

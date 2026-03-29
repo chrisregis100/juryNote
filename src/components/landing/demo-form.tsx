@@ -32,9 +32,9 @@ export function DemoForm() {
   if (isSuccess) {
     return (
       <div className="flex flex-col items-center justify-center py-8">
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-500/20">
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/20">
           <svg
-            className="h-8 w-8 text-green-500"
+            className="h-8 w-8 text-emerald-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -48,16 +48,14 @@ export function DemoForm() {
             />
           </svg>
         </div>
-        <h3 className="text-xl font-bold text-white">Demande envoyée !</h3>
-        <p className="mt-2 text-slate-400">
-          Nous vous recontactons sous 24h.
-        </p>
+        <h3 className="text-xl font-semibold text-white">Demande envoyée !</h3>
+        <p className="mt-2 text-slate-400">Nous vous recontactons sous 24h.</p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto max-w-md space-y-4">
+    <form onSubmit={handleSubmit} className="mx-auto max-w-md space-y-4 text-left">
       <div>
         <label
           htmlFor="name"
@@ -72,7 +70,7 @@ export function DemoForm() {
           required
           aria-label="Nom complet"
           placeholder="Jean Dupont"
-          className="h-12 bg-white/10 border-white/20 text-white placeholder:text-slate-500 focus:border-yellow-400 focus-visible:ring-yellow-400/20"
+          className="h-12 bg-white/10 border-white/20 text-white placeholder:text-slate-500 focus:border-slate-400 focus-visible:ring-slate-400/20"
         />
       </div>
 
@@ -90,7 +88,7 @@ export function DemoForm() {
           required
           aria-label="Email professionnel"
           placeholder="jean@organisation.fr"
-          className="h-12 bg-white/10 border-white/20 text-white placeholder:text-slate-500 focus:border-yellow-400 focus-visible:ring-yellow-400/20"
+          className="h-12 bg-white/10 border-white/20 text-white placeholder:text-slate-500 focus:border-slate-400 focus-visible:ring-slate-400/20"
         />
       </div>
 
@@ -108,7 +106,7 @@ export function DemoForm() {
           required
           aria-label="Établissement ou Organisation"
           placeholder="Université de Paris"
-          className="h-12 bg-white/10 border-white/20 text-white placeholder:text-slate-500 focus:border-yellow-400 focus-visible:ring-yellow-400/20"
+          className="h-12 bg-white/10 border-white/20 text-white placeholder:text-slate-500 focus:border-slate-400 focus-visible:ring-slate-400/20"
         />
       </div>
 
@@ -125,7 +123,7 @@ export function DemoForm() {
           aria-label="Message ou contexte"
           placeholder="Décrivez votre besoin ou votre contexte..."
           rows={4}
-          className="bg-white/10 border-white/20 text-white placeholder:text-slate-500 focus:border-yellow-400 focus-visible:ring-yellow-400/20 resize-none"
+          className="bg-white/10 border-white/20 text-white placeholder:text-slate-500 focus:border-slate-400 focus-visible:ring-slate-400/20 resize-none"
         />
       </div>
 
@@ -133,7 +131,7 @@ export function DemoForm() {
         <Button
           type="submit"
           disabled={isLoading}
-          className="h-14 w-full border-2 border-yellow-400 bg-yellow-400 px-10 font-black text-black shadow-[4px_4px_0_0_#fff] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#fff] hover:bg-yellow-400 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[4px_4px_0_0_#fff]"
+          className="h-14 w-full rounded-xl bg-white px-10 font-semibold text-slate-900 shadow-sm transition-all hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isLoading ? (
             <>
