@@ -49,14 +49,14 @@ export const HowItWorks = () => (
 
       <div className="relative mt-16 grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-8">
         <div
-          className="absolute left-[16.5%] right-[16.5%] top-14 hidden border-t border-dashed border-slate-300 md:block"
+          className="absolute left-[16.5%] right-[16.5%] top-24 hidden border-t border-dashed border-slate-300 md:block"
           aria-hidden="true"
         />
         {STEPS.map((step, i) => (
           <AnimatedSection key={step.number} delay={i * 0.12}>
-            <div className="relative flex flex-col items-center text-center">
+            <div className="relative flex flex-col items-center text-center pt-16">
               <span
-                className="absolute -top-2 left-1/2 -translate-x-1/2 text-8xl font-bold text-slate-100 select-none md:text-9xl"
+                className="absolute -top-12 left-1/2 -translate-x-1/2 text-[140px] font-bold text-slate-100 select-none leading-none pointer-events-none"
                 aria-hidden="true"
               >
                 {step.number}

@@ -32,9 +32,9 @@ export function DemoForm() {
   if (isSuccess) {
     return (
       <div className="flex flex-col items-center justify-center py-8">
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/20">
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
           <svg
-            className="h-8 w-8 text-emerald-400"
+            className="h-8 w-8 text-white"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

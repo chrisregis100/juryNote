@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import { JURY_COOKIE_NAME } from "@/lib/jury-session";
+import { NextRequest, NextResponse } from "next/server";
 
 const BETTER_AUTH_COOKIE = "better-auth.session_token";
 
@@ -31,7 +31,7 @@ function isJuryRoute(pathname: string): boolean {
   );
 }
 
-export function middleware(req: NextRequest): NextResponse {
+export function proxy(req: NextRequest): NextResponse {
   const { pathname } = req.nextUrl;
 
   if (isAdminRoute(pathname)) {

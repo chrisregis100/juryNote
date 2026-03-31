@@ -1,5 +1,5 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Star } from "lucide-react";
 import { MobileNav } from "./mobile-nav";
 
 const NAV_LINKS = [
@@ -20,9 +20,13 @@ export const Navbar = () => (
         className="flex items-center gap-2"
         aria-label="JuryNote - Accueil"
       >
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900">
-          <Star className="h-5 w-5 text-white" aria-hidden="true" />
-        </div>
+        <Image
+          src="/logo.png"
+          alt="juryNote logo"
+          width={32}
+          height={32}
+          className="rounded-lg"
+        />
         <span className="text-xl font-semibold tracking-tight text-slate-900">
           JuryNote
         </span>
