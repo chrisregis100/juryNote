@@ -1,13 +1,9 @@
-import { Navbar } from "@/components/landing/navbar";
-import { Hero } from "@/components/landing/hero";
-import { Stats } from "@/components/landing/stats";
 import { Features } from "@/components/landing/features";
-import { HowItWorks } from "@/components/landing/how-it-works";
-import { PublicEventsSection } from "@/components/landing/public-events-section";
-import { Testimonials } from "@/components/landing/testimonials";
-import { Pricing } from "@/components/landing/pricing";
-import { CTAFinal } from "@/components/landing/cta-final";
 import { Footer } from "@/components/landing/footer";
+import { Hero } from "@/components/landing/hero";
+import { HowItWorks } from "@/components/landing/how-it-works";
+import { Navbar } from "@/components/landing/navbar";
+import { Stats } from "@/components/landing/stats";
 import dynamic from "next/dynamic";
 
 const FAQ = dynamic(
@@ -26,11 +22,11 @@ export default function HomePage() {
         <Stats />
         <Features />
         <HowItWorks />
-        <PublicEventsSection />
-        <Testimonials />
-        <Pricing />
+        {/* <PublicEventsSection /> */}
+        {/* <Testimonials /> */}
+        {/* <Pricing /> */}
         <FAQ />
-        <CTAFinal />
+        {/* <CTAFinal /> */}
       </main>
       <Footer />
     </>

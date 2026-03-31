@@ -5,7 +5,6 @@ import { MobileNav } from "./mobile-nav";
 const NAV_LINKS = [
   { label: "Fonctionnalités", href: "#features" },
   { label: "Comment ça marche", href: "#how-it-works" },
-  { label: "Tarifs", href: "#pricing" },
   { label: "FAQ", href: "#faq" },
 ] as const;
 

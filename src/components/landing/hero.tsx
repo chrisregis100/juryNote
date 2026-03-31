@@ -44,14 +44,14 @@ export const Hero = () => (
       {/* CTAs */}
       <AnimatedSection delay={0.15}>
         <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center w-full max-w-md sm:max-w-none">
-          <a
-            href="#demo"
+          <Link
+            href="/admin"
             className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3.5 rounded-xl font-medium transition-all shadow-sm flex items-center justify-center gap-2"
           >
             Essayer gratuitement
-          </a>
+          </Link>
           <Link
-            href="/admin"
+            href="#demo"
             className="bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-900 px-8 py-3.5 rounded-xl font-medium transition-all shadow-sm flex items-center justify-center gap-2"
           >
             <Play className="w-4 h-4 fill-slate-900" aria-hidden="true" />

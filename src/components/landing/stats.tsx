@@ -1,8 +1,8 @@
 import { AnimatedSection } from "./animated-section";
 
 const STATS = [
-  { value: "500+", label: "Événements organisés" },
-  { value: "10k+", label: "Participants enregistrés" },
+  { value: "2+", label: "Événements organisés" },
+  { value: "100+", label: "Participants enregistrés" },
   { value: "3", label: "Rôles (Admin, Superviseur, Jury)" },
   { value: "2 min", label: "De setup" },
 ] as const;
