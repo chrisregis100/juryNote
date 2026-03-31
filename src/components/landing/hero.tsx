@@ -1,17 +1,23 @@
+import { BarChart3, ChevronRight, Play, Trophy, Users } from "lucide-react";
 import Link from "next/link";
-import { Play, CheckCircle2, Users, Trophy, Star, ChevronRight, BarChart3 } from "lucide-react";
 import { AnimatedSection } from "./animated-section";
 
 export const Hero = () => (
   <section className="relative overflow-hidden bg-slate-50 px-4 pb-24 pt-32 sm:px-6 lg:px-8 flex flex-col items-center text-center">
     {/* Subtle background gradient */}
-    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-slate-100/60 via-slate-50 to-slate-50" aria-hidden="true" />
+    <div
+      className="pointer-events-none absolute inset-0 bg-linear-to-b from-slate-100/60 via-slate-50 to-slate-50"
+      aria-hidden="true"
+    />
 
     <div className="relative w-full max-w-7xl mx-auto flex flex-col items-center">
       {/* Badge */}
       <AnimatedSection immediate>
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-sm font-medium mb-8">
-          <span className="flex h-2 w-2 rounded-full bg-slate-500" aria-hidden="true" />
+          <span
+            className="flex h-2 w-2 rounded-full bg-slate-500"
+            aria-hidden="true"
+          />
           Nouveau&nbsp;: Gestion simplifiée des hackathons
           <ChevronRight className="w-4 h-4 text-slate-500" aria-hidden="true" />
         </div>
@@ -20,16 +26,18 @@ export const Hero = () => (
       {/* Headline */}
       <AnimatedSection delay={0.05}>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight max-w-4xl leading-[1.1]">
-          Organisez, notez et délibérez —{" "}
-          <br className="hidden sm:block" />
-          <span className="text-slate-900 underline decoration-slate-300 underline-offset-4">en un seul outil.</span>
+          Organisez, notez et délibérez — <br className="hidden sm:block" />
+          <span className="text-slate-900 decoration-slate-300">
+            en un seul outil.
+          </span>
         </h1>
       </AnimatedSection>
 
       {/* Sub-headline */}
       <AnimatedSection delay={0.1}>
         <p className="mt-6 text-lg sm:text-xl text-slate-600 max-w-2xl leading-relaxed">
-          JuryNote simplifie la gestion complète de vos concours, hackathons et jurys. Du check-in des participants au classement final.
+          JuryNote simplifie la gestion complète de vos concours, hackathons et
+          jurys. Du check-in des participants au classement final.
         </p>
       </AnimatedSection>
 
@@ -52,31 +60,6 @@ export const Hero = () => (
         </div>
       </AnimatedSection>
 
-      {/* Social proof */}
-      <AnimatedSection delay={0.2}>
-        <div className="mt-12 flex items-center gap-4 text-sm text-slate-500">
-          <div className="flex -space-x-2" aria-hidden="true">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="w-8 h-8 rounded-full border-2 border-slate-50 bg-slate-200 flex items-center justify-center overflow-hidden"
-              >
-                <img
-                  src={`https://i.pravatar.cc/100?img=${i + 10}`}
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
-          </div>
-          <p>
-            Rejoint par plus de{" "}
-            <span className="font-semibold text-slate-700">2&nbsp;000</span>{" "}
-            organisateurs
-          </p>
-        </div>
-      </AnimatedSection>
-
       {/* Dashboard Mockup */}
       <AnimatedSection delay={0.3}>
         <div className="mt-20 w-full max-w-5xl relative">
@@ -95,7 +78,10 @@ export const Hero = () => (
                 <div className="w-3 h-3 rounded-full bg-emerald-400 border border-emerald-500/20" />
               </div>
               <div className="mx-auto bg-white border border-slate-200 rounded-md px-3 py-1 text-xs text-slate-400 font-medium flex items-center gap-2 w-64 justify-center shadow-sm">
-                <div className="w-3 h-3 rounded-sm bg-slate-100" aria-hidden="true" />
+                <div
+                  className="w-3 h-3 rounded-sm bg-slate-100"
+                  aria-hidden="true"
+                />
                 app.jurynote.com
               </div>
             </div>
@@ -127,8 +113,12 @@ export const Hero = () => (
               <div className="flex-1 p-8 bg-white overflow-hidden flex flex-col">
                 <div className="flex justify-between items-end mb-8">
                   <div>
-                    <h2 className="text-2xl font-bold text-slate-900">Classement en direct</h2>
-                    <p className="text-slate-500 text-sm mt-1">Dernière mise à jour il y a 2 minutes</p>
+                    <h2 className="text-2xl font-bold text-slate-900">
+                      Classement en direct
+                    </h2>
+                    <p className="text-slate-500 text-sm mt-1">
+                      Dernière mise à jour il y a 2 minutes
+                    </p>
                   </div>
                   <button className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm">
                     Exporter CSV
@@ -146,10 +136,38 @@ export const Hero = () => (
 
                   <div className="flex-1 overflow-hidden flex flex-col divide-y divide-slate-100">
                     {[
-                      { rank: 1, name: "DataMinds", project: "Analyse prédictive", cat: "Innovation IA", score: "9.8/10", trend: "up" },
-                      { rank: 2, name: "EcoTech Solutions", project: "Optimisation énergie", cat: "GreenTech", score: "9.5/10", trend: "same" },
-                      { rank: 3, name: "HealthSync", project: "Suivi patient", cat: "HealthTech", score: "9.2/10", trend: "up" },
-                      { rank: 4, name: "EduFuture", project: "Apprentissage adaptatif", cat: "EdTech", score: "8.9/10", trend: "down" },
+                      {
+                        rank: 1,
+                        name: "DataMinds",
+                        project: "Analyse prédictive",
+                        cat: "Innovation IA",
+                        score: "9.8/10",
+                        trend: "up",
+                      },
+                      {
+                        rank: 2,
+                        name: "EcoTech Solutions",
+                        project: "Optimisation énergie",
+                        cat: "GreenTech",
+                        score: "9.5/10",
+                        trend: "same",
+                      },
+                      {
+                        rank: 3,
+                        name: "HealthSync",
+                        project: "Suivi patient",
+                        cat: "HealthTech",
+                        score: "9.2/10",
+                        trend: "up",
+                      },
+                      {
+                        rank: 4,
+                        name: "EduFuture",
+                        project: "Apprentissage adaptatif",
+                        cat: "EdTech",
+                        score: "8.9/10",
+                        trend: "down",
+                      },
                     ].map((row, i) => (
                       <div
                         key={row.rank}
@@ -161,18 +179,22 @@ export const Hero = () => (
                               i === 0
                                 ? "bg-amber-100 text-amber-700"
                                 : i === 1
-                                ? "bg-slate-200 text-slate-700"
-                                : i === 2
-                                ? "bg-orange-100 text-orange-700"
-                                : "text-slate-500"
+                                  ? "bg-slate-200 text-slate-700"
+                                  : i === 2
+                                    ? "bg-orange-100 text-orange-700"
+                                    : "text-slate-500"
                             }`}
                           >
                             {row.rank}
                           </span>
                         </div>
                         <div className="col-span-5">
-                          <div className="font-semibold text-slate-900">{row.name}</div>
-                          <div className="text-sm text-slate-500">{row.project}</div>
+                          <div className="font-semibold text-slate-900">
+                            {row.name}
+                          </div>
+                          <div className="text-sm text-slate-500">
+                            {row.project}
+                          </div>
                         </div>
                         <div className="col-span-3">
                           <span className="inline-flex items-center px-2 py-1 rounded-md bg-slate-100 text-slate-600 text-xs font-medium">
@@ -182,13 +204,22 @@ export const Hero = () => (
                         <div className="col-span-3 text-right font-bold text-slate-900 flex items-center justify-end gap-2">
                           {row.score}
                           {row.trend === "up" && (
-                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+                            <div
+                              className="w-1.5 h-1.5 rounded-full bg-emerald-500"
+                              aria-hidden="true"
+                            />
                           )}
                           {row.trend === "down" && (
-                            <div className="w-1.5 h-1.5 rounded-full bg-rose-500" aria-hidden="true" />
+                            <div
+                              className="w-1.5 h-1.5 rounded-full bg-rose-500"
+                              aria-hidden="true"
+                            />
                           )}
                           {row.trend === "same" && (
-                            <div className="w-1.5 h-1.5 rounded-full bg-slate-300" aria-hidden="true" />
+                            <div
+                              className="w-1.5 h-1.5 rounded-full bg-slate-300"
+                              aria-hidden="true"
+                            />
                           )}
                         </div>
                       </div>
