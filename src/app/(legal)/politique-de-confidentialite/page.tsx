@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Politique de confidentialité | JuryFlow",
+  title: "Politique de confidentialité | JuryNote",
   description:
-    "Découvrez comment JuryFlow collecte, utilise et protège vos données personnelles conformément à la Loi N°2009-09 du Bénin et à l&apos;Acte Additionnel CEDEAO A/SA.1/01/10.",
+    "Découvrez comment JuryNote collecte, utilise et protège vos données personnelles conformément à la Loi N°2009-09 du Bénin et à l&apos;Acte Additionnel CEDEAO A/SA.1/01/10.",
 };
 
 export const dynamic = "force-static";
@@ -90,7 +90,7 @@ export default function PolitiqueConfidentialitePage() {
           <div className="rounded-lg border-2 border-yellow-400 bg-yellow-50 p-5">
             <p className="text-sm leading-relaxed text-slate-700">
               La protection de vos données personnelles est une priorité pour
-              JuryFlow. La présente politique décrit la nature des données
+              JuryNote. La présente politique décrit la nature des données
               collectées, les finalités de leur traitement, vos droits et les
               mesures prises pour assurer leur sécurité. Elle est établie
               conformément à la{" "}
@@ -121,7 +121,7 @@ export default function PolitiqueConfidentialitePage() {
                   Responsable du traitement
                 </dt>
                 <dd className="text-sm text-slate-600">
-                  JuryFlow — exploité par [NOM DE LA SOCIÉTÉ / ÉDITEUR]
+                  JuryNote — exploité par [NOM DE LA SOCIÉTÉ / ÉDITEUR]
                 </dd>
               </div>
               <div className="flex flex-col gap-0.5 py-2 sm:flex-row sm:gap-4">
@@ -160,7 +160,7 @@ export default function PolitiqueConfidentialitePage() {
           {/* Section 2 - Données collectées */}
           <Section number="02" title="Données collectées">
             <p className="mb-4 text-sm leading-relaxed text-slate-600">
-              JuryFlow collecte uniquement les données strictement nécessaires à
+              JuryNote collecte uniquement les données strictement nécessaires à
               la fourniture de ses services. Selon votre rôle sur la plateforme,
               les données suivantes peuvent être collectées :
             </p>
@@ -336,7 +336,7 @@ export default function PolitiqueConfidentialitePage() {
             </p>
             <ul className="space-y-2 text-sm text-slate-600">
               {[
-                "Le personnel habilité de l&apos;équipe JuryFlow (accès restreint)",
+                "Le personnel habilité de l&apos;équipe JuryNote (accès restreint)",
                 "Les organisateurs de l&apos;événement auquel vous participez",
                 "Nos sous-traitants techniques (hébergeur, prestataire de base de données, service d&apos;envoi d&apos;e-mails transactionnels Brevo/Sendinblue), liés par des clauses de confidentialité strictes",
                 "Les autorités judiciaires ou administratives compétentes, uniquement sur réquisition légale",
@@ -348,7 +348,7 @@ export default function PolitiqueConfidentialitePage() {
               ))}
             </ul>
             <InfoBox>
-              <strong>Aucune vente de données :</strong> JuryFlow ne vend, ne
+              <strong>Aucune vente de données :</strong> JuryNote ne vend, ne
               loue et ne cède jamais vos données personnelles à des tiers à des
               fins commerciales.
             </InfoBox>
@@ -470,7 +470,7 @@ export default function PolitiqueConfidentialitePage() {
               adéquat reconnu par l&apos;APDP).
             </p>
             <InfoBox>
-              JuryFlow s&apos;engage à ne transférer vos données qu&apos;à des
+              JuryNote s&apos;engage à ne transférer vos données qu&apos;à des
               prestataires offrant un niveau de protection équivalent à celui
               garanti par le droit béninois et les instruments régionaux
               applicables.
@@ -480,7 +480,7 @@ export default function PolitiqueConfidentialitePage() {
           {/* Section 9 - Sécurité */}
           <Section number="09" title="Sécurité des données">
             <p className="mb-3 text-sm leading-relaxed text-slate-600">
-              JuryFlow met en œuvre des mesures techniques et organisationnelles
+              JuryNote met en œuvre des mesures techniques et organisationnelles
               appropriées pour protéger vos données contre toute perte,
               altération, accès non autorisé ou divulgation :
             </p>
@@ -504,7 +504,7 @@ export default function PolitiqueConfidentialitePage() {
           {/* Section 10 - Modifications */}
           <Section number="10" title="Modifications de la présente politique">
             <p className="text-sm leading-relaxed text-slate-600">
-              JuryFlow se réserve le droit de modifier la présente politique de
+              JuryNote se réserve le droit de modifier la présente politique de
               confidentialité à tout moment pour refléter les évolutions
               législatives, réglementaires ou les changements apportés à la
               plateforme. La date de dernière mise à jour est indiquée en haut

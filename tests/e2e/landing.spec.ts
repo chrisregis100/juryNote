@@ -1,9 +1,9 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Landing page", () => {
-  test("loads and shows navbar with JuryFlow brand", async ({ page }) => {
+  test("loads and shows navbar with JuryNote brand", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("link", { name: /JuryFlow - Accueil/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /JuryNote - Accueil/i })).toBeVisible();
   });
 
   test("navbar has navigation links", async ({ page }) => {

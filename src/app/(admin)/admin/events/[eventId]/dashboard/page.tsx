@@ -1,37 +1,35 @@
 import { notFound } from "next/navigation";
-import { db } from "@/lib/db";
 import { ParticipantsDashboard } from "@/components/admin/events/participants-dashboard";
+import { parseParticipantCheckinDashboardQuery } from "@/lib/participant-checkin-dashboard";
+import { getParticipantCheckinsDashboardData } from "@/server/queries/participant-checkins-dashboard";
 
 export default async function EventDashboardPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ eventId: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { eventId } = await params;
-  const event = await db.event.findUnique({
-    where: { id: eventId },
-    include: {
-      customQuestions: { orderBy: { order: "asc" } },
-      participantCheckins: {
-        include: {
-          answers: {
-            include: {
-              customQuestion: true,
-            },
-          },
-        },
-        orderBy: { checkedInAt: "desc" },
-      },
-    },
-  });
+  const sp = await searchParams;
+  const query = parseParticipantCheckinDashboardQuery(sp);
+  const data = await getParticipantCheckinsDashboardData(eventId, query);
 
-  if (!event) notFound();
+  if (!data.eventExists) notFound();
+
+  const effectiveQuery = { ...query, page: data.page, pageSize: data.pageSize };
 
   return (
     <ParticipantsDashboard
       eventId={eventId}
-      checkins={event.participantCheckins}
-      customQuestions={event.customQuestions}
+      checkins={data.checkins}
+      customQuestions={data.customQuestions}
+      totalFiltered={data.totalFiltered}
+      totalPages={data.totalPages}
+      page={data.page}
+      pageSize={data.pageSize}
+      query={effectiveQuery}
+      stats={data.stats}
     />
   );
 }

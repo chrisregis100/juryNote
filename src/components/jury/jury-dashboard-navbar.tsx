@@ -19,10 +19,10 @@ export function JuryDashboardNavbar({ displayName, eventName }: JuryDashboardNav
           <Link
             href="/jury"
             className="flex items-center gap-2 text-lg font-black tracking-tight sm:text-xl"
-            aria-label="JuryFlow - Tableau de bord jury"
+            aria-label="JuryNote - Tableau de bord jury"
           >
             <span className="inline-block h-4 w-4 shrink-0 rotate-6 bg-indigo-600" aria-hidden />
-            JuryFlow
+            JuryNote
           </Link>
           <span className="hidden truncate text-sm font-medium text-slate-500 sm:inline md:max-w-[12rem] lg:max-w-md">
             {eventName}

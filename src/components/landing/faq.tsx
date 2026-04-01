@@ -21,14 +21,29 @@ const FAQ_ITEMS = [
       "Absolument. Vous définissez vos propres critères, choisissez l'échelle (sur 5, 10 ou 20) et attribuez des pondérations différentes à chaque critère.",
   },
   {
+    question: "Comment fonctionne le check-in participants ?",
+    answer:
+      "Vous générez un lien de check-in unique pour votre événement. Les participants s'y rendent depuis leur mobile, renseignent leurs informations et confirment leur présence en quelques étapes. Vous suivez les arrivées en temps réel depuis votre dashboard.",
+  },
+  {
+    question: "Peut-on distribuer des ressources automatiquement au check-in ?",
+    answer:
+      "Oui. Vous configurez vos ressources en amont — clés API, liens d'accès, documents texte. Dès qu'un participant valide son check-in, il reçoit automatiquement ses ressources. Idéal pour les hackathons : fini les distributions manuelles de clés API.",
+  },
+  {
+    question: "JuryNote fonctionne-t-il pour les hackathons ?",
+    answer:
+      "Absolument. La distribution automatique de clés API et d'accès au check-in a été conçue précisément pour les hackathons. Gérez l'accueil des participants, la notation et la délibération depuis une seule plateforme.",
+  },
+  {
     question: "Les données sont-elles sécurisées ?",
     answer:
       "Oui. Toutes les données sont chiffrées en transit et au repos. Nous utilisons des serveurs en Europe et respectons le RGPD.",
   },
   {
-    question: "Puis-je exporter les résultats ?",
+    question: "Puis-je exporter les résultats et les participants ?",
     answer:
-      "Oui, vous pouvez exporter les classements et les notes détaillées. L'export avancé avec filtres est disponible sur le plan Pro.",
+      "Oui, vous pouvez exporter les classements, les notes détaillées et la liste des participants enregistrés. L'export avancé avec filtres est disponible sur le plan Pro.",
   },
   {
     question: "Y a-t-il une période d'essai ?",
@@ -59,21 +74,21 @@ const FAQItem = ({
 
   return (
     <AnimatedSection delay={index * 0.06}>
-      <div className="border-2 border-black bg-white shadow-[3px_3px_0_0_#0a0a0a]">
+      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
         <button
           onClick={handleToggle}
           onKeyDown={handleKeyDown}
           aria-expanded={isOpen}
           aria-controls={accordionId}
-          className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+          className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-slate-50 transition-colors"
         >
-          <span className="text-sm font-bold text-black md:text-base">
+          <span className="text-sm font-medium text-slate-900 md:text-base">
             {question}
           </span>
           <motion.span
             animate={{ rotate: isOpen ? 45 : 0 }}
             transition={{ duration: 0.2 }}
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black text-lg font-bold leading-none"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-slate-200 text-lg font-medium leading-none text-slate-600"
             aria-hidden="true"
           >
             +
@@ -89,7 +104,7 @@ const FAQItem = ({
               transition={{ duration: 0.25 }}
               className="overflow-hidden"
             >
-              <p className="px-5 pb-4 text-sm leading-relaxed text-slate-600">
+              <p className="border-t border-slate-100 px-5 pb-4 pt-3 text-sm leading-relaxed text-slate-600">
                 {answer}
               </p>
             </motion.div>
@@ -101,18 +116,18 @@ const FAQItem = ({
 };
 
 export const FAQ = () => (
-  <section
-    id="faq"
-    className="dot-pattern-light bg-slate-50 px-6 py-20 md:py-28"
-  >
+  <section id="faq" className="bg-slate-50 px-6 py-20 md:py-28">
     <div className="mx-auto max-w-2xl">
       <AnimatedSection>
-        <h2 className="text-center text-4xl font-black tracking-tight text-black md:text-5xl">
+        <h2 className="text-center text-4xl font-bold tracking-tight text-slate-900 md:text-5xl">
           Questions fréquentes
         </h2>
+        <p className="mx-auto mt-4 max-w-lg text-center text-lg text-slate-600">
+          Tout ce que vous devez savoir avant de vous lancer.
+        </p>
       </AnimatedSection>
 
-      <div className="mt-12 space-y-4">
+      <div className="mt-12 space-y-3">
         {FAQ_ITEMS.map((item, i) => (
           <FAQItem
             key={item.question}

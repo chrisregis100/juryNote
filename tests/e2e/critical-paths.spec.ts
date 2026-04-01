@@ -15,7 +15,7 @@ test.describe("Critical user journeys", () => {
   test("Landing page → Login → Admin dashboard flow", async ({ page }) => {
     // 1. Landing page loads
     await page.goto("/");
-    await expect(page.getByRole("link", { name: /JuryFlow/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /JuryNote/i })).toBeVisible();
     await expect(page.getByRole("link", { name: "Fonctionnalités" })).toBeVisible();
 
     // 2. Navigate to login
@@ -39,7 +39,7 @@ test.describe("Critical user journeys", () => {
   test("Landing page → Jury join page flow", async ({ page }) => {
     // 1. Landing page
     await page.goto("/");
-    await expect(page.getByRole("link", { name: /JuryFlow/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /JuryNote/i })).toBeVisible();
 
     // 2. Navigate to jury join
     await page.goto("/jury/join");

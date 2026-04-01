@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Conditions Générales d&apos;Utilisation | JuryFlow",
+  title: "Conditions Générales d&apos;Utilisation | JuryNote",
   description:
-    "Conditions générales d&apos;utilisation de la plateforme JuryFlow — droits, obligations, propriété intellectuelle et droit applicable (Bénin).",
+    "Conditions générales d&apos;utilisation de la plateforme JuryNote — droits, obligations, propriété intellectuelle et droit applicable (Bénin).",
 };
 
 export const dynamic = "force-static";
@@ -78,7 +78,7 @@ export default function CguPage() {
             <p className="text-sm leading-relaxed text-slate-700">
               Les présentes Conditions Générales d&apos;Utilisation (ci-après «
               CGU ») régissent l&apos;accès et l&apos;utilisation de la
-              plateforme <strong>JuryFlow</strong> (accessible à [URL DE LA
+              plateforme <strong>JuryNote</strong> (accessible à [URL DE LA
               PLATEFORME]). En accédant à la plateforme, vous acceptez sans
               réserve les présentes CGU. Si vous n&apos;acceptez pas ces
               conditions, vous devez cesser immédiatement d&apos;utiliser la
@@ -90,7 +90,7 @@ export default function CguPage() {
           <Section number="01" title="Objet">
             <p className="text-sm leading-relaxed text-slate-600">
               Les présentes CGU ont pour objet de définir les conditions dans
-              lesquelles <strong>JuryFlow</strong> (ci-après « la Plateforme »)
+              lesquelles <strong>JuryNote</strong> (ci-après « la Plateforme »)
               met à disposition des organisateurs, membres du jury, superviseurs
               et participants (ci-après collectivement « les Utilisateurs ») une
               solution logicielle de gestion, notation et délibération pour
@@ -122,14 +122,14 @@ export default function CguPage() {
           {/* Section 2 - Accès */}
           <Section number="02" title="Accès à la plateforme">
             <p className="mb-3 text-sm leading-relaxed text-slate-600">
-              L&apos;accès à JuryFlow est différencié selon les rôles :
+              L&apos;accès à JuryNote est différencié selon les rôles :
             </p>
             <div className="space-y-3">
               {[
                 {
                   role: "Organisateurs",
                   condition:
-                    "Inscription via adresse e-mail et connexion par lien magique (magic link). L&apos;accès est soumis à une validation préalable par l&apos;équipe JuryFlow.",
+                    "Inscription via adresse e-mail et connexion par lien magique (magic link). L&apos;accès est soumis à une validation préalable par l&apos;équipe JuryNote.",
                   color: "border-indigo-200 bg-indigo-50",
                 },
                 {
@@ -160,7 +160,7 @@ export default function CguPage() {
             <p className="mt-4 text-sm leading-relaxed text-slate-600">
               La Plateforme est accessible 24h/24 et 7j/7, sous réserve des
               opérations de maintenance et des interruptions de service
-              indépendantes de la volonté de JuryFlow.
+              indépendantes de la volonté de JuryNote.
             </p>
           </Section>
 
@@ -174,7 +174,7 @@ export default function CguPage() {
               {[
                 "Fournir des informations exactes, complètes et à jour lors de l&apos;inscription",
                 "Maintenir la confidentialité de ses accès (lien magique, session)",
-                "Notifier immédiatement JuryFlow de tout accès non autorisé à son compte",
+                "Notifier immédiatement JuryNote de tout accès non autorisé à son compte",
                 "Ne pas créer plusieurs comptes pour contourner des restrictions",
                 "Ne pas céder son accès à des tiers non autorisés",
               ].map((item) => (
@@ -255,13 +255,13 @@ export default function CguPage() {
               L&apos;ensemble des éléments de la Plateforme — code source,
               algorithmes, interfaces graphiques, logos, marques, textes et
               contenus éditoriaux — sont la propriété exclusive de
-              l&apos;éditeur de JuryFlow et sont protégés par les lois
+              l&apos;éditeur de JuryNote et sont protégés par les lois
               béninoises et internationales sur la propriété intellectuelle.
             </p>
             <p className="text-sm leading-relaxed text-slate-600">
               L&apos;Utilisateur conserve l&apos;intégralité des droits sur les
               données qu&apos;il crée (événements, critères, résultats). Il
-              accorde à JuryFlow une licence limitée, non exclusive et non
+              accorde à JuryNote une licence limitée, non exclusive et non
               cessible pour traiter ces données aux seules fins de la fourniture
               du service.
             </p>
@@ -273,12 +273,12 @@ export default function CguPage() {
             </p>
           </Section>
 
-          {/* Section 7 - Responsabilité JuryFlow */}
-          <Section number="07" title="Responsabilité de JuryFlow">
+          {/* Section 7 - Responsabilité JuryNote */}
+          <Section number="07" title="Responsabilité de JuryNote">
             <p className="mb-3 text-sm leading-relaxed text-slate-600">
-              JuryFlow s&apos;engage à mettre en œuvre tous les moyens
+              JuryNote s&apos;engage à mettre en œuvre tous les moyens
               raisonnables pour assurer un accès de qualité à la Plateforme.
-              Cependant, JuryFlow ne peut être tenu responsable :
+              Cependant, JuryNote ne peut être tenu responsable :
             </p>
             <ul className="space-y-2 text-sm text-slate-600">
               {[
@@ -300,14 +300,14 @@ export default function CguPage() {
           {/* Section 8 - Disponibilité */}
           <Section number="08" title="Disponibilité du service et maintenance">
             <p className="text-sm leading-relaxed text-slate-600">
-              JuryFlow s&apos;efforce de maintenir la Plateforme disponible en
+              JuryNote s&apos;efforce de maintenir la Plateforme disponible en
               permanence mais ne garantit pas une disponibilité de 100 %. Des
               opérations de maintenance peuvent entraîner des interruptions
               temporaires, annoncées dans la mesure du possible avec un préavis
               raisonnable.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
-              JuryFlow se réserve le droit de modifier, suspendre ou interrompre
+              JuryNote se réserve le droit de modifier, suspendre ou interrompre
               tout ou partie des fonctionnalités de la Plateforme à tout moment,
               notamment pour des raisons techniques, légales ou commerciales.
             </p>
@@ -316,7 +316,7 @@ export default function CguPage() {
           {/* Section 9 - Modifications des CGU */}
           <Section number="09" title="Modifications des présentes CGU">
             <p className="text-sm leading-relaxed text-slate-600">
-              JuryFlow se réserve le droit de modifier les présentes CGU à tout
+              JuryNote se réserve le droit de modifier les présentes CGU à tout
               moment. Les modifications entrent en vigueur dès leur publication
               sur la Plateforme. La date de dernière mise à jour est indiquée en
               tête du présent document.
@@ -335,10 +335,10 @@ export default function CguPage() {
             <p className="mb-3 text-sm leading-relaxed text-slate-600">
               L&apos;Utilisateur peut à tout moment cesser d&apos;utiliser la
               Plateforme et demander la suppression de son compte en contactant
-              JuryFlow.
+              JuryNote.
             </p>
             <p className="text-sm leading-relaxed text-slate-600">
-              JuryFlow peut suspendre ou résilier l&apos;accès d&apos;un
+              JuryNote peut suspendre ou résilier l&apos;accès d&apos;un
               Utilisateur sans préavis ni remboursement en cas de :
             </p>
             <ul className="mt-3 space-y-1.5 text-sm text-slate-600">

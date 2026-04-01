@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Mentions légales | JuryFlow",
+  title: "Mentions légales | JuryNote",
   description:
-    "Informations légales relatives à l&apos;éditeur, l&apos;hébergement et la propriété intellectuelle de la plateforme JuryFlow.",
+    "Informations légales relatives à l&apos;éditeur, l&apos;hébergement et la propriété intellectuelle de la plateforme JuryNote.",
 };
 
 export const dynamic = "force-static";
@@ -84,7 +84,7 @@ export default function MentionsLegalesPage() {
               Conformément aux dispositions applicables en République du Bénin
               et aux standards de transparence en ligne, les présentes mentions
               légales ont pour objet d&apos;informer les utilisateurs de la
-              plateforme <strong>JuryFlow</strong> sur l&apos;identité de
+              plateforme <strong>JuryNote</strong> sur l&apos;identité de
               l&apos;éditeur, les conditions d&apos;hébergement et les règles
               applicables à l&apos;utilisation du site.
             </p>
@@ -95,7 +95,7 @@ export default function MentionsLegalesPage() {
             <dl className="divide-y divide-slate-100">
               <DataRow
                 label="Dénomination commerciale"
-                value={<strong>JuryFlow</strong>}
+                value={<strong>JuryNote</strong>}
               />
               <DataRow
                 label="Société éditrice"
@@ -175,7 +175,7 @@ export default function MentionsLegalesPage() {
           {/* Section 4 - Propriété intellectuelle */}
           <Section number="04" title="Propriété intellectuelle">
             <p className="text-sm leading-relaxed text-slate-600">
-              L&apos;ensemble des éléments constituant la plateforme JuryFlow —
+              L&apos;ensemble des éléments constituant la plateforme JuryNote —
               notamment les textes, graphismes, logotypes, icônes, images,
               vidéos, animations, logiciels et architecture du site — sont la
               propriété exclusive de l&apos;éditeur ou de ses partenaires et
@@ -198,14 +198,14 @@ export default function MentionsLegalesPage() {
           {/* Section 5 - Liens hypertextes */}
           <Section number="05" title="Liens hypertextes">
             <p className="text-sm leading-relaxed text-slate-600">
-              La plateforme JuryFlow peut contenir des liens hypertextes vers
+              La plateforme JuryNote peut contenir des liens hypertextes vers
               d&apos;autres sites internet. Ces liens sont proposés à titre
               informatif. L&apos;éditeur n&apos;a aucun contrôle sur le contenu
               de ces sites et décline toute responsabilité quant aux
               informations qui y figurent.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
-              La création de liens vers la plateforme JuryFlow est soumise à
+              La création de liens vers la plateforme JuryNote est soumise à
               l&apos;accord préalable et exprès de l&apos;éditeur. Pour toute
               demande, contactez-nous à l&apos;adresse indiquée ci-dessus.
             </p>
@@ -215,7 +215,7 @@ export default function MentionsLegalesPage() {
           <Section number="06" title="Données personnelles & Cookies">
             <p className="text-sm leading-relaxed text-slate-600">
               La collecte et le traitement des données personnelles effectués
-              dans le cadre de l&apos;utilisation de JuryFlow sont régis par la{" "}
+              dans le cadre de l&apos;utilisation de JuryNote sont régis par la{" "}
               <strong>
                 Loi N°2009-09 du 22 mai 2009 portant protection des données à
                 caractère personnel en République du Bénin

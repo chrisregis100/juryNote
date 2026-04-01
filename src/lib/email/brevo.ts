@@ -28,7 +28,7 @@ function getBrevoConfig(): { apiKey: string; senderEmail: string; senderName: st
   }
 
   const senderName =
-    process.env.BREVO_SENDER_NAME?.trim() ?? "JuryFlow";
+    process.env.BREVO_SENDER_NAME?.trim() ?? "JuryNote";
 
   return { apiKey, senderEmail, senderName };
 }
@@ -221,7 +221,7 @@ export async function sendResourcesEmail(params: {
           <tr>
             <td style="padding: 20px 32px; background-color: #f3f4f6; text-align: center; border-top: 1px solid #e5e7eb;">
               <p style="margin: 0; font-size: 12px; color: #9ca3af;">
-                Envoyé via JuryFlow
+                Envoyé via JuryNote
               </p>
             </td>
           </tr>

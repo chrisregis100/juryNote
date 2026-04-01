@@ -14,10 +14,10 @@ function buildMagicLinkEmailContent(verifyUrl: string): {
   html: string;
   text: string;
 } {
-  const subject = "Votre lien de connexion JuryFlow";
+  const subject = "Votre lien de connexion JuryNote";
   const html = `
             <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-              <h2 style="color: #1a1a1a;">Connexion à JuryFlow</h2>
+              <h2 style="color: #1a1a1a;">Connexion à JuryNote</h2>
               <p style="color: #555;">Cliquez sur le bouton ci-dessous pour vous connecter. Ce lien expire dans 10&nbsp;minutes.</p>
               <a
                 href="${verifyUrl}"
@@ -39,7 +39,7 @@ function buildMagicLinkEmailContent(verifyUrl: string): {
               </p>
             </div>
           `;
-  const text = `Connexion à JuryFlow : ${verifyUrl}`;
+  const text = `Connexion à JuryNote : ${verifyUrl}`;
   return { subject, html, text };
 }
 
@@ -82,7 +82,7 @@ export const auth = betterAuth({
     nextCookies(),
     magicLink({
       expiresIn: 60 * 10, // 10 minutes
-      disableSignUp: true,
+      disableSignUp: false,
       sendMagicLink: async ({ email, token }) => {
         const appUrl =
           process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
@@ -108,8 +108,7 @@ export const auth = betterAuth({
       create: {
         before: async (user) => {
           // Ensure only organizer/supervisor can authenticate via magic link.
-          // New user creation is blocked by disableSignUp; this hook guards
-          // any programmatic creation path.
+          // This hook guards any programmatic creation path (e.g. jury role).
           const role = (user as { role?: string }).role ?? "organizer";
           if (role === "jury") {
             throw new Error("Jury members cannot authenticate via Better Auth.");

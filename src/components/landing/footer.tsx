@@ -1,38 +1,58 @@
+import Image from "next/image";
 import Link from "next/link";
 
-export const Footer = () => (
-  <footer className="bg-[#0a0a0a] px-6 pb-8 pt-12">
-    <div className="mx-auto max-w-6xl">
-      <div className="border-t border-slate-800 pt-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {/* Brand */}
-          <div>
-            <span className="flex items-center gap-2 text-lg font-black text-white">
-              <span className="inline-block h-3 w-3 rotate-6 bg-indigo-600" />
-              JuryFlow
-            </span>
-            <p className="mt-3 text-sm leading-relaxed text-slate-500">
-              La plateforme de notation et délibération pour hackathons et
-              concours.
-            </p>
-          </div>
+const PRODUCT_LINKS = [
+  { label: "Fonctionnalités", href: "#features" },
+  { label: "Tarifs", href: "#pricing" },
+  { label: "FAQ", href: "#faq" },
+  { label: "Demander une démo", href: "#demo" },
+] as const;
 
-          {/* Links */}
+const LEGAL_LINKS = [
+  { label: "Mentions légales", href: "/mentions-legales" },
+  { label: "Politique de confidentialité", href: "/politique-de-confidentialite" },
+  { label: "CGU", href: "/cgu" },
+  { label: "Politique de cookies", href: "/cookies" },
+] as const;
+
+export const Footer = () => (
+  <footer className="bg-white border-t border-black/10">
+    <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+      <div className="flex flex-col md:flex-row md:justify-between gap-12 md:gap-24">
+
+        {/* Brand */}
+        <div className="max-w-sm">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/logo.png"
+              alt="juryNote logo"
+              width={32}
+              height={32}
+              className="rounded-lg"
+            />
+            <span className="text-xl font-bold tracking-tight text-black">
+              JuryNote
+            </span>
+          </div>
+          <p className="mt-6 text-sm leading-relaxed text-black/50">
+            La plateforme de notation et délibération pour hackathons et concours. 
+            Organisez vos événements de manière professionnelle et transparente.
+          </p>
+        </div>
+
+        {/* Links Container */}
+        <div className="flex flex-col sm:flex-row gap-12 sm:gap-24">
+          {/* Product links */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400">
+            <h4 className="text-xs font-bold tracking-[0.2em] uppercase text-black mb-6">
               Produit
             </h4>
-            <ul className="mt-3 space-y-2">
-              {[
-                { label: "Fonctionnalités", href: "#features" },
-                { label: "Tarifs", href: "#pricing" },
-                { label: "FAQ", href: "#faq" },
-                { label: "Demander une démo", href: "#demo" },
-              ].map((link) => (
+            <ul className="space-y-4">
+              {PRODUCT_LINKS.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-sm text-slate-500 transition-colors hover:text-white"
+                    className="text-sm font-medium text-black/50 transition-colors hover:text-black"
                   >
                     {link.label}
                   </a>
@@ -41,25 +61,17 @@ export const Footer = () => (
             </ul>
           </div>
 
-          {/* Legal */}
+          {/* Legal links */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400">
+            <h4 className="text-xs font-bold tracking-[0.2em] uppercase text-black mb-6">
               Légal
             </h4>
-            <ul className="mt-3 space-y-2">
-              {[
-                { label: "Mentions légales", href: "/mentions-legales" },
-                {
-                  label: "Politique de confidentialité",
-                  href: "/politique-de-confidentialite",
-                },
-                { label: "CGU", href: "/cgu" },
-                { label: "Politique de cookies", href: "/cookies" },
-              ].map((item) => (
+            <ul className="space-y-4">
+              {LEGAL_LINKS.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-sm text-slate-500 transition-colors hover:text-white"
+                    className="text-sm font-medium text-black/50 transition-colors hover:text-black"
                   >
                     {item.label}
                   </Link>
@@ -68,10 +80,13 @@ export const Footer = () => (
             </ul>
           </div>
         </div>
+
       </div>
 
-      <div className="mt-10 border-t border-slate-800 pt-6 text-center text-xs text-slate-600">
-        &copy; {new Date().getFullYear()} JuryFlow. Tous droits réservés.
+      <div className="mt-24 pt-8 border-t border-black/10 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p className="text-xs font-medium text-black/40">
+          &copy; {new Date().getFullYear()} JuryNote. Tous droits réservés.
+        </p>
       </div>
     </div>
   </footer>

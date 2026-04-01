@@ -1,4 +1,4 @@
-// JuryFlow - Prisma Schema
+// JuryNote - Prisma Schema
 // PostgreSQL + Prisma ORM
 
 generator client {

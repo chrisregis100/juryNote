@@ -1,4 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
+vi.mock("@/lib/auth", () => ({
+  getServerSession: vi.fn(async () => ({
+    user: { role: "organizer" as const, id: "org-1", email: "o@test.com", name: "Org" },
+  })),
+  isOrganizerOrSupervisor: () => true,
+  isJurySession: () => false,
+}));
+
 import { createEvent, createCriterion, createTeam, generateJuryPin } from "./event";
 
 const mockRevalidatePath = vi.fn();
@@ -41,7 +50,7 @@ describe("event actions", () => {
 
       expect(result).toEqual({ data: event });
       expect(mockEventCreate).toHaveBeenCalledWith({
-        data: { name: "Hack 2025", slug: "hack-2025" },
+        data: { name: "Hack 2025", slug: "hack-2025", organizerId: "org-1" },
       });
       expect(mockRevalidatePath).toHaveBeenCalledWith("/admin");
       expect(mockRevalidatePath).toHaveBeenCalledWith("/admin/events");

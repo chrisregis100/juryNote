@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Politique de cookies | JuryFlow",
+  title: "Politique de cookies | JuryNote",
   description:
-    "Politique de cookies de JuryFlow — quels cookies sont utilisés, pourquoi et comment les gérer.",
+    "Politique de cookies de JuryNote — quels cookies sont utilisés, pourquoi et comment les gérer.",
 };
 
 export const dynamic = "force-static";
@@ -107,7 +107,7 @@ export default function CookiesPage() {
           <div className="rounded-lg border-2 border-yellow-400 bg-yellow-50 p-5">
             <p className="text-sm leading-relaxed text-slate-700">
               La présente politique de cookies explique ce que sont les cookies,
-              lesquels sont utilisés par <strong>JuryFlow</strong>, pourquoi
+              lesquels sont utilisés par <strong>JuryNote</strong>, pourquoi
               nous les utilisons et comment vous pouvez les gérer. Elle complète
               notre{" "}
               <Link
@@ -144,7 +144,7 @@ export default function CookiesPage() {
                 },
                 {
                   type: "Cookies propriétaires",
-                  desc: "Déposés directement par JuryFlow.",
+                  desc: "Déposés directement par JuryNote.",
                 },
                 {
                   type: "Cookies tiers",
@@ -165,9 +165,9 @@ export default function CookiesPage() {
           </Section>
 
           {/* Section 2 - Cookies utilisés */}
-          <Section number="02" title="Cookies utilisés par JuryFlow">
+          <Section number="02" title="Cookies utilisés par JuryNote">
             <p className="mb-4 text-sm leading-relaxed text-slate-600">
-              JuryFlow utilise exclusivement des cookies strictement nécessaires
+              JuryNote utilise exclusivement des cookies strictement nécessaires
               au fonctionnement de la plateforme.{" "}
               <strong>Aucun cookie publicitaire ni de traçage marketing</strong>{" "}
               n&apos;est déposé sur votre terminal.
@@ -270,7 +270,7 @@ export default function CookiesPage() {
 
             <div className="mt-4 rounded-md border-l-4 border-green-500 bg-green-50 p-4 text-sm text-slate-700">
               <strong>Aucun cookie tiers, publicitaire ou analytique</strong>{" "}
-              n&apos;est utilisé par JuryFlow. Nous ne partageons aucune donnée
+              n&apos;est utilisé par JuryNote. Nous ne partageons aucune donnée
               de navigation avec des réseaux publicitaires ou des plateformes
               d&apos;analyse tierces.
             </div>
@@ -279,7 +279,7 @@ export default function CookiesPage() {
           {/* Section 3 - Base légale */}
           <Section number="03" title="Base légale et consentement">
             <p className="text-sm leading-relaxed text-slate-600">
-              Les cookies utilisés par JuryFlow sont{" "}
+              Les cookies utilisés par JuryNote sont{" "}
               <strong>strictement nécessaires</strong> au fonctionnement du
               service d&apos;authentification. À ce titre, conformément à la{" "}
               <strong>Loi N°2009-09 du 22 mai 2009</strong> (art. 5) et à
@@ -302,7 +302,7 @@ export default function CookiesPage() {
           {/* Section 4 - Durée */}
           <Section number="04" title="Durée de conservation des cookies">
             <p className="text-sm leading-relaxed text-slate-600">
-              Les cookies de session de JuryFlow sont conservés pour une durée
+              Les cookies de session de JuryNote sont conservés pour une durée
               maximale de <strong>30 jours</strong> à compter de la dernière
               activité de l&apos;utilisateur sur la plateforme. Cette durée est
               conforme aux exigences de sécurité et aux standards de
@@ -355,7 +355,7 @@ export default function CookiesPage() {
             <div className="mt-4 rounded-md border-l-4 border-yellow-400 bg-yellow-50 p-4 text-sm text-slate-700">
               <strong>Attention :</strong> Si vous désactivez les cookies de
               session dans votre navigateur, vous ne pourrez plus vous connecter
-              à votre compte JuryFlow. Les membres du jury accédant via code PIN
+              à votre compte JuryNote. Les membres du jury accédant via code PIN
               ne seront pas affectés de la même manière, mais leur session sera
               interrompue.
             </div>

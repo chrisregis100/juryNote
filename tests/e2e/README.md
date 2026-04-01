@@ -1,6 +1,6 @@
 # E2E Testing with Playwright
 
-This directory contains end-to-end tests for the JuryFlow application using [Playwright](https://playwright.dev/).
+This directory contains end-to-end tests for the JuryNote application using [Playwright](https://playwright.dev/).
 
 ## Overview
 

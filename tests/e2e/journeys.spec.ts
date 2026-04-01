@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test.describe("User journeys", () => {
   test("landing -> login -> back to landing via home", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("link", { name: /JuryFlow - Accueil/i }).click();
+    await page.getByRole("link", { name: /JuryNote - Accueil/i }).click();
     await expect(page).toHaveURL("/");
 
     await page.goto("/login");
@@ -29,7 +29,7 @@ test.describe("User journeys", () => {
 
   test("direct navigation to key public routes", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("link", { name: /JuryFlow/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /JuryNote/i })).toBeVisible();
 
     await page.goto("/login");
     await expect(page.getByRole("heading", { name: "Connexion" })).toBeVisible();
