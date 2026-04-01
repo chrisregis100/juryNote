@@ -82,7 +82,7 @@ export const auth = betterAuth({
     nextCookies(),
     magicLink({
       expiresIn: 60 * 10, // 10 minutes
-      disableSignUp: true,
+      disableSignUp: false,
       sendMagicLink: async ({ email, token }) => {
         const appUrl =
           process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
@@ -108,8 +108,7 @@ export const auth = betterAuth({
       create: {
         before: async (user) => {
           // Ensure only organizer/supervisor can authenticate via magic link.
-          // New user creation is blocked by disableSignUp; this hook guards
-          // any programmatic creation path.
+          // This hook guards any programmatic creation path (e.g. jury role).
           const role = (user as { role?: string }).role ?? "organizer";
           if (role === "jury") {
             throw new Error("Jury members cannot authenticate via Better Auth.");

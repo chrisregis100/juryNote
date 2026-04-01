@@ -1,11 +1,10 @@
 "use client";
 
-import { useStore } from "better-auth/react";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 
 export const AuthNavButton = () => {
-  const { data: session, isPending } = useStore(authClient.useSession);
+  const { data: session, isPending } = authClient.useSession();
 
   if (isPending) {
     return <div className="h-9 w-28 animate-pulse rounded-md bg-muted" />;

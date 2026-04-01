@@ -1,16 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { authClient } from "@/lib/auth-client";
 
-type VerifyStatus = "loading" | "success" | "error";
+type VerifyStatus = "loading" | "error";
 
 export function VerifyEmailClient() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const token = searchParams.get("token");
 
   const [status, setStatus] = useState<VerifyStatus>(() =>
@@ -24,11 +23,10 @@ export function VerifyEmailClient() {
     if (!token) return;
 
     async function verifyToken() {
+      // Omit callbackURL so the API returns JSON + Set-Cookie instead of a 302.
+      // A full navigation then ensures the session cookie is visible to the server (proxy / RSC).
       const { error } = await authClient.magicLink.verify({
-        query: {
-          token: token!,
-          callbackURL: "/admin",
-        },
+        query: { token: token! },
       });
 
       if (error) {
@@ -39,12 +37,11 @@ export function VerifyEmailClient() {
         return;
       }
 
-      setStatus("success");
-      router.push("/admin");
+      window.location.assign("/admin");
     }
 
     verifyToken();
-  }, [token, router]);
+  }, [token]);
 
   if (status === "loading") {
     return (
@@ -83,40 +80,6 @@ export function VerifyEmailClient() {
           Vous allez être redirigé automatiquement.
         </p>
       </div>
-    );
-  }
-
-  if (status === "success") {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="flex flex-col items-center gap-4 py-6 text-center"
-        role="status"
-        aria-live="polite"
-      >
-        <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-emerald-500 bg-emerald-50">
-          <svg
-            className="h-7 w-7 text-emerald-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2.5}
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4.5 12.75l6 6 9-13.5"
-            />
-          </svg>
-        </div>
-        <p className="text-lg font-bold text-slate-900">Connecté !</p>
-        <p className="text-sm text-slate-500">
-          Redirection vers votre espace&hellip;
-        </p>
-      </motion.div>
     );
   }
 
