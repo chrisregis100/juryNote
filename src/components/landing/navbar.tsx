@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import logo from "../../../public/logo.png";
 import { MobileNav } from "./mobile-nav";
 
 const NAV_LINKS = [
@@ -20,7 +21,7 @@ export const Navbar = () => (
         aria-label="JuryNote - Accueil"
       >
         <Image
-          src="/logo.png"
+          src={logo}
           alt="juryNote logo"
           width={32}
           height={32}
@@ -46,7 +47,7 @@ export const Navbar = () => (
 
       <div className="hidden items-center gap-4 md:flex">
         <a
-          href="#demo"
+          href="/login"
           className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
         >
           Connexion
