@@ -1,15 +1,23 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { toast } from "sonner";
-import { Key, Link2, FileText, Plus, Trash2, Settings, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  getEventResources,
   deleteEventResource,
+  getEventResources,
   updateEventResource,
 } from "@/server/actions/resources";
+import {
+  ExternalLink,
+  FileText,
+  Key,
+  Link2,
+  Plus,
+  Settings,
+  Trash2,
+} from "lucide-react";
 import dynamic from "next/dynamic";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { AddResourceDialog } from "./add-resource-dialog";
 
 const ApiCredentialsManager = dynamic(
@@ -22,7 +30,7 @@ const ApiCredentialsManager = dynamic(
       <div className="h-64 w-full animate-pulse rounded-xl bg-slate-100" />
     ),
     ssr: false,
-  }
+  },
 );
 
 interface Resource {
@@ -64,7 +72,9 @@ export function ResourcesSection({ eventId }: ResourcesSectionProps) {
   const [resources, setResources] = useState<Resource[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [managerResourceId, setManagerResourceId] = useState<string | null>(null);
+  const [managerResourceId, setManagerResourceId] = useState<string | null>(
+    null,
+  );
   const [managerResourceTitle, setManagerResourceTitle] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);
@@ -81,15 +91,20 @@ export function ResourcesSection({ eventId }: ResourcesSectionProps) {
   }, [eventId]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchResources();
   }, [fetchResources]);
 
   const handleToggleActive = async (resource: Resource) => {
     setTogglingId(resource.id);
-    const result = await updateEventResource(resource.id, { isActive: !resource.isActive });
+    const result = await updateEventResource(resource.id, {
+      isActive: !resource.isActive,
+    });
     if (result.success) {
       setResources((prev) =>
-        prev.map((r) => (r.id === resource.id ? { ...r, isActive: !resource.isActive } : r))
+        prev.map((r) =>
+          r.id === resource.id ? { ...r, isActive: !resource.isActive } : r,
+        ),
       );
     } else {
       toast.error("Impossible de mettre à jour la ressource");
@@ -98,7 +113,8 @@ export function ResourcesSection({ eventId }: ResourcesSectionProps) {
   };
 
   const handleDelete = async (resourceId: string) => {
-    if (!confirm("Êtes-vous sûr de vouloir supprimer cette ressource ?")) return;
+    if (!confirm("Êtes-vous sûr de vouloir supprimer cette ressource ?"))
+      return;
     setDeletingId(resourceId);
     const result = await deleteEventResource(resourceId);
     if (result.success) {
@@ -139,8 +155,8 @@ export function ResourcesSection({ eventId }: ResourcesSectionProps) {
         </div>
       ) : resources.length === 0 ? (
         <p className="rounded-lg bg-slate-50 px-4 py-8 text-center text-sm text-slate-500">
-          Aucune ressource ajoutée. Ajoutez des ressources pour les distribuer automatiquement lors
-          du check-in.
+          Aucune ressource ajoutée. Ajoutez des ressources pour les distribuer
+          automatiquement lors du check-in.
         </p>
       ) : (
         <ul className="space-y-3">
@@ -167,14 +183,19 @@ export function ResourcesSection({ eventId }: ResourcesSectionProps) {
                         </span>
                       )}
                     </div>
-                    <p className="font-semibold text-slate-900">{resource.title}</p>
+                    <p className="font-semibold text-slate-900">
+                      {resource.title}
+                    </p>
                     {resource.description && (
-                      <p className="mt-0.5 text-sm text-slate-500">{resource.description}</p>
+                      <p className="mt-0.5 text-sm text-slate-500">
+                        {resource.description}
+                      </p>
                     )}
 
                     {resource.type === "API_CREDENTIAL" && (
                       <p className="mt-1 inline-flex rounded-full bg-purple-50 px-2 py-0.5 text-xs font-medium text-purple-700">
-                        {resource.assignedCount} / {resource.totalCredentials} assignés
+                        {resource.assignedCount} / {resource.totalCredentials}{" "}
+                        assignés
                       </p>
                     )}
 
@@ -186,16 +207,20 @@ export function ResourcesSection({ eventId }: ResourcesSectionProps) {
                         className="mt-1 inline-flex items-center gap-1 truncate text-xs text-blue-600 hover:underline"
                       >
                         <ExternalLink className="h-3 w-3 shrink-0" />
-                        <span className="max-w-[260px] truncate">{resource.url}</span>
+                        <span className="max-w-[260px] truncate">
+                          {resource.url}
+                        </span>
                       </a>
                     )}
 
                     {resource.type === "TEXT_INFO" && resource.content && (
-                      <p className="mt-1 line-clamp-2 text-xs text-slate-500">{resource.content}</p>
+                      <p className="mt-1 line-clamp-2 text-xs text-slate-500">
+                        {resource.content}
+                      </p>
                     )}
                   </div>
 
-                    <div className="flex shrink-0 items-center gap-2">
+                  <div className="flex shrink-0 items-center gap-2">
                     {resource.type === "API_CREDENTIAL" && (
                       <Button
                         size="sm"
