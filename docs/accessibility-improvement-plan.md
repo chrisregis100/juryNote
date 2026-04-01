@@ -1,4 +1,4 @@
-# Plan d'amélioration de l'accessibilité – JuryFlow
+# Plan d'amélioration de l'accessibilité – JuryNote
 
 **Référence :** WCAG 2.1 niveau AA  
 **Stack :** Next.js, React 19, Shadcn UI, Radix UI  
@@ -36,7 +36,7 @@ L’ordre recommandé est celui du tableau : traiter d’abord les points **Crit
 #### Fichiers concernés
 - `src/app/layout.tsx` : point d’injection global du skip link (recommandé).
 - `src/components/landing/navbar.tsx` : si le skip link est placé dans le premier bloc focusable de la landing.
-- `src/app/(jury)/jury/layout.tsx`, `src/app/(admin)/admin/layout.tsx`, `src/app/(supervisor)/supervisor/layout.tsx` : s’assurer qu’une cible `id="main"` existe pour le skip.
+- `src/app/(jury)/jury/layout.tsx`, `src/app/(admin)/admin/layout.tsx` : s’assurer qu’une cible `id="main"` existe pour le skip.
 - `src/app/page.tsx` : `<main>` doit avoir `id="main"` pour être la cible du skip sur la landing.
 
 #### Solution proposée
@@ -47,7 +47,7 @@ L’ordre recommandé est celui du tableau : traiter d’abord les points **Crit
 
 2. **Cible main**  
    - Sur la landing : dans `src/app/page.tsx`, donner à `<main>` l’attribut `id="main"`.  
-   - Dans les layouts jury, admin, supervisor : donner à la balise `<main>` l’attribut `id="main"` (déjà présents dans ces layouts).
+   - Dans les layouts jury et admin : donner à la balise `<main>` l’attribut `id="main"` (déjà présents dans ces layouts).
 
 3. **Navigation clavier menu mobile**  
    - Fichier : `src/components/landing/mobile-nav.tsx`.  
@@ -159,7 +159,7 @@ L’ordre recommandé est celui du tableau : traiter d’abord les points **Crit
 **Fichiers**
 - `src/components/landing/navbar.tsx` : `<nav>` → ajouter `aria-label="Navigation principale"` (ou « Navigation du site »).
 - `src/app/page.tsx` : `<main>` → ajouter `id="main"`.
-- `src/app/(jury)/jury/layout.tsx`, `src/app/(admin)/admin/layout.tsx`, `src/app/(supervisor)/supervisor/layout.tsx` : s’assurer que `<main>` a bien `id="main"`.
+- `src/app/(jury)/jury/layout.tsx`, `src/app/(admin)/admin/layout.tsx` : s’assurer que `<main>` a bien `id="main"`.
 
 **Solution**
 - Sur chaque `<nav>` : `aria-label` descriptif.  
@@ -181,7 +181,7 @@ L’ordre recommandé est celui du tableau : traiter d’abord les points **Crit
 - Garder `role="alert"` pour les erreurs (déjà en place) pour une annonce immédiate.
 
 **À vérifier ailleurs**  
-- Tout message de chargement ou de succès qui apparaît dynamiquement (formulaires admin, supervisor) : utiliser `role="status"` et/ou `aria-live="polite"` si le message n’est pas déjà dans un `role="alert"`.
+- Tout message de chargement ou de succès qui apparaît dynamiquement (formulaires admin) : utiliser `role="status"` et/ou `aria-live="polite"` si le message n’est pas déjà dans un `role="alert"`.
 
 ---
 
@@ -209,7 +209,7 @@ L’ordre recommandé est celui du tableau : traiter d’abord les points **Crit
 - **1.3.1**, **2.4.6 Headings and Labels (AA)** : hiérarchie logique, un seul h1 par page.
 
 **Fichiers**
-- Pages principales : `src/app/page.tsx`, `src/app/(auth)/login/page.tsx`, `src/app/(auth)/jury/join/page.tsx`, `src/app/(jury)/jury/page.tsx`, `src/app/(admin)/admin/page.tsx`, et vues jury/admin/supervisor.
+- Pages principales : `src/app/page.tsx`, `src/app/(auth)/login/page.tsx`, `src/app/(auth)/jury/join/page.tsx`, `src/app/(jury)/jury/page.tsx`, `src/app/(admin)/admin/page.tsx`, et vues jury/admin.
 - Composants landing : hero, features, how-it-works, faq, etc.
 
 **Solution**
@@ -236,7 +236,6 @@ L’ordre recommandé est celui du tableau : traiter d’abord les points **Crit
 | `src/components/landing/navbar.tsx` | `aria-label` sur `<nav>`. |
 | `src/app/(jury)/jury/layout.tsx` | `id="main"` sur `<main>` (si pas déjà fait). |
 | `src/app/(admin)/admin/layout.tsx` | `id="main"` sur `<main>`. |
-| `src/app/(supervisor)/supervisor/layout.tsx` | `id="main"` sur `<main>`. |
 | `src/components/landing/mobile-nav.tsx` | Gestion focus (ouverture/fermeture), Échap pour fermer, optionnel : focus trap. |
 | `src/components/ui/button.tsx` | Documentation / prop pour exiger `aria-label` lorsque le contenu est uniquement une icône. |
 
@@ -267,7 +266,7 @@ L’ordre recommandé est celui du tableau : traiter d’abord les points **Crit
 ## 5. Ordre d’implémentation recommandé
 
 1. **Phase 1 – Critique (1–2 jours)**  
-   - Skip link + `id="main"` (layout + page + layouts jury/admin/supervisor).  
+   - Skip link + `id="main"` (layout + page + layouts jury/admin).  
    - Slider : props ARIA dans `slider.tsx` + usage dans `notation-form.tsx`.  
    - Notation form : labels/textarea (id, Label ou aria-label) + live region « Sauvegarde… ».  
    - Jury join form : fieldset + legend pour le PIN.

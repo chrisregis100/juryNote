@@ -74,7 +74,7 @@ export async function submitDemoRequest(formData: FormData): Promise<{ success: 
           <tr>
             <td style="padding: 20px 32px; background-color: #f3f4f6; text-align: center; border-top: 1px solid #e5e7eb;">
               <p style="margin: 0; font-size: 12px; color: #9ca3af;">
-                Envoyé depuis le formulaire de démo JuryFlow
+                Envoyé depuis le formulaire de démo JuryNote
               </p>
             </td>
           </tr>
@@ -93,7 +93,7 @@ Email: ${email}
 Organisation: ${organisation}
 ${message ? `Message: ${message}` : ""}
 
-Envoyé depuis le formulaire de démo JuryFlow`;
+Envoyé depuis le formulaire de démo JuryNote`;
 
     await sendBrevoTransactionalEmail({
       toEmail: "contact@juryflow.fr",

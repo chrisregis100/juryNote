@@ -18,8 +18,8 @@ test.describe("Navigation after organisateur login", () => {
     await expect(page).toHaveURL(/\/admin/, { timeout: 15_000 });
   });
 
-  test("admin dashboard shows JuryFlow Admin header", async ({ page }) => {
-    await expect(page.getByRole("link", { name: /JuryFlow Admin/i })).toBeVisible();
+  test("admin dashboard shows JuryNote Admin header", async ({ page }) => {
+    await expect(page.getByRole("link", { name: /JuryNote Admin/i })).toBeVisible();
   });
 
   test("admin can see events section or empty state", async ({ page }) => {

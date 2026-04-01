@@ -52,7 +52,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           <Link href="/" className="group inline-block">
             <div className="inline-block -rotate-2 bg-yellow-400 px-5 py-2.5 transition-transform group-hover:rotate-0">
               <span className="text-4xl font-black tracking-tight text-black">
-                JuryFlow
+                JuryNote
               </span>
             </div>
           </Link>
@@ -70,7 +70,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
               <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
               <div className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
               <span className="ml-2 text-[10px] font-medium text-slate-500">
-                JuryFlow
+                JuryNote
               </span>
             </div>
             <div className="space-y-2.5">
@@ -106,7 +106,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         <div className="relative z-10 mb-10 lg:hidden">
           <Link href="/" className="inline-block -rotate-2 bg-yellow-400 px-4 py-1.5">
             <span className="text-2xl font-black tracking-tight text-black">
-              JuryFlow
+              JuryNote
             </span>
           </Link>
         </div>

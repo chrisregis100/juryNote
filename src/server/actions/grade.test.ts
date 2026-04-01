@@ -1,4 +1,20 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
+vi.mock("@/lib/auth", () => ({
+  getServerSession: vi.fn(async () => ({
+    user: {
+      role: "jury" as const,
+      id: "j1",
+      eventId: "ev-1",
+      juryAssignmentId: "ja-1",
+      displayName: "Juror",
+      isPresident: false,
+    },
+  })),
+  isOrganizerOrSupervisor: () => false,
+  isJurySession: () => true,
+}));
+
 import { upsertGrade } from "./grade";
 
 const mockRevalidatePath = vi.fn();

@@ -14,10 +14,10 @@ function buildMagicLinkEmailContent(verifyUrl: string): {
   html: string;
   text: string;
 } {
-  const subject = "Votre lien de connexion JuryFlow";
+  const subject = "Votre lien de connexion JuryNote";
   const html = `
             <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-              <h2 style="color: #1a1a1a;">Connexion à JuryFlow</h2>
+              <h2 style="color: #1a1a1a;">Connexion à JuryNote</h2>
               <p style="color: #555;">Cliquez sur le bouton ci-dessous pour vous connecter. Ce lien expire dans 10&nbsp;minutes.</p>
               <a
                 href="${verifyUrl}"
@@ -39,7 +39,7 @@ function buildMagicLinkEmailContent(verifyUrl: string): {
               </p>
             </div>
           `;
-  const text = `Connexion à JuryFlow : ${verifyUrl}`;
+  const text = `Connexion à JuryNote : ${verifyUrl}`;
   return { subject, html, text };
 }
 

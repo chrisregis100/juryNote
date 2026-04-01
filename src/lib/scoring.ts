@@ -1,5 +1,5 @@
 /**
- * JuryFlow - Weighted score calculation
+ * JuryNote - Weighted score calculation
  * Score Final = Σ(Note × Coefficient) / Σ(Coefficients)
  * Aggregated per team across all criteria and all juries.
  */

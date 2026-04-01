@@ -22,10 +22,10 @@ export function DashboardNavbar({ user }: DashboardNavbarProps) {
         <Link
           href="/admin"
           className="flex items-center gap-2 text-xl font-black tracking-tight"
-          aria-label="JuryFlow Admin - Accueil"
+          aria-label="JuryNote Admin - Accueil"
         >
           <span className="inline-block h-4 w-4 rotate-6 bg-indigo-600" />
-          JuryFlow
+          JuryNote
         </Link>
 
         <div className="flex items-center gap-4">

@@ -20,7 +20,7 @@ function applySecurityHeaders(res: NextResponse): NextResponse {
 }
 
 function isAdminRoute(pathname: string): boolean {
-  return pathname.startsWith("/admin") || pathname.startsWith("/supervisor");
+  return pathname.startsWith("/admin");
 }
 
 function isJuryRoute(pathname: string): boolean {

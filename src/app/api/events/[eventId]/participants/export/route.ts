@@ -12,6 +12,7 @@ function sanitizeCsvCell(value: string): string {
   return trimmed;
 }
 
+/** Full export of all check-ins for the event (not paginated; intentional for CSV/Excel/PDF). */
 export async function GET(
   request: NextRequest,
   context: { params: Promise<{ eventId: string }> }

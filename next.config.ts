@@ -10,6 +10,21 @@ const nextConfig: NextConfig = {
   compress: true,
   reactStrictMode: true,
 
+  async redirects() {
+    return [
+      {
+        source: "/supervisor/events/:eventId",
+        destination: "/admin/events/:eventId/deliberation",
+        permanent: true,
+      },
+      {
+        source: "/supervisor",
+        destination: "/admin",
+        permanent: true,
+      },
+    ];
+  },
+
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],

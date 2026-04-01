@@ -1,4 +1,4 @@
-# JuryFlow
+# JuryNote
 
 Plateforme de notation et de délibération pour jurys de hackathons et compétitions.
 
@@ -58,7 +58,7 @@ Plateforme de notation et de délibération pour jurys de hackathons et compéti
 
 ### Délibération (organisateur)
 
-- **Vue de délibération** (`/admin/events/[eventId]/deliberation`) ; l’ancienne URL `/supervisor/events/[eventId]` redirige vers cette page :
+- **Vue de délibération** (`/admin/events/[eventId]/deliberation`) ; les anciennes URLs `/supervisor` et `/supervisor/events/[eventId]` redirigent (301) vers `/admin` et cette page de délibération.
   - Tableau de classement des équipes en temps réel.
   - Calcul par moyenne pondérée : `Σ(Note × Coefficient) / Σ(Coefficients)`.
   - Bouton de clôture de la délibération.
@@ -102,7 +102,6 @@ src/
 │   ├── (jury)/jury/         # Espace jury
 │   │   ├── teams/[teamId]/  # Notation d'une équipe
 │   │   └── summary/         # Récapitulatif des notes
-│   ├── (supervisor)/        # Espace superviseur / délibération
 │   └── api/                 # Routes API (auth, SSE)
 ├── components/              # Composants UI (Shadcn, landing, shared)
 ├── lib/                     # Utilitaires (auth, DB, scoring, validation)
